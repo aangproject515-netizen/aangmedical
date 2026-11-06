@@ -345,7 +345,6 @@
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="emrPatientCardsGrid"></div>
         </div>
-
         <div id="emrDetailPortal" class="hidden space-y-6">
           <div class="pastel-card p-5 bg-gradient-to-r from-pink-50 to-white flex justify-between items-center">
             <div>
@@ -359,12 +358,10 @@
               </button>
             </div>
           </div>
-
           <div class="pastel-card p-5 space-y-3">
             <h3 class="font-bold text-sm text-medDark border-b pb-2 border-pink-100"><i class="fa-solid fa-clock-rotate-left text-teal-600 mr-2"></i>Riwayat Rekam Medis Kronologis (Semua Kunjungan Tersimpan)</h3>
             <div id="patientVisitHistoryContainer" class="space-y-3"></div>
           </div>
-
           <div class="pastel-card p-6">
             <div class="flex justify-between items-center border-b border-pink-100 pb-3 mb-4">
               <h3 class="font-bold text-base text-medDark"><i class="fa-solid fa-pen-to-square text-pastelRose mr-2"></i>Form Input SOAP & e-Resep (<span id="emr-active-visit-date"></span>)</h3>
@@ -419,7 +416,6 @@
           </div>
         </div>
       </section>
-
       <!-- 5. LABORATORIUM & RADIOLOGI (DENGAN UPDATE TAHAP PROGRES) -->
       <section id="tab-labrad" class="tab-section hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -466,7 +462,6 @@
           </div>
         </div>
       </section>
-
       <!-- 6. KASIR / BILLING SYSTEM (STATUS LUNAS/BELUM & STRUK RESMI) -->
       <section id="tab-kasir" class="tab-section hidden space-y-6">
         <div id="billingSelectionPortal" class="pastel-card p-6 space-y-4 bg-gradient-to-r from-teal-50 via-white to-pink-50">
@@ -534,7 +529,6 @@
           </div>
         </div>
       </section>
-
       <!-- 7. INVENTARIS RS (DENGAN TOMBOL TAMBAH & HAPUS) -->
       <section id="tab-inventaris" class="tab-section hidden space-y-6">
         <div class="pastel-card p-6 space-y-4">
@@ -552,7 +546,6 @@
       </section>
     </main>
   </div>
-
   <!-- AREA PRINT STRUK KASIR RESMI -->
   <div id="printableReceiptArea" class="hidden p-8 font-mono text-xs text-gray-800 bg-white">
     <div class="text-center border-b-2 border-dashed border-gray-400 pb-4 mb-4">
@@ -586,7 +579,6 @@
       <p>Semoga lekas sembuh!</p>
     </div>
   </div>
-
   <!-- MODAL TAMBAH INVENTARIS -->
   <div id="inventoryModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4 no-print">
     <div class="pastel-card max-w-md w-full p-6 space-y-4">
@@ -612,7 +604,6 @@
       </form>
     </div>
   </div>
-
   <!-- MODAL KONFIGURASI API -->
   <div id="configModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4 no-print">
     <div class="pastel-card max-w-lg w-full p-6 space-y-4">
@@ -632,13 +623,11 @@
       </div>
     </div>
   </div>
-
   <!-- SCRIPT UTAMA DINAMIS MURNI DATABASE -->
   <script>
     const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxaF7QdzPombAPXECdhFOLZXc2X72_hzOjIbjEIVuAKWJD7_P6BHkNuP9sjNUxaRmd0Ng/exec';
     let GAS_URL = localStorage.getItem('AANG_MEDICAL_GAS_URL') || DEFAULT_GAS_URL;
     let selectedPayMethod = 'Tunai';
-
     let appState = {
       patients: [],
       doctors: [],
@@ -651,7 +640,6 @@
       masterObat: [],
       auditLogs: []
     };
-
     async function fetchDatabaseData() {
       try {
         const response = await fetch(GAS_URL + "?action=init");
@@ -677,7 +665,6 @@
         renderAll();
       }
     }
-
     function switchTab(tabId) {
       document.querySelectorAll('.tab-section').forEach(el => el.classList.add('hidden'));
       document.getElementById('tab-' + tabId).classList.remove('hidden');
@@ -688,8 +675,8 @@
       if (tabId === 'emr') renderEmrPatientCards();
       if (tabId === 'kasir') renderBillingPatientSelection();
       if (tabId === 'inventaris') renderInventory();
+      if (tabId === 'labrad') renderLabQueue();
     }
-
     function renderAll() {
       renderPatientsList();
       renderDoctorsAndRooms();
@@ -707,7 +694,6 @@
       const totalUnpaid = appState.billing.filter(b => b.payment_status !== 'Lunas').reduce((acc, curr) => acc + (Number(curr.patient_paid) || 0), 0);
       document.getElementById('stat-bills').innerText = 'Rp ' + totalUnpaid.toLocaleString('id-ID');
     }
-
     // --- 1. FRONT OFFICE & KUNJUNGAN ---
     function renderPatientsList() {
       const q = (document.getElementById('searchPatientInput')?.value || '').toLowerCase();
@@ -727,14 +713,11 @@
           </div>
         `).join('');
       }
-
-      // Populate visit patient select
       const patSelect = document.getElementById('visit-patient-id');
       if (patSelect) {
         patSelect.innerHTML = appState.patients.map(p => `<option value="${p.patient_id}">${p.patient_id} - ${p.full_name}</option>`).join('');
       }
     }
-
     function renderDoctorsAndRooms() {
       const docList = document.getElementById('doctorScheduleList');
       if (docList) {
@@ -748,12 +731,10 @@
           </div>
         `).join('');
       }
-
       const visitDocSelect = document.getElementById('visit-doctor-id');
       if (visitDocSelect) {
         visitDocSelect.innerHTML = appState.doctors.map(d => `<option value="${d.doctor_id}">${d.full_name}</option>`).join('');
       }
-
       const roomList = document.getElementById('roomStatusFrontOffice');
       if (roomList) {
         roomList.innerHTML = appState.rooms.map(r => `
@@ -767,7 +748,6 @@
         `).join('');
       }
     }
-
     async function handleRegisterPatient(e) {
       e.preventDefault();
       const payload = {
@@ -792,7 +772,6 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal register: " + e); }
     }
-
     async function handleCreateVisit(e) {
       e.preventDefault();
       const payload = {
@@ -815,25 +794,21 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal buat kunjungan: " + e); }
     }
-
     // --- 2. RAWAT INAP & RAWAT JALAN (TIDAK HILANG SAAT PULANG & FILTER TANGGAL) ---
     function renderInpatientCards() {
       const filterDate = document.getElementById('filterInpatientDate')?.value || '';
       const filterType = document.getElementById('filterVisitType')?.value || 'Semua';
       const container = document.getElementById('inpatientCardGrid');
       if (!container) return;
-
       const filtered = appState.visits.filter(v => {
         const matchType = filterType === 'Semua' || v.visit_type === filterType;
         const matchDate = !filterDate || String(v.visit_date).indexOf(filterDate) !== -1;
         return matchType && matchDate;
       });
-
       if (filtered.length === 0) {
         container.innerHTML = `<p class="col-span-2 text-center text-xs text-gray-500 py-4">Tidak ada data kunjungan pada filter tersebut.</p>`;
         return;
       }
-
       container.innerHTML = filtered.map(v => {
         const pat = appState.patients.find(p => p.patient_id === v.patient_id) || {};
         const isPulang = v.visit_status === 'Pulang';
@@ -850,22 +825,18 @@
         `;
       }).join('');
     }
-
     // --- 3. EMR (CARD SELECTION + FILTER TANGGAL BEROBAT + KRONOLOGIS) ---
     function renderEmrPatientCards() {
       const q = (document.getElementById('searchEmrPortalInput')?.value || '').toLowerCase();
       const filterDate = document.getElementById('filterEmrDate')?.value || '';
-
       const filtered = appState.patients.filter(p => {
         const matchQ = String(p.full_name).toLowerCase().includes(q) || String(p.patient_id).toLowerCase().includes(q);
         if (!filterDate) return matchQ;
         const hasVisitOnDate = appState.visits.some(v => v.patient_id === p.patient_id && String(v.visit_date).indexOf(filterDate) !== -1);
         return matchQ && hasVisitOnDate;
       });
-
       const container = document.getElementById('emrPatientCardsGrid');
       if (!container) return;
-
       container.innerHTML = filtered.map(p => `
         <div onclick="selectEmrPatient('${p.patient_id}')" class="pastel-card p-4 cursor-pointer hover:border-pastelRose bg-white transition space-y-2">
           <div class="flex justify-between items-start">
@@ -877,44 +848,34 @@
         </div>
       `).join('');
     }
-
     function selectEmrPatient(patientId) {
       const pat = appState.patients.find(p => p.patient_id === patientId);
       if (!pat) return;
-
       document.getElementById('emr-active-name').innerText = pat.full_name;
       document.getElementById('emr-active-rm').innerText = pat.patient_id;
       
       const v = appState.visits.find(vis => vis.patient_id === patientId) || { visit_type: 'Rawat Jalan' };
       document.getElementById('emr-active-visit-type-badge').innerText = v.visit_type;
-
       document.getElementById('emrPatientSelectionPortal').classList.add('hidden');
       document.getElementById('emrDetailPortal').classList.remove('hidden');
-
       const docSelect = document.getElementById('emr-doctor');
       docSelect.innerHTML = appState.doctors.map(d => `<option value="${d.doctor_id}">${d.full_name} (${d.specialization})</option>`).join('');
-
       renderPatientVisitHistory(patientId);
       renderPharmacyDrugDropdown();
     }
-
     function backToEmrSelection() {
       document.getElementById('emrDetailPortal').classList.add('hidden');
       document.getElementById('emrPatientSelectionPortal').classList.remove('hidden');
     }
-
     function renderPatientVisitHistory(patientId) {
       const container = document.getElementById('patientVisitHistoryContainer');
       const records = appState.medicalRecords.filter(r => r.patient_id === patientId);
       const todayStr = new Date().toISOString().split('T')[0];
-
       document.getElementById('emr-active-visit-date').innerText = `Tanggal Berobat: ${todayStr}`;
-
       if (records.length === 0) {
         container.innerHTML = `<p class="text-xs text-gray-500 italic">Belum ada riwayat rekam medis kronologis sebelumnya.</p>`;
         return;
       }
-
       container.innerHTML = records.map(rec => {
         let presText = "-";
         try {
@@ -923,7 +884,6 @@
             presText = parsed.items.map(i => `${i.drug} (${i.dose})`).join(', ');
           }
         } catch(e) { presText = rec.prescription_json; }
-
         return `
           <div class="p-3.5 rounded-xl border border-teal-200 bg-teal-50/40 text-xs space-y-1">
             <div class="flex justify-between font-bold text-teal-900 border-b border-teal-100 pb-1">
@@ -939,7 +899,6 @@
         `;
       }).join('');
     }
-
     function openNewVisitRecordModal() {
       const todayStr = new Date().toISOString().split('T')[0];
       document.getElementById('emr-active-visit-date').innerText = `Tanggal Berobat: ${todayStr}`;
@@ -949,7 +908,6 @@
       document.getElementById('emr-soap-p').value = "";
       alert("Form siap untuk entri rekam medis kunjungan baru hari ini.");
     }
-
     function renderPharmacyDrugDropdown() {
       const selects = document.querySelectorAll('.pres-drug-select');
       selects.forEach(sel => {
@@ -965,7 +923,6 @@
         sel.innerHTML = optionsHtml;
       });
     }
-
     function addPrescriptionRow() {
       const container = document.getElementById('prescriptionRows');
       const div = document.createElement('div');
@@ -976,7 +933,6 @@
         optionsHtml += `<option value="${m.drug_name}">${m.drug_name} (Stok: ${m.stock_qty})</option>`;
       });
       optionsHtml += `<option value="CUSTOM">+ Ketik Manual Nama Obat Lain...</option>`;
-
       div.innerHTML = `
         <select class="col-span-6 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-drug-select" onchange="checkCustomDrugInput(this)">
           ${optionsHtml}
@@ -987,7 +943,6 @@
       `;
       container.appendChild(div);
     }
-
     function checkCustomDrugInput(selectEl) {
       if (selectEl.value === 'CUSTOM') {
         const customName = prompt("Masukkan nama obat manual:", "Obat Racikan Khusus");
@@ -1002,7 +957,6 @@
         }
       }
     }
-
     function addNewPharmacyDrugPrompt() {
       const newDrug = prompt("Masukkan nama obat baru:", "Cetirizine 10mg");
       if (newDrug) {
@@ -1011,12 +965,10 @@
         renderPharmacyDrugDropdown();
       }
     }
-
     async function handleSaveEMR(e) {
       e.preventDefault();
       const patientId = document.getElementById('emr-active-rm').innerText;
       const visit = appState.visits.find(v => v.patient_id === patientId) || appState.visits[0] || { visit_id: "VST-DEFAULT" };
-
       const rows = document.querySelectorAll('.prescription-row-item');
       let presItems = [];
       rows.forEach(r => {
@@ -1025,7 +977,6 @@
         const dose = r.querySelector('.pres-dosage').value;
         presItems.push({ drug, dose: `${qty} - ${dose}`, price: 25000 });
       });
-
       const payload = {
         action: "saveMedicalRecord",
         visit_id: visit.visit_id,
@@ -1037,7 +988,6 @@
         soap_p: document.getElementById('emr-soap-p').value,
         prescription_items: presItems
       };
-
       try {
         await fetch(GAS_URL, {
           method: "POST",
@@ -1051,11 +1001,14 @@
         alert("Gagal menyimpan ke database: " + err);
       }
     }
-
-    // --- 4. LAB & RADIOLOGI (UPDATE TAHAP PROGRES) ---
+    // --- 4. LAB & RADIOLOGI (DENGAN UPDATE TAHAP PROGRES) ---
     function renderLabQueue() {
       const container = document.getElementById('labQueueContainer');
       if (!container) return;
+      if (appState.lab_radiology.length === 0) {
+        container.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">Belum ada antrean lab & radiologi di database.</p>`;
+        return;
+      }
       container.innerHTML = appState.lab_radiology.map((item, idx) => `
         <div onclick="selectLabItem(${idx})" class="p-3.5 rounded-xl border border-pink-100 hover:border-purple-300 bg-white cursor-pointer flex justify-between items-center transition">
           <div>
@@ -1066,7 +1019,6 @@
         </div>
       `).join('');
     }
-
     function selectLabItem(index) {
       const item = appState.lab_radiology[index];
       if (!item) return;
@@ -1077,7 +1029,6 @@
       document.getElementById('lab-detail-flag').value = item.critical_flag || 'Normal';
       document.getElementById('lab-detail-summary').value = item.result_summary || '';
     }
-
     async function saveLabResultUpdate() {
       const orderId = document.getElementById('lab-detail-order-id').value;
       const status = document.getElementById('lab-detail-status').value;
@@ -1088,7 +1039,6 @@
         alert("Pilih pemeriksaan terlebih dahulu dari daftar antrean.");
         return;
       }
-
       try {
         await fetch(GAS_URL, {
           method: "POST",
@@ -1100,7 +1050,6 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal update lab: " + e); }
     }
-
     function promptNewLabOrder() {
       const rm = prompt("Masukkan No. RM Pasien:", "RM-00001");
       if (!rm) return;
@@ -1114,7 +1063,6 @@
         examination_type: exam,
         notes: "Permintaan baru dari UI"
       };
-
       fetch(GAS_URL, {
         method: "POST",
         mode: "no-cors",
@@ -1125,7 +1073,6 @@
         fetchDatabaseData();
       });
     }
-
     // --- 5. KASIR / BILLING SYSTEM ---
     function renderBillingPatientSelection() {
       const container = document.getElementById('billingPatientCards');
@@ -1148,12 +1095,10 @@
         `;
       }).join('');
     }
-
     let activeBillingObj = null;
     function selectBillingItem(billId) {
       activeBillingObj = appState.billing.find(b => b.bill_id === billId);
       if (!activeBillingObj) return;
-
       document.getElementById('bill-patient-name').innerText = activeBillingObj.patient_id;
       document.getElementById('bill-patient-rm').innerText = activeBillingObj.patient_id;
       
@@ -1161,10 +1106,8 @@
       const isLunas = activeBillingObj.payment_status === 'Lunas';
       badge.className = `px-3 py-1 rounded-full text-xs font-bold ${isLunas ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}`;
       badge.innerText = activeBillingObj.payment_status || 'Belum Lunas';
-
       document.getElementById('billingSelectionPortal').classList.add('hidden');
       document.getElementById('billingDetailPortal').classList.remove('hidden');
-
       const tbody = document.getElementById('billingItemsTable');
       tbody.innerHTML = `
         <tr>
@@ -1175,27 +1118,22 @@
           <td class="py-3 px-3 text-right font-bold text-pink-600">Rp ${Number(activeBillingObj.patient_paid).toLocaleString('id-ID')}</td>
         </tr>
       `;
-
       document.getElementById('bill-subtotal-txt').innerText = 'Rp ' + Number(activeBillingObj.amount).toLocaleString('id-ID');
       document.getElementById('bill-covered-txt').innerText = 'Rp ' + Number(activeBillingObj.insurance_covered).toLocaleString('id-ID');
       document.getElementById('bill-net-txt').innerText = 'Rp ' + Number(activeBillingObj.patient_paid).toLocaleString('id-ID');
     }
-
     function backToBillingSelection() {
       document.getElementById('billingDetailPortal').classList.add('hidden');
       document.getElementById('billingSelectionPortal').classList.remove('hidden');
     }
-
     function selectPayMethod(method) {
       selectedPayMethod = method;
       document.querySelectorAll('.pay-method-btn').forEach(b => b.className = 'pay-method-btn py-2 rounded-xl border border-pink-200');
       const active = document.getElementById('pay-' + method);
       if (active) active.className = 'pay-method-btn py-2 rounded-xl border-2 border-pastelRose bg-pink-50 text-pink-900';
     }
-
     async function processCashierPayment() {
       if (!activeBillingObj) return;
-
       try {
         await fetch(GAS_URL, {
           method: "POST",
@@ -1203,7 +1141,6 @@
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify({ action: "processPayment", bill_id: activeBillingObj.bill_id, payment_method: selectedPayMethod })
         });
-
         document.getElementById('print-trx-id').innerText = activeBillingObj.bill_id;
         document.getElementById('print-patient-name').innerText = activeBillingObj.patient_id;
         document.getElementById('print-patient-rm').innerText = activeBillingObj.patient_id;
@@ -1214,13 +1151,11 @@
         document.getElementById('print-items-body').innerHTML = `
           <tr><td class="py-1">${activeBillingObj.item_description}</td><td class="text-right">Rp ${Number(activeBillingObj.amount).toLocaleString('id-ID')}</td></tr>
         `;
-
         alert("Pembayaran berhasil diproses LUNAS ke database! Membuka cetak struk resmi...");
         window.print();
         fetchDatabaseData();
       } catch(e) { alert("Gagal proses pembayaran: " + e); }
     }
-
     // --- 6. INVENTARIS RS (DENGAN TOMBOL TAMBAH DAN HAPUS) ---
     function renderInventory() {
       const container = document.getElementById('inventoryListContainer');
@@ -1238,17 +1173,14 @@
         </div>
       `).join('');
     }
-
     function openInventoryModal() {
       document.getElementById('inventoryModal').classList.remove('hidden');
       document.getElementById('inventoryModal').classList.add('flex');
     }
-
     function closeInventoryModal() {
       document.getElementById('inventoryModal').classList.add('hidden');
       document.getElementById('inventoryModal').classList.remove('flex');
     }
-
     async function handleSaveInventorySubmit(e) {
       e.preventDefault();
       const payload = {
@@ -1261,7 +1193,6 @@
         unit: document.getElementById('inv-unit').value,
         condition_status: "Aktif"
       };
-
       try {
         await fetch(GAS_URL, {
           method: "POST",
@@ -1275,7 +1206,6 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal simpan inventaris: " + e); }
     }
-
     async function deleteInventoryItemModal(itemId) {
       if (!confirm(`Hapus item inventaris ${itemId}?`)) return;
       try {
@@ -1289,19 +1219,16 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal hapus: " + e); }
     }
-
     // --- 7. CONFIG ---
     function openConfigModal() {
       document.getElementById('inputGasUrl').value = GAS_URL;
       document.getElementById('configModal').classList.remove('hidden');
       document.getElementById('configModal').classList.add('flex');
     }
-
     function closeConfigModal() {
       document.getElementById('configModal').classList.add('hidden');
       document.getElementById('configModal').classList.remove('flex');
     }
-
     function saveApiConfig() {
       GAS_URL = document.getElementById('inputGasUrl').value.trim();
       localStorage.setItem('AANG_MEDICAL_GAS_URL', GAS_URL);
@@ -1309,7 +1236,6 @@
       fetchDatabaseData();
       alert("URL Web App berhasil disimpan & disinkronkan!");
     }
-
     window.addEventListener('DOMContentLoaded', () => {
       fetchDatabaseData();
     });
