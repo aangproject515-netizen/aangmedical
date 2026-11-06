@@ -550,8 +550,7 @@
           <div id="inventoryListContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
         </div>
       </section>
-    </main>
-    <!-- 8. MANAJEMEN USER RS -->
+      <!-- 8. MANAJEMEN USER RS -->
       <section id="tab-users" class="tab-section hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div class="lg:col-span-8 pastel-card p-6 space-y-4">
@@ -590,6 +589,7 @@
           </div>
         </div>
       </section>
+    </main>
   </div>
 
   <!-- AREA PRINT STRUK KASIR RESMI -->
@@ -671,7 +671,6 @@
       </div>
     </div>
   </div>
-  </main>
 
   <!-- SCRIPT UTAMA DINAMIS MURNI DATABASE -->
   <script>
@@ -749,7 +748,7 @@
       renderUsersModule();
       
       document.getElementById('stat-patients').innerText = appState.patients.length;
-      document.getElementById('stat-lab').innerText = appState.lab_radiology.length;
+      document.getElementById('stat-lab').innerText = (appState.labRadiology || []).length;
       const activeVisitsCount = appState.visits.filter(v => v.visit_status !== 'Pulang').length;
       document.getElementById('stat-rooms').innerText = activeVisitsCount;
       
@@ -1195,7 +1194,8 @@
     function selectBillingItem(billId) {
       activeBillingObj = appState.billing.find(b => b.bill_id === billId);
       if (!activeBillingObj) return;
-      document.getElementById('bill-patient-name').innerText = activeBillingObj.patient_id;
+      const patObj = appState.patients.find(p => p.patient_id === activeBillingObj.patient_id) || {};
+      document.getElementById('bill-patient-name').innerText = patObj.full_name || activeBillingObj.patient_id;
       document.getElementById('bill-patient-rm').innerText = activeBillingObj.patient_id;
       
       const badge = document.getElementById('bill-status-badge');
@@ -1240,8 +1240,9 @@
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify({ action: "processPayment", bill_id: activeBillingObj.bill_id, payment_method: selectedPayMethod })
         });
+        const patObj = appState.patients.find(p => p.patient_id === activeBillingObj.patient_id) || {};
         document.getElementById('print-trx-id').innerText = activeBillingObj.bill_id;
-        document.getElementById('print-patient-name').innerText = activeBillingObj.patient_id;
+        document.getElementById('print-patient-name').innerText = patObj.full_name || activeBillingObj.patient_id;
         document.getElementById('print-patient-rm').innerText = activeBillingObj.patient_id;
         document.getElementById('print-date-time').innerText = new Date().toLocaleString('id-ID');
         document.getElementById('print-covered').innerText = 'Rp ' + Number(activeBillingObj.insurance_covered).toLocaleString('id-ID');
