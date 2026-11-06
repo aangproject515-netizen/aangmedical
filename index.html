@@ -128,6 +128,9 @@
         <button onclick="switchTab('inventaris')" id="btn-inventaris" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
           <i class="fa-solid fa-boxes-stacked w-5 text-center"></i> Inventaris RS
         </button>
+        <button onclick="switchTab('users')" id="btn-users" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
+          <i class="fa-solid fa-user-shield w-5 text-center"></i> Manajemen User RS
+        </button>
       </div>
     </aside>
 
@@ -548,6 +551,45 @@
         </div>
       </section>
     </main>
+    <!-- 8. MANAJEMEN USER RS -->
+      <section id="tab-users" class="tab-section hidden space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-8 pastel-card p-6 space-y-4">
+            <div class="flex flex-wrap justify-between items-center border-b border-pink-100 pb-3 gap-2">
+              <div>
+                <h2 class="text-xl font-extrabold text-medDark"><i class="fa-solid fa-user-shield text-indigo-600 mr-2"></i>Manajemen User & Hak Akses RS</h2>
+                <p class="text-xs text-gray-500">Kelola akun dokter, front office, kasir, dan administrator rumah sakit</p>
+              </div>
+              <div class="flex gap-2">
+                <input type="text" id="userSearchInput" oninput="renderUsersModule()" placeholder="Cari User..." class="px-3 py-1.5 rounded-xl border border-pink-200 text-xs">
+                <button onclick="openNewUserPrompt()" class="px-3.5 py-1.5 rounded-xl bg-pastelRose hover:bg-pink-400 text-white text-xs font-bold shadow-sm">
+                  + Tambah User Baru
+                </button>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr class="bg-pink-50 text-pink-900 border-b border-pink-200 text-xs uppercase">
+                    <th class="py-3 px-3">Nama Lengkap</th>
+                    <th class="py-3 px-3">Role / Jabatan</th>
+                    <th class="py-3 px-3">Akses Modul</th>
+                    <th class="py-3 px-3 text-center">Status</th>
+                    <th class="py-3 px-3 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTableBody" class="divide-y divide-pink-100"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="lg:col-span-4 pastel-card p-6 space-y-4">
+            <h3 class="font-extrabold text-base border-b border-pink-100 pb-3">
+              <i class="fa-solid fa-chart-pie text-pastelRose mr-2"></i>Ringkasan Role RS
+            </h3>
+            <div id="roleSummaryContainer" class="space-y-2.5 text-xs"></div>
+          </div>
+        </div>
+      </section>
   </div>
 
   <!-- AREA PRINT STRUK KASIR RESMI -->
@@ -632,7 +674,7 @@
 
   <!-- SCRIPT UTAMA DINAMIS MURNI DATABASE -->
   <script>
-    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxaF7QdzPombAPXECdhFOLZXc2X72_hzOjIbjEIVuAKWJD7_P6BHkNuP9sjNUxaRmd0Ng/exec';
+    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxVWVPOXIDUikH9SbyJiBvn63VbnoFYqyXOKKU1YUACq8xUgFozGFfvx51uTTAyA6RraA/exec';
     let GAS_URL = localStorage.getItem('AANG_MEDICAL_GAS_URL') || DEFAULT_GAS_URL;
     let selectedPayMethod = 'Tunai';
     let appState = {
@@ -645,7 +687,13 @@
       billing: [],
       inventory: [],
       masterObat: [],
-      auditLogs: []
+      auditLogs: [],
+      users: [ // <-- DITAMBAHKAN
+        { user_id: "USR-01", full_name: "Dr. Aang, Sp.PD", role: "Administrator", module_access: "Semua Modul RS", user_status: "Aktif" },
+        { user_id: "USR-02", full_name: "Siti Rahma", role: "Petugas Front Office", module_access: "Front Office & Antrean", user_status: "Aktif" },
+        { user_id: "USR-03", full_name: "dr. Siti Rahma, Sp.A", role: "Dokter DPJP", module_access: "Rekam Medis (EMR)", user_status: "Aktif" },
+        { user_id: "USR-04", full_name: "Dewi Puspita", role: "Kasir / Billing", module_access: "Kasir / Billing System", user_status: "Aktif" }
+      ]
     };
 
     async function fetchDatabaseData() {
@@ -663,6 +711,7 @@
           appState.inventory = json.data.inventory || [];
           appState.masterObat = json.data.masterObat || [];
           appState.auditLogs = json.data.auditLogs || [];
+          appState.users = json.data.users || appState.users;
           
           document.getElementById('connBadge').className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
           document.getElementById('connBadge').innerHTML = '<i class="fa-solid fa-cloud-check mr-1"></i> Terhubung ke Database Sheets';
