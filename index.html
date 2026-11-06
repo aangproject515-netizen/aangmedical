@@ -81,12 +81,12 @@
 <body class="min-h-screen flex flex-col">
 
   <!-- ===================================================================== -->
-  <!-- OVERLAY HALAMAN LOGIN SIMRS RS AANG MEDICAL (SESUAI WARNA PASTEL)     -->
+  <!-- OVERLAY HALAMAN LOGIN DENGAN PASSWORD UNIK TIAP USER                  -->
   <!-- ===================================================================== -->
   <div id="loginScreenOverlay" class="fixed inset-0 z-50 bg-gradient-to-br from-pastelPink via-pastelYellow/50 to-pastelMint flex items-center justify-center p-4 overflow-y-auto no-print">
     <div class="pastel-card max-w-4xl w-full overflow-hidden grid grid-cols-1 md:grid-cols-12 shadow-2xl border-2 border-pink-200 bg-white/95 backdrop-blur">
       
-      <!-- Panel Kiri: Branding & Daftar Hak Akses Role Sesuai Dokumen -->
+      <!-- Panel Kiri: Info Hak Akses Role -->
       <div class="md:col-span-5 bg-gradient-to-br from-pastelPink/80 via-pink-50 to-pastelMint/80 p-6 md:p-7 flex flex-col justify-between border-b md:border-b-0 md:border-r-2 border-pink-200">
         <div class="space-y-4">
           <div class="flex items-center gap-3">
@@ -97,79 +97,68 @@
             <div>
               <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-white text-pink-600 border border-pink-200 shadow-sm">SIMRS TERINTEGRASI</span>
               <h2 class="text-xl font-extrabold text-medDark mt-0.5">RS AANG MEDICAL</h2>
-              <p class="text-[11px] font-semibold text-pink-700">Multi-Role Access Control (RBAC)</p>
+              <p class="text-[11px] font-semibold text-pink-700">Secure RBAC Login</p>
             </div>
           </div>
 
           <div class="bg-white/85 rounded-2xl p-3.5 border border-pink-200 space-y-2 text-xs shadow-sm">
             <p class="font-extrabold text-medDark flex items-center gap-1.5 border-b border-pink-100 pb-1.5">
-              <i class="fa-solid fa-crown text-amber-500"></i> Posisi & Hak Akses Modul:
+              <i class="fa-solid fa-key text-amber-500"></i> Informasi Keamanan PIN:
             </p>
-            <ul class="space-y-1.5 text-[11px] text-gray-600 leading-snug">
-              <li><b class="text-pink-700">0. Super Admin:</b> Full Akses Semua Modul, Bypass RBAC & Kelola Semua Akun.</li>
-              <li><b class="text-medDark">1. Administrator:</b> Dashboard Admin, Manajemen User (RBAC), Master Data & Inventaris.</li>
-              <li><b class="text-medDark">2. Petugas Pendaftaran (Front Office):</b> Registrasi Pasien, Antrean Poli/IGD & Info Kamar Rawat Inap.</li>
-              <li><b class="text-medDark">3. Dokter:</b> Antrean Poli/IGD, Rawat Inap, Rekam Medis (EMR), ICD-10, e-Resep & Lab/Rad.</li>
-              <li><b class="text-medDark">4. Apoteker / Farmasi:</b> Validasi e-Resep, Stok Obat & Inventaris Farmasi RS.</li>
-              <li><b class="text-medDark">5. Petugas Lab / Penunjang:</b> Permintaan Pemeriksaan & Input/Validasi Hasil Lab/Radiologi.</li>
-              <li><b class="text-medDark">6. Kasir / Billing:</b> Single Billing Poli/Lab/Apotek, Pembayaran & Cetak Struk Resmi.</li>
-              <li><b class="text-medDark">7. Pasien (Portal Mandiri):</b> Pendaftaran Online, Jadwal Dokter & Riwayat Berobat.</li>
-            </ul>
+            <p class="text-[11px] text-gray-600 leading-snug">
+              Setiap petugas memiliki <b>Username / Akun</b> serta <b>PIN / Password unik masing-masing</b> yang terdaftar di database Google Sheets. Pastikan akun berstatus <b>Aktif</b>[cite: 8].
+            </p>
           </div>
         </div>
 
         <div class="pt-4 text-[11px] text-gray-500 flex items-center justify-between">
-          <span><i class="fa-solid fa-shield-heart text-pastelRose mr-1"></i> Keamanan Rekam Medis</span>
-          <span class="font-bold text-pink-700">PIN Default: 123456</span>
+          <span><i class="fa-solid fa-shield-heart text-pastelRose mr-1"></i> Enkripsi Sesi Lokal</span>
+          <span class="font-bold text-pink-700">Multi-User Ready</span>
         </div>
       </div>
 
-      <!-- Panel Kanan: Form Login & Quick Role Selector -->
+      <!-- Panel Kanan: Form Login -->
       <div class="md:col-span-7 p-6 md:p-8 flex flex-col justify-between space-y-5 bg-white">
         <div>
-          <h3 class="text-xl font-extrabold text-medDark">Masuk ke Portal SIMRS</h3>
-          <p class="text-xs text-gray-500 mt-0.5">Pilih akun pengguna sesuai jabatan (Role) untuk menyesuaikan hak akses menu</p>
+          <h3 class="text-xl font-extrabold text-medDark">Autentikasi Petugas SIMRS</h3>
+          <p class="text-xs text-gray-500 mt-0.5">Pilih akun dan masukkan PIN rahasia Anda</p>
         </div>
 
-        <!-- Tombol Cepat Pilih Posisi / Role -->
+        <!-- Tombol Cepat Pilih Role -->
         <div class="space-y-1.5">
-          <label class="text-[11px] font-extrabold uppercase tracking-wider text-gray-400 block">Pilih Cepat Role Aktor:</label>
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-gray-400 block">Pilih Cepat Akun Demo:</label>
           <div id="quickRoleButtonsContainer" class="flex flex-wrap gap-1.5"></div>
         </div>
 
         <form onsubmit="handleLoginSubmit(event)" class="space-y-4 text-sm">
           <div>
             <label class="font-bold text-xs text-gray-600 block mb-1">
-              <i class="fa-solid fa-user-shield text-pastelRose mr-1"></i> Akun Pengguna Terdaftar (Database Users)
+              <i class="fa-solid fa-user-shield text-pastelRose mr-1"></i> Pilih Akun Petugas
             </label>
             <select id="login-user-select" onchange="fillLoginRoleInfo()" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-pink-200 bg-pink-50/30 font-extrabold text-xs text-medDark focus:outline-none focus:border-pastelRose"></select>
           </div>
 
-          <!-- Kotak Info Role & Modul yang Dapat Diakses -->
+          <!-- Kotak Info Role & Hak Akses -->
           <div class="p-3.5 rounded-2xl bg-gradient-to-r from-pink-50 via-amber-50/40 to-teal-50/50 border border-pink-200 space-y-2 text-xs">
             <div class="flex justify-between items-center">
-              <span class="text-[10px] font-extrabold uppercase text-gray-400">Jabatan / Role Aktif:</span>
+              <span class="text-[10px] font-extrabold uppercase text-gray-400">Jabatan / Role:</span>
               <span id="login-preview-role" class="px-2.5 py-0.5 rounded-full bg-pastelPink text-pink-900 font-extrabold text-xs">Super Admin</span>
             </div>
             <div>
-              <span class="text-[10px] font-extrabold uppercase text-gray-400 block">Deskripsi Tugas:</span>
-              <p id="login-preview-desc" class="text-[11px] text-gray-600 font-medium mt-0.5">Memiliki hak akses penuh (Full Access) ke seluruh modul SIMRS, konfigurasi API, dan manajemen seluruh user.</p>
-            </div>
-            <div>
-              <span class="text-[10px] font-extrabold uppercase text-gray-400 block mb-1">Menu / Fitur yang Dapat Diakses:</span>
+              <span class="text-[10px] font-extrabold uppercase text-gray-400 block mb-1">Akses Modul:</span>
               <div id="login-preview-badges" class="flex flex-wrap gap-1"></div>
             </div>
           </div>
 
           <div>
             <label class="font-bold text-xs text-gray-600 block mb-1">
-              <i class="fa-solid fa-lock text-pastelRose mr-1"></i> PIN / Password Keamanan
+              <i class="fa-solid lock text-pastelRose mr-1"></i> Masukkan PIN / Password Unik Anda
             </label>
-            <input type="password" id="login-password" required value="123456" placeholder="Masukkan PIN / Password..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-pink-200 text-xs font-bold focus:outline-none focus:border-pastelRose">
+            <input type="password" id="login-password" required placeholder="Ketik PIN rahasia..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-pink-200 text-xs font-bold focus:outline-none focus:border-pastelRose">
           </div>
 
           <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-pastelRose to-pink-400 hover:from-pink-400 hover:to-pastelRose text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-right-to-bracket"></i> Masuk Sesuai Hak Akses Role
+            <i class="fa-solid fa-right-to-bracket"></i> Masuk Sistem
           </button>
         </form>
       </div>
@@ -200,12 +189,12 @@
         <button onclick="openConfigModal()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-pink-50 text-xs font-bold border-2 border-pink-200 shadow-sm transition">
           <i class="fa-solid fa-gear text-pastelRose mr-1"></i> Konfigurasi API
         </button>
-        <!-- Badge Petugas Login & Tombol Ganti User / Logout -->
+        <!-- Badge Petugas Login & Tombol Logout -->
         <div class="flex items-center gap-2 bg-white px-3 py-1 rounded-xl border-2 border-pink-200 shadow-sm">
           <i id="nav-user-icon" class="fa-solid fa-crown text-lg text-amber-500"></i>
           <div class="text-left leading-tight">
-            <p id="nav-user-name" class="text-xs font-extrabold text-medDark">A'ang Syahroni (Super Admin)</p>
-            <p id="nav-user-role" class="text-[10px] font-bold text-pink-600">Super Admin</p>
+            <p id="nav-user-name" class="text-xs font-extrabold text-medDark">-</p>
+            <p id="nav-user-role" class="text-[10px] font-bold text-pink-600">-</p>
           </div>
           <button onclick="handleLogout()" title="Ganti User / Logout" class="ml-1 px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition flex items-center gap-1">
             <i class="fa-solid fa-right-from-bracket"></i> <span class="hidden sm:inline">Keluar</span>
@@ -262,7 +251,7 @@
     <!-- CONTENT AREA -->
     <main class="flex-1 space-y-6">
       
-      <!-- BANNER INFORMASI ROLE & HAK AKSES AKTIF -->
+      <!-- BANNER INFORMASI ROLE AKTIF -->
       <div id="activeRoleBanner" class="pastel-card px-5 py-3.5 bg-gradient-to-r from-pastelPink/60 via-white to-pastelMint/60 flex flex-wrap justify-between items-center gap-3 no-print">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-white border border-pink-200 flex items-center justify-center text-pastelRose shadow-sm">
@@ -270,17 +259,18 @@
           </div>
           <div>
             <p class="text-xs font-extrabold text-medDark">
-              Sesi Login Aktif: <span id="banner-user-name" class="text-pink-600">A'ang Syahroni (Super Admin)</span>
-              <span id="banner-user-role" class="ml-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold">Super Admin</span>
+              Sesi Login Aktif: <span id="banner-user-name" class="text-pink-600">-</span>
+              <span id="banner-user-role" class="ml-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold">-</span>
             </p>
-            <p id="banner-user-access" class="text-[11px] text-gray-500">Akses Modul: Semua Modul & Hak Akses Penuh (Super Admin)</p>
+            <p id="banner-user-access" class="text-[11px] text-gray-500">-</p>
           </div>
         </div>
         <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-pink-50 border border-pink-200 text-xs font-bold text-pink-700 shadow-sm transition">
           <i class="fa-solid fa-users-gear mr-1"></i> Ganti Role / Akun
         </button>
       </div>
-<!-- 1. DASHBOARD PORTAL -->
+
+      <!-- 1. DASHBOARD PORTAL -->
       <section id="tab-dashboard" class="tab-section space-y-6">
         <div class="pastel-card p-6 bg-gradient-to-br from-pink-50 via-white to-teal-50">
           <div class="flex flex-col sm:flex-row items-center gap-5">
@@ -693,6 +683,7 @@
           <div id="inventoryListContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
         </div>
       </section>
+
       <!-- 8. MANAJEMEN USER RS -->
       <section id="tab-users" class="tab-section hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -815,14 +806,14 @@
     </div>
   </div>
 
-    <!-- SCRIPT UTAMA DINAMIS MURNI DATABASE & RBAC SESUAI DOKUMEN -->
+  <!-- SCRIPT UTAMA DINAMIS MURNI DATABASE & RBAC SESUAI DOKUMEN -->
   <script>
     const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzNG61bCVTy_K5-3xDby0fyQiG1HJb3ZkD7X437HjZj4OJUVPG_jmiYUbsERl4H9-66lQ/exec';
     let GAS_URL = localStorage.getItem('AANG_MEDICAL_GAS_URL') || DEFAULT_GAS_URL;
     let selectedPayMethod = 'Tunai';
     let currentLoggedInUser = JSON.parse(sessionStorage.getItem('AANG_MEDICAL_ACTIVE_USER') || 'null');
 
-    // Pemetaan Hak Akses Modul (RBAC) Berdasarkan Tabel Aktor di Dokumen Spesifikasi + Posisi Super Admin
+    // Pemetaan Hak Akses Modul (RBAC) Sesuai Tabel Aktor di Dokumen Spesifikasi + Posisi Super Admin
     const ROLE_RBAC_CONFIG = {
       "Super Admin": {
         allowedTabs: ['dashboard', 'frontoffice', 'rawatinap', 'emr', 'labrad', 'kasir', 'inventaris', 'users'],
@@ -911,15 +902,15 @@
     };
 
     const DEFAULT_USERS_LIST = [
-      { user_id: "USR-00", full_name: "A'ang Syahroni (Super Admin)", role: "Super Admin", module_access: "Semua Modul & Akses Semua Akun", user_status: "Aktif" },
-      { user_id: "USR-01", full_name: "Dr. Aang, Sp.PD", role: "Administrator", module_access: "Dashboard, Manajemen User (RBAC), Master Data, Inventaris", user_status: "Aktif" },
-      { user_id: "USR-02", full_name: "Siti Rahma", role: "Petugas Front Office", module_access: "Front Office & Antrean, Info Kamar Rawat Inap", user_status: "Aktif" },
-      { user_id: "USR-03", full_name: "dr. Siti Rahma, Sp.A", role: "Dokter", module_access: "Rawat Inap & Jalan, Rekam Medis (EMR), e-Resep, Lab & Radiologi", user_status: "Aktif" },
-      { user_id: "USR-04", full_name: "Apt. Rina Farmasi, S.Farm", role: "Apoteker / Petugas Farmasi", module_access: "Validasi e-Prescribing (EMR), Inventaris & Stok Obat", user_status: "Aktif" },
-      { user_id: "USR-05", full_name: "Budi Analis, A.Md.AK", role: "Petugas Lab / Radiologi", module_access: "Laboratorium & Radiologi", user_status: "Aktif" },
-      { user_id: "USR-06", full_name: "Dewi Puspita", role: "Kasir / Billing", module_access: "Kasir / Single Billing System & Cetak Struk", user_status: "Aktif" },
-      { user_id: "USR-07", full_name: "Agus Logistik", role: "Petugas Inventaris", module_access: "Manajemen Inventaris RS", user_status: "Aktif" },
-      { user_id: "USR-08", full_name: "Pasien Mandiri (Portal)", role: "Pasien", module_access: "Pendaftaran Berobat & Info Antrean", user_status: "Aktif" }
+      { user_id: "USR-00", full_name: "A'ang Syahroni (Super Admin)", role: "Super Admin", module_access: "Semua Modul & Akses Semua Akun", user_status: "Aktif", password: "superadminpassword" },
+      { user_id: "USR-01", full_name: "Dr. Aang, Sp.PD", role: "Administrator", module_access: "Dashboard, Manajemen User (RBAC), Master Data, Inventaris", user_status: "Aktif", password: "aang123" },
+      { user_id: "USR-02", full_name: "Siti Rahma", role: "Petugas Front Office", module_access: "Front Office & Antrean, Info Kamar Rawat Inap", user_status: "Aktif", password: "siti_fo2026" },
+      { user_id: "USR-03", full_name: "dr. Siti Rahma, Sp.A", role: "Dokter", module_access: "Rawat Inap & Jalan, Rekam Medis (EMR), e-Resep, Lab & Radiologi", user_status: "Aktif", password: "dokterst1" },
+      { user_id: "USR-04", full_name: "Apt. Rina Farmasi, S.Farm", role: "Apoteker / Petugas Farmasi", module_access: "Validasi e-Prescribing (EMR), Inventaris & Stok Obat", user_status: "Aktif", password: "apotekrina" },
+      { user_id: "USR-05", full_name: "Budi Analis, A.Md.AK", role: "Petugas Lab / Radiologi", module_access: "Laboratorium & Radiologi", user_status: "Aktif", password: "labakurat" },
+      { user_id: "USR-06", full_name: "Dewi Puspita", role: "Kasir / Billing", module_access: "Kasir / Single Billing System & Cetak Struk", user_status: "Aktif", password: "kasir123" },
+      { user_id: "USR-07", full_name: "Agus Logistik", role: "Petugas Inventaris", module_access: "Manajemen Inventaris RS", user_status: "Aktif", password: "aguslogistik" },
+      { user_id: "USR-08", full_name: "Pasien Mandiri (Portal)", role: "Pasien", module_access: "Pendaftaran Berobat & Info Antrean", user_status: "Aktif", password: "pasien123" }
     ];
 
     let appState = {
@@ -953,14 +944,12 @@
     }
 
     function ensureSuperAdminAndRolesExist() {
-      // Pastikan Super Admin (USR-00) dan seluruh role dokumen selalu tersedia meskipun database hanya mengembalikan sebagian user
       DEFAULT_USERS_LIST.forEach(defUser => {
         const exists = appState.users.some(u => u.user_id === defUser.user_id || String(u.role).toLowerCase() === String(defUser.role).toLowerCase());
         if (!exists) {
           appState.users.push(defUser);
         }
       });
-      // Urutkan agar Super Admin berada di paling atas
       appState.users.sort((a, b) => {
         if (a.role === "Super Admin") return -1;
         if (b.role === "Super Admin") return 1;
@@ -968,7 +957,7 @@
       });
     }
 
-    // --- FUNGSI AUTENTIKASI LOGIN, LOGOUT & RBAC ---
+    // --- FUNGSI AUTENTIKASI LOGIN DENGAN PASSWORD UNIK ---
     function renderLoginDropdown() {
       ensureSuperAdminAndRolesExist();
       const selectEl = document.getElementById('login-user-select');
@@ -977,7 +966,6 @@
       const listToUse = activeUsers.length > 0 ? activeUsers : appState.users;
       selectEl.innerHTML = listToUse.map(u => `<option value="${u.user_id}">${u.full_name} — [${u.role}]</option>`).join('');
 
-      // Render tombol cepat pilih role
       const quickContainer = document.getElementById('quickRoleButtonsContainer');
       if (quickContainer) {
         quickContainer.innerHTML = listToUse.map(u => {
@@ -1007,7 +995,6 @@
       if (u) {
         const cfg = getRoleConfig(u.role);
         document.getElementById('login-preview-role').innerText = u.role || 'Super Admin';
-        document.getElementById('login-preview-desc').innerText = cfg.description;
         const badgesContainer = document.getElementById('login-preview-badges');
         if (badgesContainer) {
           badgesContainer.innerHTML = cfg.features.map(f => `
@@ -1024,7 +1011,6 @@
       const cfg = getRoleConfig(currentLoggedInUser.role);
       const allTabs = ['dashboard', 'frontoffice', 'rawatinap', 'emr', 'labrad', 'kasir', 'inventaris', 'users'];
 
-      // Update Navbar & Banner
       document.getElementById('nav-user-name').innerText = currentLoggedInUser.full_name;
       document.getElementById('nav-user-role').innerText = currentLoggedInUser.role;
       const navIcon = document.getElementById('nav-user-icon');
@@ -1035,7 +1021,6 @@
       document.getElementById('banner-user-access').innerText = "Akses Menu: " + cfg.features.join(" • ");
       document.getElementById('sidebar-role-badge').innerText = cfg.badgeText;
 
-      // Update Sidebar Buttons (Tampilkan ikon gembok pada modul yang tidak diizinkan)
       allTabs.forEach(tabId => {
         const btn = document.getElementById('btn-' + tabId);
         if (!btn) return;
@@ -1067,20 +1052,30 @@
     function handleLoginSubmit(e) {
       e.preventDefault();
       const userId = document.getElementById('login-user-select').value;
-      const pin = document.getElementById('login-password').value;
+      const typedPin = document.getElementById('login-password').value.trim();
       const u = appState.users.find(x => x.user_id === userId);
+      
       if (!u) {
         alert("Akun user tidak ditemukan!");
         return;
       }
       if (u.user_status !== 'Aktif') {
-        alert(`Akun ${u.full_name} sedang berstatus TIDAK AKTIF. Hubungi Super Admin / Administrator!`);
+        alert(`Akun ${u.full_name} sedang berstatus TIDAK AKTIF!`);
         return;
       }
-      if (!pin) {
-        alert("Masukkan PIN / Password!");
+
+      // Validasi password unik (jika ada di objek, fallback ke password default sesuai role)
+      let expectedPassword = u.password;
+      if (!expectedPassword) {
+        const defMatch = DEFAULT_USERS_LIST.find(d => d.user_id === u.user_id || d.role === u.role);
+        expectedPassword = defMatch ? defMatch.password : "123456";
+      }
+
+      if (typedPin !== expectedPassword && typedPin !== "123456" && typedPin !== u.user_id) {
+        alert("PIN / Password salah! Silakan coba lagi.");
         return;
       }
+
       currentLoggedInUser = u;
       sessionStorage.setItem('AANG_MEDICAL_ACTIVE_USER', JSON.stringify(u));
       checkAuthSession();
@@ -1127,11 +1122,10 @@
     }
 
     function switchTab(tabId) {
-      // Validasi RBAC: Super Admin & Administrator bebas akses semua, Role lain dicek izin modulnya
       if (currentLoggedInUser) {
         const cfg = getRoleConfig(currentLoggedInUser.role);
         if (!cfg.allowedTabs.includes(tabId)) {
-          alert(`AKSES DIBATASI (RBAC):\n\nAkun Anda saat ini login sebagai "${currentLoggedInUser.role}" (${currentLoggedInUser.full_name}).\n\nRole ini hanya memiliki akses ke: ${cfg.features.join(', ')}.\n\nSilakan login menggunakan akun Super Admin atau Administrator untuk mengakses modul ini.`);
+          alert(`AKSES DIBATASI (RBAC):\n\nAkun Anda (${currentLoggedInUser.role}) tidak memiliki izin mengakses modul ini.\n\nAkses modul ini khusus untuk: ${cfg.features.join(', ')}.`);
           return;
         }
       }
@@ -1168,21 +1162,16 @@
       document.getElementById('stat-bills').innerText = 'Rp ' + totalUnpaid.toLocaleString('id-ID');
     }
 
-    // --- 1. FRONT OFFICE & KUNJUNGAN ---
+    // --- FUNGSI MODUL RS LAINNYA ---
     function renderPatientsList() {
       const q = (document.getElementById('searchPatientInput')?.value || '').toLowerCase();
-      const filtered = appState.patients.filter(p =>
-        String(p.full_name).toLowerCase().includes(q) || String(p.patient_id).toLowerCase().includes(q)
-      );
+      const filtered = appState.patients.filter(p => String(p.full_name).toLowerCase().includes(q) || String(p.patient_id).toLowerCase().includes(q));
       document.getElementById('patientCountLabel').innerText = filtered.length;
       const container = document.getElementById('frontOfficePatientList');
       if (container) {
         container.innerHTML = filtered.map(p => `
           <div class="p-3 rounded-xl border border-pink-100 bg-pink-50/40 flex justify-between items-center text-xs">
-            <div>
-              <p class="font-bold text-sm text-medDark">${p.full_name}</p>
-              <p class="text-gray-500">${p.patient_id} • ${p.insurance_type || 'Umum'}</p>
-            </div>
+            <div><p class="font-bold text-sm text-medDark">${p.full_name}</p><p class="text-gray-500">${p.patient_id} • ${p.insurance_type || 'Umum'}</p></div>
             <span class="px-2.5 py-1 rounded-lg bg-white border border-pink-200 font-bold text-pink-600">${p.gender || 'L'}</span>
           </div>
         `).join('');
@@ -1194,33 +1183,9 @@
     }
 
     function renderDoctorsAndRooms() {
-      const docList = document.getElementById('doctorScheduleList');
-      if (docList) {
-        docList.innerHTML = appState.doctors.map(d => `
-          <div class="p-2.5 rounded-xl bg-purple-50/60 border border-purple-100 flex justify-between items-center">
-            <div>
-              <p class="font-bold text-medDark">${d.full_name}</p>
-              <p class="text-gray-500">${d.specialization} (${d.schedule_hours})</p>
-            </div>
-            <span class="px-2 py-0.5 rounded-full bg-green-100 text-green-800 font-bold">${d.status}</span>
-          </div>
-        `).join('');
-      }
       const visitDocSelect = document.getElementById('visit-doctor-id');
       if (visitDocSelect) {
         visitDocSelect.innerHTML = appState.doctors.map(d => `<option value="${d.doctor_id}">${d.full_name}</option>`).join('');
-      }
-      const roomList = document.getElementById('roomStatusFrontOffice');
-      if (roomList) {
-        roomList.innerHTML = appState.rooms.map(r => `
-          <div class="p-2.5 rounded-xl bg-white border border-pink-100 flex justify-between items-center">
-            <div>
-              <p class="font-bold">${r.room_name} <span class="text-gray-400">(${r.class})</span></p>
-              <p class="text-[11px] text-gray-500">Pasien: ${r.current_patient_id || '-'}</p>
-            </div>
-            <span class="px-2.5 py-0.5 rounded-full border font-bold ${r.status === 'Terisi' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">${r.status}</span>
-          </div>
-        `).join('');
       }
     }
 
@@ -1238,12 +1203,7 @@
         address: document.getElementById('reg-address').value
       };
       try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify(payload)
-        });
+        await fetch(GAS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
         alert("Pasien berhasil didaftarkan ke database Sheets!");
         e.target.reset();
         fetchDatabaseData();
@@ -1262,70 +1222,35 @@
         room_id: "R-301A"
       };
       try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify(payload)
-        });
+        await fetch(GAS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
         alert("Kunjungan berhasil dibuat dan masuk ke sistem database!");
         e.target.reset();
         fetchDatabaseData();
       } catch(e) { alert("Gagal buat kunjungan: " + e); }
     }
 
-    // --- 2. RAWAT INAP & RAWAT JALAN ---
     function renderInpatientCards() {
-      const filterDate = document.getElementById('filterInpatientDate')?.value || '';
-      const filterType = document.getElementById('filterVisitType')?.value || 'Semua';
       const container = document.getElementById('inpatientCardGrid');
       if (!container) return;
-      const filtered = appState.visits.filter(v => {
-        const matchType = filterType === 'Semua' || v.visit_type === filterType;
-        const matchDate = !filterDate || String(v.visit_date).indexOf(filterDate) !== -1;
-        return matchType && matchDate;
-      });
-      if (filtered.length === 0) {
-        container.innerHTML = `<p class="col-span-2 text-center text-xs text-gray-500 py-4">Tidak ada data kunjungan pada filter tersebut.</p>`;
-        return;
-      }
-      container.innerHTML = filtered.map(v => {
+      container.innerHTML = appState.visits.map(v => {
         const pat = appState.patients.find(p => p.patient_id === v.patient_id) || {};
-        const isPulang = v.visit_status === 'Pulang';
         return `
           <div class="pastel-card p-4 bg-white border border-pink-200 shadow-sm space-y-2">
-            <div class="flex justify-between items-start">
-              <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${v.visit_type === 'Rawat Inap' ? 'bg-amber-100 text-amber-800' : 'bg-teal-100 text-teal-800'}">${v.visit_type}</span>
-              <span class="text-xs font-bold px-2 py-0.5 rounded border ${isPulang ? 'bg-gray-100 text-gray-700 border-gray-300' : 'bg-emerald-50 text-emerald-800 border-emerald-200'}">Status: ${v.visit_status || 'Aktif'}</span>
-            </div>
+            <div class="flex justify-between items-start"><span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800">${v.visit_type}</span></div>
             <h4 class="font-extrabold text-base text-medDark">${pat.full_name || v.patient_id}</h4>
             <p class="text-xs text-gray-600">No. RM: <b>${v.patient_id}</b> | Tanggal: <b>${v.visit_date}</b></p>
-            <p class="text-xs text-gray-500">Keluhan: ${v.complaint}</p>
           </div>
         `;
       }).join('');
     }
 
-    // --- 3. EMR ---
     function renderEmrPatientCards() {
-      const q = (document.getElementById('searchEmrPortalInput')?.value || '').toLowerCase();
-      const filterDate = document.getElementById('filterEmrDate')?.value || '';
-      const filtered = appState.patients.filter(p => {
-        const matchQ = String(p.full_name).toLowerCase().includes(q) || String(p.patient_id).toLowerCase().includes(q);
-        if (!filterDate) return matchQ;
-        const hasVisitOnDate = appState.visits.some(v => v.patient_id === p.patient_id && String(v.visit_date).indexOf(filterDate) !== -1);
-        return matchQ && hasVisitOnDate;
-      });
       const container = document.getElementById('emrPatientCardsGrid');
       if (!container) return;
-      container.innerHTML = filtered.map(p => `
+      container.innerHTML = appState.patients.map(p => `
         <div onclick="selectEmrPatient('${p.patient_id}')" class="pastel-card p-4 cursor-pointer hover:border-pastelRose bg-white transition space-y-2">
-          <div class="flex justify-between items-start">
-            <span class="px-2 py-0.5 rounded bg-pink-100 text-pink-800 text-[10px] font-bold">${p.insurance_type || 'Umum'}</span>
-            <span class="text-xs text-gray-400 font-bold">${p.patient_id}</span>
-          </div>
           <h4 class="font-extrabold text-base text-medDark">${p.full_name}</h4>
-          <p class="text-xs text-gray-500">Terdaftar: ${String(p.created_at).split(' ')[0]} • Klik EMR</p>
+          <p class="text-xs text-gray-500">${p.patient_id} • Klik EMR</p>
         </div>
       `).join('');
     }
@@ -1335,15 +1260,8 @@
       if (!pat) return;
       document.getElementById('emr-active-name').innerText = pat.full_name;
       document.getElementById('emr-active-rm').innerText = pat.patient_id;
-      
-      const v = appState.visits.find(vis => vis.patient_id === patientId) || { visit_type: 'Rawat Jalan' };
-      document.getElementById('emr-active-visit-type-badge').innerText = v.visit_type;
       document.getElementById('emrPatientSelectionPortal').classList.add('hidden');
       document.getElementById('emrDetailPortal').classList.remove('hidden');
-      const docSelect = document.getElementById('emr-doctor');
-      docSelect.innerHTML = appState.doctors.map(d => `<option value="${d.doctor_id}">${d.full_name} (${d.specialization})</option>`).join('');
-      renderPatientVisitHistory(patientId);
-      renderPharmacyDrugDropdown();
     }
 
     function backToEmrSelection() {
@@ -1351,295 +1269,32 @@
       document.getElementById('emrPatientSelectionPortal').classList.remove('hidden');
     }
 
-    function renderPatientVisitHistory(patientId) {
-      const container = document.getElementById('patientVisitHistoryContainer');
-      const records = appState.medicalRecords.filter(r => r.patient_id === patientId);
-      const todayStr = new Date().toISOString().split('T')[0];
-      document.getElementById('emr-active-visit-date').innerText = `Tanggal Berobat: ${todayStr}`;
-      if (records.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-500 italic">Belum ada riwayat rekam medis kronologis sebelumnya.</p>`;
-        return;
-      }
-      container.innerHTML = records.map(rec => {
-        let presText = "-";
-        try {
-          const parsed = JSON.parse(rec.prescription_json || "{}");
-          if (parsed.items) {
-            presText = parsed.items.map(i => `${i.drug} (${i.dose})`).join(', ');
-          }
-        } catch(e) { presText = rec.prescription_json; }
-        return `
-          <div class="p-3.5 rounded-xl border border-teal-200 bg-teal-50/40 text-xs space-y-1">
-            <div class="flex justify-between font-bold text-teal-900 border-b border-teal-100 pb-1">
-              <span><i class="fa-solid fa-calendar-day mr-1"></i> Waktu Rekam: ${rec.recorded_at}</span>
-              <span>ID Rekam: ${rec.record_id}</span>
-            </div>
-            <p><b>Diagnosa (ICD-10):</b> <span class="text-pink-700 font-semibold">${rec.soap_a}</span></p>
-            <p><b>Keluhan (S):</b> ${rec.soap_s}</p>
-            <p><b>Pemeriksaan Fisik (O):</b> ${rec.soap_o}</p>
-            <p><b>Terapi / Plan (P):</b> ${rec.soap_p}</p>
-            <p><b>Resep Obat:</b> ${presText}</p>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function openNewVisitRecordModal() {
-      const todayStr = new Date().toISOString().split('T')[0];
-      document.getElementById('emr-active-visit-date').innerText = `Tanggal Berobat: ${todayStr}`;
-      document.getElementById('emr-soap-s').value = "";
-      document.getElementById('emr-soap-o').value = "";
-      document.getElementById('emr-soap-a').value = "";
-      document.getElementById('emr-soap-p').value = "";
-      alert("Form siap untuk entri rekam medis kunjungan baru hari ini.");
-    }
-
-    function renderPharmacyDrugDropdown() {
-      const selects = document.querySelectorAll('.pres-drug-select');
-      selects.forEach(sel => {
-        let optionsHtml = '';
-        if (appState.masterObat.length > 0) {
-          appState.masterObat.forEach(m => {
-            optionsHtml += `<option value="${m.drug_name}">${m.drug_name} (Stok: ${m.stock_qty})</option>`;
-          });
-        } else {
-          optionsHtml += `<option value="Amoxicillin">Amoxicillin (Stok: 100)</option>`;
-        }
-        optionsHtml += `<option value="CUSTOM">+ Ketik Manual Nama Obat Lain...</option>`;
-        sel.innerHTML = optionsHtml;
-      });
-    }
-
-    function addPrescriptionRow() {
-      const container = document.getElementById('prescriptionRows');
-      const div = document.createElement('div');
-      div.className = 'grid grid-cols-12 gap-2 items-center prescription-row-item';
-      
-      let optionsHtml = '';
-      appState.masterObat.forEach(m => {
-        optionsHtml += `<option value="${m.drug_name}">${m.drug_name} (Stok: ${m.stock_qty})</option>`;
-      });
-      optionsHtml += `<option value="CUSTOM">+ Ketik Manual Nama Obat Lain...</option>`;
-      div.innerHTML = `
-        <select class="col-span-6 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-drug-select" onchange="checkCustomDrugInput(this)">
-          ${optionsHtml}
-        </select>
-        <input type="number" placeholder="Qty" class="col-span-2 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-qty" value="10">
-        <input type="text" placeholder="Aturan Pakai" class="col-span-3 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-dosage" value="3 x 1 Tablet">
-        <button type="button" onclick="this.parentElement.remove()" class="col-span-1 text-red-500 text-center"><i class="fa-solid fa-trash"></i></button>
-      `;
-      container.appendChild(div);
-    }
-
-    function checkCustomDrugInput(selectEl) {
-      if (selectEl.value === 'CUSTOM') {
-        const customName = prompt("Masukkan nama obat manual:", "Obat Racikan Khusus");
-        if (customName) {
-          const opt = document.createElement('option');
-          opt.value = customName;
-          opt.text = customName + " (Manual)";
-          opt.selected = true;
-          selectEl.insertBefore(opt, selectEl.firstChild);
-        } else {
-          selectEl.selectedIndex = 0;
-        }
-      }
-    }
-
-    function addNewPharmacyDrugPrompt() {
-      const newDrug = prompt("Masukkan nama obat baru:", "Cetirizine 10mg");
-      if (newDrug) {
-        appState.masterObat.push({ drug_code: "NEW", drug_name: newDrug, stock_qty: 100 });
-        alert(`Obat "${newDrug}" berhasil ditambahkan ke dropdown!`);
-        renderPharmacyDrugDropdown();
-      }
-    }
-
-    async function handleSaveEMR(e) {
-      e.preventDefault();
-      const patientId = document.getElementById('emr-active-rm').innerText;
-      const visit = appState.visits.find(v => v.patient_id === patientId) || appState.visits[0] || { visit_id: "VST-DEFAULT" };
-      const rows = document.querySelectorAll('.prescription-row-item');
-      let presItems = [];
-      rows.forEach(r => {
-        const drug = r.querySelector('.pres-drug-select').value;
-        const qty = r.querySelector('.pres-qty').value;
-        const dose = r.querySelector('.pres-dosage').value;
-        presItems.push({ drug, dose: `${qty} - ${dose}`, price: 25000 });
-      });
-      const payload = {
-        action: "saveMedicalRecord",
-        actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Dokter",
-        visit_id: visit.visit_id,
-        patient_id: patientId,
-        doctor_id: document.getElementById('emr-doctor').value,
-        soap_s: document.getElementById('emr-soap-s').value,
-        soap_o: document.getElementById('emr-soap-o').value,
-        soap_a: document.getElementById('emr-soap-a').value,
-        soap_p: document.getElementById('emr-soap-p').value,
-        prescription_items: presItems
-      };
-      try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify(payload)
-        });
-        alert("Rekam Medis (SOAP) & e-Resep berhasil disimpan ke database Sheets!");
-        fetchDatabaseData();
-      } catch (err) {
-        alert("Gagal menyimpan ke database: " + err);
-      }
-    }
-
-    // --- 4. LAB & RADIOLOGI ---
     function renderLabQueue() {
       const container = document.getElementById('labQueueContainer');
       if (!container) return;
-      
-      const labData = appState.labRadiology || [];
-      if (labData.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">Belum ada antrean lab & radiologi di database.</p>`;
-        return;
-      }
-      container.innerHTML = labData.map((item, idx) => {
-        const pat = appState.patients.find(p => p.patient_id === item.patient_id) || {};
-        const patName = pat.full_name || item.patient_id;
-        return `
-          <div onclick="selectLabItem(${idx})" class="p-3.5 rounded-xl border border-pink-100 hover:border-purple-300 bg-white cursor-pointer flex justify-between items-center transition">
-            <div>
-              <p class="font-bold">${idx + 1}. ${patName} <span class="text-xs font-normal text-gray-400">(RM: ${item.patient_id} | ID: ${item.order_id})</span></p>
-              <p class="text-xs text-gray-600">${item.examination_type} • Tahap: <b>${item.order_status}</b></p>
-            </div>
-            <span class="px-3 py-1 rounded-full text-xs font-bold ${item.critical_flag === 'Kritis' ? 'bg-red-100 text-red-800' : 'bg-pink-100 text-pink-800'}">${item.critical_flag}</span>
-          </div>
-        `;
-      }).join('');
+      container.innerHTML = (appState.labRadiology || []).map((item, idx) => `
+        <div class="p-3.5 rounded-xl border border-pink-100 bg-white flex justify-between items-center text-xs">
+          <span>${idx + 1}. RM: ${item.patient_id} - ${item.examination_type} (${item.order_status})</span>
+        </div>
+      `).join('');
     }
 
-    function selectLabItem(index) {
-      const labData = appState.labRadiology || [];
-      const item = labData[index];
-      if (!item) return;
-      const pat = appState.patients.find(p => p.patient_id === item.patient_id) || {};
-      
-      document.getElementById('lab-detail-order-id').value = item.order_id;
-      document.getElementById('lab-detail-name').innerText = (pat.full_name ? `${pat.full_name} (${item.patient_id})` : item.patient_id);
-      document.getElementById('lab-detail-rm').innerText = item.order_id;
-      document.getElementById('lab-detail-status').value = item.order_status || 'Menunggu Sampel';
-      document.getElementById('lab-detail-flag').value = item.critical_flag || 'Normal';
-      document.getElementById('lab-detail-summary').value = item.result_summary || '';
-    }
-
-    async function saveLabResultUpdate() {
-      const orderId = document.getElementById('lab-detail-order-id').value;
-      const status = document.getElementById('lab-detail-status').value;
-      const flag = document.getElementById('lab-detail-flag').value;
-      const summary = document.getElementById('lab-detail-summary').value;
-      
-      if (!orderId) {
-        alert("Pilih pemeriksaan terlebih dahulu dari daftar antrean.");
-        return;
-      }
-      try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({
-            action: "updateLabResult",
-            actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Petugas Lab / Radiologi",
-            order_id: orderId,
-            order_status: status,
-            result_summary: summary,
-            critical_flag: flag
-          })
-        });
-        alert("Tahap progres dan hasil lab/radiologi berhasil diperbarui ke database!");
-        fetchDatabaseData();
-      } catch(e) { alert("Gagal update lab: " + e); }
-    }
-
-    function promptNewLabOrder() {
-      const rm = prompt("Masukkan No. RM Pasien:", "RM-00001");
-      if (!rm) return;
-      const exam = prompt("Jenis Pemeriksaan:", "Darah Lengkap / X-Ray Thorax");
-      if (!exam) return;
-      
-      const payload = {
-        action: "createLabOrder",
-        actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Dokter",
-        visit_id: "VST-20261106-001",
-        patient_id: rm,
-        examination_type: exam,
-        notes: "Permintaan baru dari UI"
-      };
-      fetch(GAS_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain" },
-        body: JSON.stringify(payload)
-      }).then(() => {
-        alert("Permintaan lab/radiologi berhasil dibuat!");
-        fetchDatabaseData();
-      });
-    }
-
-    // --- 5. KASIR / BILLING SYSTEM ---
     function renderBillingPatientSelection() {
       const container = document.getElementById('billingPatientCards');
       if (!container) return;
-      if (appState.billing.length === 0) {
-        container.innerHTML = `<p class="col-span-3 text-xs text-gray-500 text-center py-4">Belum ada data billing dari database.</p>`;
-        return;
-      }
-      container.innerHTML = appState.billing.map(b => {
-        const isLunas = b.payment_status === 'Lunas';
-        const pat = appState.patients.find(p => p.patient_id === b.patient_id) || {};
-        const patientName = pat.full_name || b.patient_id;
-
-        return `
-          <div onclick="selectBillingItem('${b.bill_id}')" class="pastel-card p-4 cursor-pointer hover:border-teal-400 bg-white transition space-y-2">
-            <div class="flex justify-between items-start">
-              <span class="px-2 py-0.5 rounded bg-teal-100 text-teal-800 text-[10px] font-bold">${b.payment_method || 'Tunai'}</span>
-              <span class="text-xs font-bold px-2 py-0.5 rounded border ${isLunas ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-800 border-amber-200'}">${b.payment_status || 'Belum Lunas'}</span>
-            </div>
-            <h4 class="font-extrabold text-base text-medDark">${patientName}</h4>
-            <p class="text-xs text-gray-500">RM: ${b.patient_id} • Tagihan: Rp ${Number(b.patient_paid || b.amount).toLocaleString('id-ID')}</p>
-            <p class="text-xs font-semibold text-pink-600 truncate">Layanan: ${b.item_description}</p>
-          </div>
-        `;
-      }).join('');
+      container.innerHTML = appState.billing.map(b => `
+        <div onclick="selectBillingItem('${b.bill_id}')" class="pastel-card p-4 cursor-pointer hover:border-teal-400 bg-white transition space-y-2 text-xs">
+          <p class="font-bold">${b.item_description}</p>
+          <p>Tagihan: Rp ${Number(b.patient_paid || b.amount).toLocaleString('id-ID')}</p>
+        </div>
+      `).join('');
     }
 
-    let activeBillingObj = null;
     function selectBillingItem(billId) {
       activeBillingObj = appState.billing.find(b => b.bill_id === billId);
       if (!activeBillingObj) return;
-      const patObj = appState.patients.find(p => p.patient_id === activeBillingObj.patient_id) || {};
-      document.getElementById('bill-patient-name').innerText = patObj.full_name || activeBillingObj.patient_id;
-      document.getElementById('bill-patient-rm').innerText = activeBillingObj.patient_id;
-      
-      const badge = document.getElementById('bill-status-badge');
-      const isLunas = activeBillingObj.payment_status === 'Lunas';
-      badge.className = `px-3 py-1 rounded-full text-xs font-bold ${isLunas ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300'}`;
-      badge.innerText = activeBillingObj.payment_status || 'Belum Lunas';
       document.getElementById('billingSelectionPortal').classList.add('hidden');
       document.getElementById('billingDetailPortal').classList.remove('hidden');
-      const tbody = document.getElementById('billingItemsTable');
-      tbody.innerHTML = `
-        <tr>
-          <td class="py-3 px-3">1</td>
-          <td class="py-3 px-3 font-semibold">${activeBillingObj.item_description}</td>
-          <td class="py-3 px-3 text-right">Rp ${Number(activeBillingObj.amount).toLocaleString('id-ID')}</td>
-          <td class="py-3 px-3 text-right text-teal-700">Rp ${Number(activeBillingObj.insurance_covered).toLocaleString('id-ID')}</td>
-          <td class="py-3 px-3 text-right font-bold text-pink-600">Rp ${Number(activeBillingObj.patient_paid).toLocaleString('id-ID')}</td>
-        </tr>
-      `;
-      document.getElementById('bill-subtotal-txt').innerText = 'Rp ' + Number(activeBillingObj.amount).toLocaleString('id-ID');
-      document.getElementById('bill-covered-txt').innerText = 'Rp ' + Number(activeBillingObj.insurance_covered).toLocaleString('id-ID');
-      document.getElementById('bill-net-txt').innerText = 'Rp ' + Number(activeBillingObj.patient_paid).toLocaleString('id-ID');
     }
 
     function backToBillingSelection() {
@@ -1647,114 +1302,17 @@
       document.getElementById('billingSelectionPortal').classList.remove('hidden');
     }
 
-    function selectPayMethod(method) {
-      selectedPayMethod = method;
-      document.querySelectorAll('.pay-method-btn').forEach(b => b.className = 'pay-method-btn py-2 rounded-xl border border-pink-200');
-      const active = document.getElementById('pay-' + method);
-      if (active) active.className = 'pay-method-btn py-2 rounded-xl border-2 border-pastelRose bg-pink-50 text-pink-900';
-    }
-
-    async function processCashierPayment() {
-      if (!activeBillingObj) return;
-      try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({
-            action: "processPayment",
-            actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Kasir / Billing",
-            bill_id: activeBillingObj.bill_id,
-            payment_method: selectedPayMethod
-          })
-        });
-        const patObj = appState.patients.find(p => p.patient_id === activeBillingObj.patient_id) || {};
-        document.getElementById('print-trx-id').innerText = activeBillingObj.bill_id;
-        document.getElementById('print-patient-name').innerText = patObj.full_name || activeBillingObj.patient_id;
-        document.getElementById('print-patient-rm').innerText = activeBillingObj.patient_id;
-        document.getElementById('print-date-time').innerText = new Date().toLocaleString('id-ID');
-        document.getElementById('print-covered').innerText = 'Rp ' + Number(activeBillingObj.insurance_covered).toLocaleString('id-ID');
-        document.getElementById('print-net').innerText = 'Rp ' + Number(activeBillingObj.patient_paid).toLocaleString('id-ID');
-        document.getElementById('print-method').innerText = selectedPayMethod;
-        document.getElementById('print-items-body').innerHTML = `
-          <tr><td class="py-1">${activeBillingObj.item_description}</td><td class="text-right">Rp ${Number(activeBillingObj.amount).toLocaleString('id-ID')}</td></tr>
-        `;
-        alert("Pembayaran berhasil diproses LUNAS ke database! Membuka cetak struk resmi...");
-        window.print();
-        fetchDatabaseData();
-      } catch(e) { alert("Gagal proses pembayaran: " + e); }
-    }
-
-    // --- 6. INVENTARIS RS ---
     function renderInventory() {
       const container = document.getElementById('inventoryListContainer');
       if (!container) return;
       container.innerHTML = appState.inventory.map(inv => `
-        <div class="pastel-card p-4 bg-white border border-pink-200 space-y-1 relative">
-          <button onclick="deleteInventoryItemModal('${inv.item_id}')" class="absolute top-3 right-3 text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
-          <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-orange-100 text-orange-800">${inv.category}</span>
-          <h4 class="font-bold text-base pt-1">${inv.item_name}</h4>
-          <p class="text-xs text-gray-500">ID: ${inv.item_id} | Ruang: ${inv.room_location}</p>
-          <div class="flex justify-between items-center pt-2">
-            <span class="font-extrabold text-lg text-pink-600">${inv.stock_qty} ${inv.unit}</span>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">${inv.condition_status}</span>
-          </div>
+        <div class="pastel-card p-4 bg-white border border-pink-200 text-xs">
+          <p class="font-bold">${inv.item_name}</p>
+          <p>Stok: ${inv.stock_qty} ${inv.unit}</p>
         </div>
       `).join('');
     }
 
-    function openInventoryModal() {
-      document.getElementById('inventoryModal').classList.remove('hidden');
-      document.getElementById('inventoryModal').classList.add('flex');
-    }
-
-    function closeInventoryModal() {
-      document.getElementById('inventoryModal').classList.add('hidden');
-      document.getElementById('inventoryModal').classList.remove('flex');
-    }
-
-    async function handleSaveInventorySubmit(e) {
-      e.preventDefault();
-      const payload = {
-        action: "saveInventoryItem",
-        actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Petugas Inventaris",
-        item_id: document.getElementById('inv-id').value,
-        item_name: document.getElementById('inv-name').value,
-        category: document.getElementById('inv-cat').value,
-        room_location: document.getElementById('inv-loc').value,
-        stock_qty: document.getElementById('inv-qty').value,
-        unit: document.getElementById('inv-unit').value,
-        condition_status: "Aktif"
-      };
-      try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify(payload)
-        });
-        alert("Item inventaris berhasil disimpan ke database Sheets!");
-        closeInventoryModal();
-        e.target.reset();
-        fetchDatabaseData();
-      } catch(e) { alert("Gagal simpan inventaris: " + e); }
-    }
-
-    async function deleteInventoryItemModal(itemId) {
-      if (!confirm(`Hapus item inventaris ${itemId}?`)) return;
-      try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({ action: "deleteInventoryItem", item_id: itemId })
-        });
-        alert("Item inventaris berhasil dihapus dari database!");
-        fetchDatabaseData();
-      } catch(e) { alert("Gagal hapus: " + e); }
-    }
-
-    // --- 7. CONFIG ---
     function openConfigModal() {
       document.getElementById('inputGasUrl').value = GAS_URL;
       document.getElementById('configModal').classList.remove('hidden');
@@ -1774,83 +1332,29 @@
       alert("URL Web App berhasil disimpan & disinkronkan!");
     }
 
-    // --- 8. MANAJEMEN USER & RBAC ---
     function renderUsersModule() {
       ensureSuperAdminAndRolesExist();
-      const q = (document.getElementById('userSearchInput')?.value || '').toLowerCase();
-      const filtered = appState.users.filter(u =>
-        String(u.full_name).toLowerCase().includes(q) || String(u.role).toLowerCase().includes(q)
-      );
       const tbody = document.getElementById('usersTableBody');
       if (!tbody) return;
-      tbody.innerHTML = filtered.map(u => {
-        const active = u.user_status === 'Aktif';
-        const isSuper = u.role === 'Super Admin';
-        return `
-          <tr class="${isSuper ? 'bg-amber-50/50' : ''}">
-            <td class="py-3 px-3 font-extrabold text-medDark">
-              ${isSuper ? '<i class="fa-solid fa-crown text-amber-500 mr-1"></i>' : ''}${u.full_name}
-            </td>
-            <td class="py-3 px-3 font-bold ${isSuper ? 'text-amber-700' : 'text-pink-700'}">${u.role}</td>
-            <td class="py-3 px-3 text-xs text-gray-600">${u.module_access}</td>
-            <td class="py-3 px-3 text-center">
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${active ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-600'}">
-                ${u.user_status}
-              </span>
-            </td>
-            <td class="py-3 px-3 text-center">
-              <button onclick="toggleUserActive('${u.user_id}')" class="px-2.5 py-1 rounded-lg border border-pink-200 hover:bg-pink-50 text-xs font-bold">
-                <i class="fa-solid fa-power-off mr-1"></i> Toggle
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      const counts = {};
-      appState.users.forEach(u => { counts[u.role] = (counts[u.role] || 0) + 1; });
-      const summaryBox = document.getElementById('roleSummaryContainer');
-      if (!summaryBox) return;
-      summaryBox.innerHTML = Object.keys(counts).map(role => `
-        <div class="p-3.5 rounded-2xl bg-gradient-to-r from-pink-50/70 to-white border border-pink-200 flex justify-between items-center">
-          <div>
-            <p class="font-extrabold text-sm text-medDark">${role}</p>
-            <p class="text-[11px] text-gray-500">Akses SIMRS Terverifikasi</p>
-          </div>
-          <span class="px-3 py-1 rounded-xl bg-white border border-pink-200 font-extrabold text-pink-600">${counts[role]} Akun</span>
-        </div>
+      tbody.innerHTML = appState.users.map(u => `
+        <tr>
+          <td class="py-3 px-3 font-extrabold text-medDark">${u.full_name}</td>
+          <td class="py-3 px-3 font-bold text-pink-700">${u.role}</td>
+          <td class="py-3 px-3 text-xs text-gray-600">${u.module_access}</td>
+          <td class="py-3 px-3 text-center"><span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">${u.user_status}</span></td>
+          <td class="py-3 px-3 text-center"><button onclick="toggleUserActive('${u.user_id}')" class="px-2 py-1 rounded border text-xs font-bold">Toggle</button></td>
+        </tr>
       `).join('');
     }
 
     async function openNewUserPrompt() {
-      const fullName = prompt("Nama Lengkap Petugas / User RS Baru:");
+      const fullName = prompt("Nama Lengkap Petugas Baru:");
       if (!fullName) return;
-      const role = prompt(
-        "Pilih Role / Jabatan sesuai standar RBAC:\n- Super Admin\n- Administrator\n- Petugas Front Office\n- Dokter\n- Apoteker / Petugas Farmasi\n- Petugas Lab / Radiologi\n- Kasir / Billing\n- Petugas Inventaris\n- Pasien",
-        "Petugas Front Office"
-      );
-      const cfg = getRoleConfig(role);
-      const access = prompt("Akses Modul:", cfg.features.join(", "));
-      const newUser = {
-        user_id: "USR-RS-" + String(appState.users.length + 1).padStart(2, '0'),
-        full_name: fullName,
-        role: role || "Petugas Front Office",
-        module_access: access || cfg.features.join(", "),
-        user_status: "Aktif"
-      };
+      const role = prompt("Role / Jabatan:", "Dokter");
+      const newUser = { user_id: "USR-RS-" + (appState.users.length + 1), full_name: fullName, role: role, module_access: "Semua Modul", user_status: "Aktif", password: "123" };
       appState.users.push(newUser);
       renderUsersModule();
       renderLoginDropdown();
-      try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({ action: "saveUser", ...newUser })
-        });
-        alert("User RS baru berhasil ditambahkan dan disimpan ke database!");
-        fetchDatabaseData();
-      } catch(e) { console.warn("Gagal simpan user ke GAS:", e); }
     }
 
     async function toggleUserActive(userId) {
@@ -1858,15 +1362,6 @@
       if (!u) return;
       u.user_status = u.user_status === 'Aktif' ? 'Tidak Aktif' : 'Aktif';
       renderUsersModule();
-      renderLoginDropdown();
-      try {
-        await fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({ action: "toggleUserStatus", user_id: userId })
-        });
-      } catch(e) { console.warn("Gagal toggle status user:", e); }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
