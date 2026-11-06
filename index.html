@@ -306,7 +306,7 @@
         </div>
       </section>
 
-      <!-- 3. RAWAT INAP & RAWAT JALAN (DENGAN PEMISAHAN MENU & DATA PULANG TERSIMPAN) -->
+      <!-- 3. RAWAT INAP & RAWAT JALAN -->
       <section id="tab-rawatinap" class="tab-section hidden space-y-6">
         <div class="pastel-card p-5 bg-gradient-to-r from-pink-50 to-amber-50 space-y-4">
           <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-pink-100 pb-3">
@@ -328,7 +328,7 @@
         </div>
       </section>
 
-      <!-- 4. REKAM MEDIS ELEKTRONIK / EMR (CARD SELECTION + FILTER TANGGAL + RIWAYAT KRONOLOGIS) -->
+      <!-- 4. REKAM MEDIS ELEKTRONIK / EMR -->
       <section id="tab-emr" class="tab-section hidden space-y-6">
         <div id="emrPatientSelectionPortal" class="pastel-card p-6 space-y-4 bg-gradient-to-r from-pink-50 via-white to-teal-50">
           <div class="flex flex-wrap justify-between items-center border-b border-pink-100 pb-3 gap-2">
@@ -416,6 +416,7 @@
           </div>
         </div>
       </section>
+
       <!-- 5. LABORATORIUM & RADIOLOGI (DENGAN UPDATE TAHAP PROGRES) -->
       <section id="tab-labrad" class="tab-section hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -462,6 +463,7 @@
           </div>
         </div>
       </section>
+
       <!-- 6. KASIR / BILLING SYSTEM (STATUS LUNAS/BELUM & STRUK RESMI) -->
       <section id="tab-kasir" class="tab-section hidden space-y-6">
         <div id="billingSelectionPortal" class="pastel-card p-6 space-y-4 bg-gradient-to-r from-teal-50 via-white to-pink-50">
@@ -529,6 +531,7 @@
           </div>
         </div>
       </section>
+
       <!-- 7. INVENTARIS RS (DENGAN TOMBOL TAMBAH & HAPUS) -->
       <section id="tab-inventaris" class="tab-section hidden space-y-6">
         <div class="pastel-card p-6 space-y-4">
@@ -546,6 +549,7 @@
       </section>
     </main>
   </div>
+
   <!-- AREA PRINT STRUK KASIR RESMI -->
   <div id="printableReceiptArea" class="hidden p-8 font-mono text-xs text-gray-800 bg-white">
     <div class="text-center border-b-2 border-dashed border-gray-400 pb-4 mb-4">
@@ -579,6 +583,7 @@
       <p>Semoga lekas sembuh!</p>
     </div>
   </div>
+
   <!-- MODAL TAMBAH INVENTARIS -->
   <div id="inventoryModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4 no-print">
     <div class="pastel-card max-w-md w-full p-6 space-y-4">
@@ -604,6 +609,7 @@
       </form>
     </div>
   </div>
+
   <!-- MODAL KONFIGURASI API -->
   <div id="configModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4 no-print">
     <div class="pastel-card max-w-lg w-full p-6 space-y-4">
@@ -619,10 +625,11 @@
       </div>
       <div class="flex justify-end gap-2 pt-3 border-t border-pink-100">
         <button onclick="closeConfigModal()" class="px-4 py-2 rounded-xl border border-gray-300 text-xs font-bold">Batal</button>
-        <button onclick="saveApiConfig()" class="px-5 py-2 rounded-xl bg-pastelRose text-white text-xs font-bold shadow">Simpan & Sinkronkan</button>
+        <button onclick="saveApiConfig()" class="px-5 py-2 rounded-xl bg-pastelRose text-white font-bold shadow">Simpan & Sinkronkan</button>
       </div>
     </div>
   </div>
+
   <!-- SCRIPT UTAMA DINAMIS MURNI DATABASE -->
   <script>
     const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxaF7QdzPombAPXECdhFOLZXc2X72_hzOjIbjEIVuAKWJD7_P6BHkNuP9sjNUxaRmd0Ng/exec';
@@ -640,6 +647,7 @@
       masterObat: [],
       auditLogs: []
     };
+
     async function fetchDatabaseData() {
       try {
         const response = await fetch(GAS_URL + "?action=init");
@@ -665,6 +673,7 @@
         renderAll();
       }
     }
+
     function switchTab(tabId) {
       document.querySelectorAll('.tab-section').forEach(el => el.classList.add('hidden'));
       document.getElementById('tab-' + tabId).classList.remove('hidden');
@@ -677,6 +686,7 @@
       if (tabId === 'inventaris') renderInventory();
       if (tabId === 'labrad') renderLabQueue();
     }
+
     function renderAll() {
       renderPatientsList();
       renderDoctorsAndRooms();
@@ -694,6 +704,7 @@
       const totalUnpaid = appState.billing.filter(b => b.payment_status !== 'Lunas').reduce((acc, curr) => acc + (Number(curr.patient_paid) || 0), 0);
       document.getElementById('stat-bills').innerText = 'Rp ' + totalUnpaid.toLocaleString('id-ID');
     }
+
     // --- 1. FRONT OFFICE & KUNJUNGAN ---
     function renderPatientsList() {
       const q = (document.getElementById('searchPatientInput')?.value || '').toLowerCase();
@@ -718,6 +729,7 @@
         patSelect.innerHTML = appState.patients.map(p => `<option value="${p.patient_id}">${p.patient_id} - ${p.full_name}</option>`).join('');
       }
     }
+
     function renderDoctorsAndRooms() {
       const docList = document.getElementById('doctorScheduleList');
       if (docList) {
@@ -748,6 +760,7 @@
         `).join('');
       }
     }
+
     async function handleRegisterPatient(e) {
       e.preventDefault();
       const payload = {
@@ -772,6 +785,7 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal register: " + e); }
     }
+
     async function handleCreateVisit(e) {
       e.preventDefault();
       const payload = {
@@ -794,7 +808,8 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal buat kunjungan: " + e); }
     }
-    // --- 2. RAWAT INAP & RAWAT JALAN (TIDAK HILANG SAAT PULANG & FILTER TANGGAL) ---
+
+    // --- 2. RAWAT INAP & RAWAT JALAN ---
     function renderInpatientCards() {
       const filterDate = document.getElementById('filterInpatientDate')?.value || '';
       const filterType = document.getElementById('filterVisitType')?.value || 'Semua';
@@ -825,7 +840,8 @@
         `;
       }).join('');
     }
-    // --- 3. EMR (CARD SELECTION + FILTER TANGGAL BEROBAT + KRONOLOGIS) ---
+
+    // --- 3. EMR ---
     function renderEmrPatientCards() {
       const q = (document.getElementById('searchEmrPortalInput')?.value || '').toLowerCase();
       const filterDate = document.getElementById('filterEmrDate')?.value || '';
@@ -848,6 +864,7 @@
         </div>
       `).join('');
     }
+
     function selectEmrPatient(patientId) {
       const pat = appState.patients.find(p => p.patient_id === patientId);
       if (!pat) return;
@@ -863,10 +880,12 @@
       renderPatientVisitHistory(patientId);
       renderPharmacyDrugDropdown();
     }
+
     function backToEmrSelection() {
       document.getElementById('emrDetailPortal').classList.add('hidden');
       document.getElementById('emrPatientSelectionPortal').classList.remove('hidden');
     }
+
     function renderPatientVisitHistory(patientId) {
       const container = document.getElementById('patientVisitHistoryContainer');
       const records = appState.medicalRecords.filter(r => r.patient_id === patientId);
@@ -899,6 +918,7 @@
         `;
       }).join('');
     }
+
     function openNewVisitRecordModal() {
       const todayStr = new Date().toISOString().split('T')[0];
       document.getElementById('emr-active-visit-date').innerText = `Tanggal Berobat: ${todayStr}`;
@@ -908,6 +928,7 @@
       document.getElementById('emr-soap-p').value = "";
       alert("Form siap untuk entri rekam medis kunjungan baru hari ini.");
     }
+
     function renderPharmacyDrugDropdown() {
       const selects = document.querySelectorAll('.pres-drug-select');
       selects.forEach(sel => {
@@ -923,6 +944,7 @@
         sel.innerHTML = optionsHtml;
       });
     }
+
     function addPrescriptionRow() {
       const container = document.getElementById('prescriptionRows');
       const div = document.createElement('div');
@@ -943,6 +965,7 @@
       `;
       container.appendChild(div);
     }
+
     function checkCustomDrugInput(selectEl) {
       if (selectEl.value === 'CUSTOM') {
         const customName = prompt("Masukkan nama obat manual:", "Obat Racikan Khusus");
@@ -957,6 +980,7 @@
         }
       }
     }
+
     function addNewPharmacyDrugPrompt() {
       const newDrug = prompt("Masukkan nama obat baru:", "Cetirizine 10mg");
       if (newDrug) {
@@ -965,6 +989,7 @@
         renderPharmacyDrugDropdown();
       }
     }
+
     async function handleSaveEMR(e) {
       e.preventDefault();
       const patientId = document.getElementById('emr-active-rm').innerText;
@@ -1001,7 +1026,8 @@
         alert("Gagal menyimpan ke database: " + err);
       }
     }
-    // --- 4. LAB & RADIOLOGI (DENGAN UPDATE TAHAP PROGRES) ---
+
+    // --- 4. LAB & RADIOLOGI ---
     function renderLabQueue() {
       const container = document.getElementById('labQueueContainer');
       if (!container) return;
@@ -1019,6 +1045,7 @@
         </div>
       `).join('');
     }
+
     function selectLabItem(index) {
       const item = appState.lab_radiology[index];
       if (!item) return;
@@ -1029,6 +1056,7 @@
       document.getElementById('lab-detail-flag').value = item.critical_flag || 'Normal';
       document.getElementById('lab-detail-summary').value = item.result_summary || '';
     }
+
     async function saveLabResultUpdate() {
       const orderId = document.getElementById('lab-detail-order-id').value;
       const status = document.getElementById('lab-detail-status').value;
@@ -1050,6 +1078,7 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal update lab: " + e); }
     }
+
     function promptNewLabOrder() {
       const rm = prompt("Masukkan No. RM Pasien:", "RM-00001");
       if (!rm) return;
@@ -1073,6 +1102,7 @@
         fetchDatabaseData();
       });
     }
+
     // --- 5. KASIR / BILLING SYSTEM ---
     function renderBillingPatientSelection() {
       const container = document.getElementById('billingPatientCards');
@@ -1095,6 +1125,7 @@
         `;
       }).join('');
     }
+
     let activeBillingObj = null;
     function selectBillingItem(billId) {
       activeBillingObj = appState.billing.find(b => b.bill_id === billId);
@@ -1122,16 +1153,19 @@
       document.getElementById('bill-covered-txt').innerText = 'Rp ' + Number(activeBillingObj.insurance_covered).toLocaleString('id-ID');
       document.getElementById('bill-net-txt').innerText = 'Rp ' + Number(activeBillingObj.patient_paid).toLocaleString('id-ID');
     }
+
     function backToBillingSelection() {
       document.getElementById('billingDetailPortal').classList.add('hidden');
       document.getElementById('billingSelectionPortal').classList.remove('hidden');
     }
+
     function selectPayMethod(method) {
       selectedPayMethod = method;
       document.querySelectorAll('.pay-method-btn').forEach(b => b.className = 'pay-method-btn py-2 rounded-xl border border-pink-200');
       const active = document.getElementById('pay-' + method);
       if (active) active.className = 'pay-method-btn py-2 rounded-xl border-2 border-pastelRose bg-pink-50 text-pink-900';
     }
+
     async function processCashierPayment() {
       if (!activeBillingObj) return;
       try {
@@ -1156,7 +1190,8 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal proses pembayaran: " + e); }
     }
-    // --- 6. INVENTARIS RS (DENGAN TOMBOL TAMBAH DAN HAPUS) ---
+
+    // --- 6. INVENTARIS RS ---
     function renderInventory() {
       const container = document.getElementById('inventoryListContainer');
       if (!container) return;
@@ -1173,14 +1208,17 @@
         </div>
       `).join('');
     }
+
     function openInventoryModal() {
       document.getElementById('inventoryModal').classList.remove('hidden');
       document.getElementById('inventoryModal').classList.add('flex');
     }
+
     function closeInventoryModal() {
       document.getElementById('inventoryModal').classList.add('hidden');
       document.getElementById('inventoryModal').classList.remove('flex');
     }
+
     async function handleSaveInventorySubmit(e) {
       e.preventDefault();
       const payload = {
@@ -1206,6 +1244,7 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal simpan inventaris: " + e); }
     }
+
     async function deleteInventoryItemModal(itemId) {
       if (!confirm(`Hapus item inventaris ${itemId}?`)) return;
       try {
@@ -1219,16 +1258,19 @@
         fetchDatabaseData();
       } catch(e) { alert("Gagal hapus: " + e); }
     }
+
     // --- 7. CONFIG ---
     function openConfigModal() {
       document.getElementById('inputGasUrl').value = GAS_URL;
       document.getElementById('configModal').classList.remove('hidden');
       document.getElementById('configModal').classList.add('flex');
     }
+
     function closeConfigModal() {
       document.getElementById('configModal').classList.add('hidden');
       document.getElementById('configModal').classList.remove('flex');
     }
+
     function saveApiConfig() {
       GAS_URL = document.getElementById('inputGasUrl').value.trim();
       localStorage.setItem('AANG_MEDICAL_GAS_URL', GAS_URL);
@@ -1236,6 +1278,7 @@
       fetchDatabaseData();
       alert("URL Web App berhasil disimpan & disinkronkan!");
     }
+
     window.addEventListener('DOMContentLoaded', () => {
       fetchDatabaseData();
     });
