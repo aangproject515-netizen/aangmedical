@@ -550,6 +550,7 @@
           <div id="inventoryListContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
         </div>
       </section>
+
       <!-- 8. MANAJEMEN USER RS -->
       <section id="tab-users" class="tab-section hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -1079,44 +1080,45 @@
     }
 
     // --- 4. LAB & RADIOLOGI ---
-   function renderLabQueue() {
-  const container = document.getElementById('labQueueContainer');
-  if (!container) return;
-  
-  // Gunakan appState.labRadiology secara konsisten
-  const labData = appState.labRadiology || [];
-  if (labData.length === 0) {
-    container.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">Belum ada antrean lab & radiologi di database.</p>`;
-    return;
-  }
-  container.innerHTML = labData.map((item, idx) => {
-    const pat = appState.patients.find(p => p.patient_id === item.patient_id) || {};
-    const patName = pat.full_name || item.patient_id;
-    return `
-      <div onclick="selectLabItem(${idx})" class="p-3.5 rounded-xl border border-pink-100 hover:border-purple-300 bg-white cursor-pointer flex justify-between items-center transition">
-        <div>
-          <p class="font-bold">${idx + 1}. ${patName} <span class="text-xs font-normal text-gray-400">(RM: ${item.patient_id} | ID: ${item.order_id})</span></p>
-          <p class="text-xs text-gray-600">${item.examination_type} • Tahap: <b>${item.order_status}</b></p>
-        </div>
-        <span class="px-3 py-1 rounded-full text-xs font-bold ${item.critical_flag === 'Kritis' ? 'bg-red-100 text-red-800' : 'bg-pink-100 text-pink-800'}">${item.critical_flag}</span>
-      </div>
-    `;
-  }).join('');
-}
+    function renderLabQueue() {
+      const container = document.getElementById('labQueueContainer');
+      if (!container) return;
+      
+      // Gunakan appState.labRadiology secara konsisten
+      const labData = appState.labRadiology || [];
+      if (labData.length === 0) {
+        container.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">Belum ada antrean lab & radiologi di database.</p>`;
+        return;
+      }
+      container.innerHTML = labData.map((item, idx) => {
+        const pat = appState.patients.find(p => p.patient_id === item.patient_id) || {};
+        const patName = pat.full_name || item.patient_id;
+        return `
+          <div onclick="selectLabItem(${idx})" class="p-3.5 rounded-xl border border-pink-100 hover:border-purple-300 bg-white cursor-pointer flex justify-between items-center transition">
+            <div>
+              <p class="font-bold">${idx + 1}. ${patName} <span class="text-xs font-normal text-gray-400">(RM: ${item.patient_id} | ID: ${item.order_id})</span></p>
+              <p class="text-xs text-gray-600">${item.examination_type} • Tahap: <b>${item.order_status}</b></p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold ${item.critical_flag === 'Kritis' ? 'bg-red-100 text-red-800' : 'bg-pink-100 text-pink-800'}">${item.critical_flag}</span>
+          </div>
+        `;
+      }).join('');
+    }
 
     function selectLabItem(index) {
-  const labData = appState.labRadiology || [];
-  const item = labData[index];
-  if (!item) return;
-  const pat = appState.patients.find(p => p.patient_id === item.patient_id) || {};
-  
-  document.getElementById('lab-detail-order-id').value = item.order_id;
-  document.getElementById('lab-detail-name').innerText = (pat.full_name ? `${pat.full_name} (${item.patient_id})` : item.patient_id);
-  document.getElementById('lab-detail-rm').innerText = item.order_id;
-  document.getElementById('lab-detail-status').value = item.order_status || 'Menunggu Sampel';
-  document.getElementById('lab-detail-flag').value = item.critical_flag || 'Normal';
-  document.getElementById('lab-detail-summary').value = item.result_summary || '';
-}
+      const labData = appState.labRadiology || [];
+      const item = labData[index];
+      if (!item) return;
+      const pat = appState.patients.find(p => p.patient_id === item.patient_id) || {};
+      
+      document.getElementById('lab-detail-order-id').value = item.order_id;
+      document.getElementById('lab-detail-name').innerText = (pat.full_name ? `${pat.full_name} (${item.patient_id})` : item.patient_id);
+      document.getElementById('lab-detail-rm').innerText = item.order_id;
+      document.getElementById('lab-detail-status').value = item.order_status || 'Menunggu Sampel';
+      document.getElementById('lab-detail-flag').value = item.critical_flag || 'Normal';
+      document.getElementById('lab-detail-summary').value = item.result_summary || '';
+    }
+
     async function saveLabResultUpdate() {
       const orderId = document.getElementById('lab-detail-order-id').value;
       const status = document.getElementById('lab-detail-status').value;
@@ -1165,31 +1167,32 @@
 
     // --- 5. KASIR / BILLING SYSTEM ---
     function renderBillingPatientSelection() {
-  const container = document.getElementById('billingPatientCards');
-  if (!container) return;
-  if (appState.billing.length === 0) {
-    container.innerHTML = `<p class="col-span-3 text-xs text-gray-500 text-center py-4">Belum ada data billing dari database.</p>`;
-    return;
-  }
-  container.innerHTML = appState.billing.map(b => {
-    const isLunas = b.payment_status === 'Lunas';
-    // Cari data pasien berdasarkan patient_id untuk menampilkan nama lengkap
-    const pat = appState.patients.find(p => p.patient_id === b.patient_id) || {};
-    const patientName = pat.full_name || b.patient_id;
+      const container = document.getElementById('billingPatientCards');
+      if (!container) return;
+      if (appState.billing.length === 0) {
+        container.innerHTML = `<p class="col-span-3 text-xs text-gray-500 text-center py-4">Belum ada data billing dari database.</p>`;
+        return;
+      }
+      container.innerHTML = appState.billing.map(b => {
+        const isLunas = b.payment_status === 'Lunas';
+        // Cari data pasien berdasarkan patient_id untuk menampilkan nama lengkap
+        const pat = appState.patients.find(p => p.patient_id === b.patient_id) || {};
+        const patientName = pat.full_name || b.patient_id;
 
-    return `
-      <div onclick="selectBillingItem('${b.bill_id}')" class="pastel-card p-4 cursor-pointer hover:border-teal-400 bg-white transition space-y-2">
-        <div class="flex justify-between items-start">
-          <span class="px-2 py-0.5 rounded bg-teal-100 text-teal-800 text-[10px] font-bold">${b.payment_method || 'Tunai'}</span>
-          <span class="text-xs font-bold px-2 py-0.5 rounded border ${isLunas ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-800 border-amber-200'}">${b.payment_status || 'Belum Lunas'}</span>
-        </div>
-        <h4 class="font-extrabold text-base text-medDark">${patientName}</h4>
-        <p class="text-xs text-gray-500">RM: ${b.patient_id} • Tagihan: Rp ${Number(b.patient_paid || b.amount).toLocaleString('id-ID')}</p>
-        <p class="text-xs font-semibold text-pink-600 truncate">Layanan: ${b.item_description}</p>
-      </div>
-    `;
-  }).join('');
-}
+        return `
+          <div onclick="selectBillingItem('${b.bill_id}')" class="pastel-card p-4 cursor-pointer hover:border-teal-400 bg-white transition space-y-2">
+            <div class="flex justify-between items-start">
+              <span class="px-2 py-0.5 rounded bg-teal-100 text-teal-800 text-[10px] font-bold">${b.payment_method || 'Tunai'}</span>
+              <span class="text-xs font-bold px-2 py-0.5 rounded border ${isLunas ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-800 border-amber-200'}">${b.payment_status || 'Belum Lunas'}</span>
+            </div>
+            <h4 class="font-extrabold text-base text-medDark">${patientName}</h4>
+            <p class="text-xs text-gray-500">RM: ${b.patient_id} • Tagihan: Rp ${Number(b.patient_paid || b.amount).toLocaleString('id-ID')}</p>
+            <p class="text-xs font-semibold text-pink-600 truncate">Layanan: ${b.item_description}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
     let activeBillingObj = null;
     function selectBillingItem(billId) {
       activeBillingObj = appState.billing.find(b => b.bill_id === billId);
