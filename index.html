@@ -734,6 +734,7 @@
       if (tabId === 'kasir') renderBillingPatientSelection();
       if (tabId === 'inventaris') renderInventory();
       if (tabId === 'labrad') renderLabQueue();
+      if (tabId === 'users') renderUsersModule();
     }
 
     function renderAll() {
@@ -744,6 +745,7 @@
       renderBillingPatientSelection();
       renderInpatientCards();
       renderEmrPatientCards();
+      renderUsersModule();
       
       document.getElementById('stat-patients').innerText = appState.patients.length;
       document.getElementById('stat-lab').innerText = appState.lab_radiology.length;
@@ -1339,6 +1341,90 @@
       closeConfigModal();
       fetchDatabaseData();
       alert("URL Web App berhasil disimpan & disinkronkan!");
+    }
+
+    function renderUsersModule() {
+      const q = (document.getElementById('userSearchInput')?.value || '').toLowerCase();
+      const filtered = appState.users.filter(u =>
+        String(u.full_name).toLowerCase().includes(q) || String(u.role).toLowerCase().includes(q)
+      );
+      const tbody = document.getElementById('usersTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = filtered.map(u => {
+        const active = u.user_status === 'Aktif';
+        return `
+          <tr>
+            <td class="py-3 px-3 font-extrabold text-medDark">${u.full_name}</td>
+            <td class="py-3 px-3 font-bold text-pink-700">${u.role}</td>
+            <td class="py-3 px-3 text-xs text-gray-600">${u.module_access}</td>
+            <td class="py-3 px-3 text-center">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${active ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-600'}">
+                ${u.user_status}
+              </span>
+            </td>
+            <td class="py-3 px-3 text-center">
+              <button onclick="toggleUserActive('${u.user_id}')" class="px-2.5 py-1 rounded-lg border border-pink-200 hover:bg-pink-50 text-xs font-bold">
+                <i class="fa-solid fa-power-off mr-1"></i> Toggle
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      const counts = {};
+      appState.users.forEach(u => { counts[u.role] = (counts[u.role] || 0) + 1; });
+      const summaryBox = document.getElementById('roleSummaryContainer');
+      if (!summaryBox) return;
+      summaryBox.innerHTML = Object.keys(counts).map(role => `
+        <div class="p-3.5 rounded-2xl bg-gradient-to-r from-pink-50/70 to-white border border-pink-200 flex justify-between items-center">
+          <div>
+            <p class="font-extrabold text-sm text-medDark">${role}</p>
+            <p class="text-[11px] text-gray-500">Akses SIMRS Terverifikasi</p>
+          </div>
+          <span class="px-3 py-1 rounded-xl bg-white border border-pink-200 font-extrabold text-pink-600">${counts[role]} Akun</span>
+        </div>
+      `).join('');
+    }
+
+    async function openNewUserPrompt() {
+      const fullName = prompt("Nama Lengkap Petugas / User RS Baru:");
+      if (!fullName) return;
+      const role = prompt("Role / Jabatan (Administrator / Front Office / Dokter / Kasir / Apoteker):", "Front Office");
+      const access = prompt("Akses Modul:", "Front Office & Antrean");
+      const newUser = {
+        user_id: "USR-RS-" + String(appState.users.length + 1).padStart(2, '0'),
+        full_name: fullName,
+        role: role || "Petugas RS",
+        module_access: access || "Front Office",
+        user_status: "Aktif"
+      };
+      appState.users.push(newUser);
+      renderUsersModule();
+      try {
+        await fetch(GAS_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ action: "saveUser", ...newUser })
+        });
+        alert("User RS baru berhasil ditambahkan dan disimpan ke database!");
+        fetchDatabaseData();
+      } catch(e) { console.warn("Gagal simpan user ke GAS:", e); }
+    }
+
+    async function toggleUserActive(userId) {
+      const u = appState.users.find(x => x.user_id === userId);
+      if (!u) return;
+      u.user_status = u.user_status === 'Aktif' ? 'Tidak Aktif' : 'Aktif';
+      renderUsersModule();
+      try {
+        await fetch(GAS_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({ action: "toggleUserStatus", user_id: userId })
+        });
+      } catch(e) { console.warn("Gagal toggle status user:", e); }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
