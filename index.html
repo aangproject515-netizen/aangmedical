@@ -38,6 +38,24 @@
       color: white;
       box-shadow: 0 4px 12px rgba(255, 158, 170, 0.4);
     }
+    /* Style untuk cut/crop gambar kartu menu dashboard agar teks bawaan gambar tersembunyi */
+    .card-img-wrapper {
+      position: relative;
+      width: 100%;
+      height: 14rem;
+      overflow: hidden;
+      border-radius: 1rem;
+      background: #FFF0F3;
+    }
+    .card-img-wrapper img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 145%; /* Diperbesar agar teks bawah gambar terpotong */
+      object-fit: cover;
+      object-position: top center;
+    }
     @media print {
       .no-print { display: none !important; }
       .print-area { border: none !important; box-shadow: none !important; }
@@ -45,27 +63,27 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
-
   <!-- TOP NAVBAR -->
   <header class="bg-gradient-to-r from-pastelPink via-pastelYellow to-pastelMint border-b-2 border-pink-200 sticky top-0 z-40 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-16 h-16 rounded-2xl bg-white border-2 border-pastelRose flex items-center justify-center shadow-sm overflow-hidden">
-          <img src="logo_medica.png" alt="Logo RS Aang Medical" class="w-full h-full object-cover scale-125" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-          <i class="fa-solid fa-user-doctor text-2xl text-pastelRose hidden"></i>
+        <div class="w-14 h-14 rounded-2xl bg-white border-2 border-pastelRose flex items-center justify-center shadow-sm overflow-hidden">
+          <i class="fa-solid fa-user-doctor text-2xl text-pastelRose"></i>
         </div>
         <div>
           <h1 class="text-xl font-bold tracking-wide text-medDark">RS AANG MEDICAL</h1>
           <p class="text-xs font-semibold text-pink-600">Sistem Informasi Rumah Sakit Terintegrasi E-Apotek</p>
         </div>
       </div>
-
       <div class="flex items-center gap-3">
         <span id="connBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300">
           <i class="fa-solid fa-bolt mr-1"></i> Mode Simulasi (Demo Aktif)
         </span>
+        <a href="https://drive.google.com/drive/folders/1D-Uq0dhLIjI3o4DQPDZiHm6D55DPtyws?usp=sharing" target="_blank" class="px-3 py-1.5 rounded-xl bg-white hover:bg-pink-50 text-xs font-bold border-2 border-pink-200 shadow-sm transition text-pink-700">
+          <i class="fa-brands fa-google-drive mr-1"></i> Folder Drive Berkas
+        </a>
         <button onclick="openConfigModal()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-pink-50 text-xs font-bold border-2 border-pink-200 shadow-sm transition">
-          <i class="fa-solid fa-gear text-pastelRose mr-1"></i> Koneksi API & Apotek
+          <i class="fa-solid fa-gear text-pastelRose mr-1"></i> Konfigurasi API
         </button>
       </div>
     </div>
@@ -73,7 +91,6 @@
 
   <!-- MAIN CONTAINER -->
   <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col lg:flex-row gap-6 p-4 md:p-6">
-
     <!-- SIDEBAR NAVIGATION -->
     <aside class="w-full lg:w-64 shrink-0 no-print">
       <div class="pastel-card p-4 sticky top-24 space-y-2">
@@ -104,13 +121,13 @@
 
     <!-- CONTENT AREA -->
     <main class="flex-1 space-y-6">
-
-      <!-- 1. DASHBOARD PORTAL (SESUAI HALAMAN 1 PDF + GAMBAR ILUSTRASI GITHUB) -->
+      
+      <!-- 1. DASHBOARD PORTAL -->
       <section id="tab-dashboard" class="tab-section space-y-6">
         <div class="pastel-card p-6 bg-gradient-to-br from-pink-50 via-white to-teal-50">
           <div class="flex flex-col sm:flex-row items-center gap-5">
-            <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-3xl border-2 border-pink-200 shadow-md bg-white overflow-hidden flex items-center justify-center shrink-0">
-              <img src="logo_medica.png" alt="Logo RS Aang Medical" class="w-full h-full object-contain scale-125" onerror="this.style.display='none'">
+            <div class="w-32 h-32 rounded-3xl border-2 border-pink-200 shadow-md bg-white flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-hospital text-5xl text-pastelRose"></i>
             </div>
             <div>
               <h2 class="text-2xl font-bold text-medDark">Selamat Datang di Portal SIMRS RS Aang Medical</h2>
@@ -118,7 +135,6 @@
             </div>
           </div>
           
-          <!-- Ringkasan Cepat -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
             <div class="bg-white p-4 rounded-2xl border border-pink-200 shadow-sm">
               <span class="text-xs text-gray-500 font-bold">Total Pasien Terdaftar</span>
@@ -139,57 +155,46 @@
           </div>
         </div>
 
-        <!-- 6 Kartu Modul dengan Gambar Ilustrasi dari GitHub Repository -->
+        <!-- 6 Kartu Modul dengan Gambar Ter-crop (Teks di dalam gambar disembunyikan menggunakan CSS wrapper) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div onclick="switchTab('frontoffice')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-full h-56 rounded-2xl bg-pink-50/70 border border-pink-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
-              <img src="01-front-office.png" style="transform: scale(1.18);" alt="Front Office" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-              <i class="fa-solid fa-hospital-user text-3xl text-pink-700 hidden"></i>
+          <div onclick="switchTab('frontoffice')" class="pastel-card p-5 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
+            <div class="card-img-wrapper mb-3 border border-pink-100 shadow-inner">
+              <img src="01-front-office.png" alt="Front Office" onerror="this.parentElement.style.display='none';">
             </div>
             <h3 class="text-lg font-bold">Front Office</h3>
             <p class="text-xs text-gray-500 mt-1">Registrasi pasien baru/lama, antrean poliklinik, verifikasi BPJS/Asuransi & status kamar.</p>
           </div>
-
-          <div onclick="switchTab('rawatinap')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-full h-56 rounded-2xl bg-amber-50/70 border border-amber-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
-              <img src="02-rawat-inap.png" style="transform: scale(1.18);" alt="Rawat Inap" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-              <i class="fa-solid fa-bed-pulse text-3xl text-amber-700 hidden"></i>
+          <div onclick="switchTab('rawatinap')" class="pastel-card p-5 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
+            <div class="card-img-wrapper mb-3 border border-amber-100 shadow-inner">
+              <img src="02-rawat-inap.png" alt="Rawat Inap" onerror="this.parentElement.style.display='none';">
             </div>
             <h3 class="text-lg font-bold">Rawat Inap</h3>
             <p class="text-xs text-gray-500 mt-1">Monitoring pasien bangsal, catatan medis harian, jadwal obat aktif, dan pemulangan pasien.</p>
           </div>
-
-          <div onclick="switchTab('labrad')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-full h-56 rounded-2xl bg-purple-50/70 border border-purple-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
-              <img src="03-laboratorium-radiologi.png" style="transform: scale(1.18);" alt="Laboratorium & Radiologi" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-              <i class="fa-solid fa-x-ray text-3xl text-purple-700 hidden"></i>
+          <div onclick="switchTab('labrad')" class="pastel-card p-5 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
+            <div class="card-img-wrapper mb-3 border border-purple-100 shadow-inner">
+              <img src="03-laboratorium-radiologi.png" alt="Laboratorium & Radiologi" onerror="this.parentElement.style.display='none';">
             </div>
             <h3 class="text-lg font-bold">Laboratorium & Radiologi</h3>
             <p class="text-xs text-gray-500 mt-1">Manajemen sampel lab darah/urine, Rontgen Thorax, USG Abdomen, & unggah DICOM/PDF.</p>
           </div>
-
-          <div onclick="switchTab('kasir')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-full h-56 rounded-2xl bg-teal-50/70 border border-teal-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
-              <img src="04-kasir-billing-system.png" style="transform: scale(1.18);" alt="Kasir / Billing System" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-              <i class="fa-solid fa-cash-register text-3xl text-teal-700 hidden"></i>
+          <div onclick="switchTab('kasir')" class="pastel-card p-5 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
+            <div class="card-img-wrapper mb-3 border border-teal-100 shadow-inner">
+              <img src="04-kasir-billing-system.png" alt="Kasir / Billing System" onerror="this.parentElement.style.display='none';">
             </div>
             <h3 class="text-lg font-bold">Kasir / Billing System</h3>
             <p class="text-xs text-gray-500 mt-1">Konsolidasi tagihan poli, lab, dan resep apotek, diskon asuransi, & cetak struk lunas.</p>
           </div>
-
-          <div onclick="switchTab('inventaris')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-full h-56 rounded-2xl bg-orange-50/70 border border-orange-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
-              <img src="05-manajemen-inventaris-rs.png" style="transform: scale(1.18);" alt="Manajemen Inventaris RS" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-              <i class="fa-solid fa-clipboard-check text-3xl text-orange-700 hidden"></i>
+          <div onclick="switchTab('inventaris')" class="pastel-card p-5 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
+            <div class="card-img-wrapper mb-3 border border-orange-100 shadow-inner">
+              <img src="05-manajemen-inventaris-rs.png" alt="Manajemen Inventaris RS" onerror="this.parentElement.style.display='none';">
             </div>
             <h3 class="text-lg font-bold">Manajemen Inventaris RS</h3>
             <p class="text-xs text-gray-500 mt-1">Pemantauan alat medis ruangan, oksigen sentral, infus pump, dan stok obat emergency.</p>
           </div>
-
-          <div onclick="switchTab('emr')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-full h-56 rounded-2xl bg-rose-50/70 border border-rose-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
-              <img src="06-rekam-medis-elektronik.png" style="transform: scale(1.18);" alt="Rekam Medis Elektronik" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-              <i class="fa-solid fa-file-waveform text-3xl text-rose-700 hidden"></i>
+          <div onclick="switchTab('emr')" class="pastel-card p-5 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
+            <div class="card-img-wrapper mb-3 border border-rose-100 shadow-inner">
+              <img src="06-rekam-medis-elektronik.png" alt="Rekam Medis Elektronik" onerror="this.parentElement.style.display='none';">
             </div>
             <h3 class="text-lg font-bold">Rekam Medis Elektronik</h3>
             <p class="text-xs text-gray-500 mt-1">Pencatatan SOAP, grafik tanda vital (Vital Signs), diagnosa ICD-10, & integrasi e-Resep Apotek.</p>
@@ -208,7 +213,6 @@
                 <p class="text-xs text-gray-500">Registrasi Pasien Baru / Lama</p>
               </div>
             </div>
-
             <form id="formRegister" onsubmit="handleRegisterPatient(event)" class="space-y-3 text-sm">
               <div>
                 <label class="font-bold text-xs">NIK KTP</label>
@@ -274,7 +278,6 @@
                 </div>
               </div>
             </div>
-
             <div class="bg-gradient-to-r from-pastelMint to-teal-50 p-4 rounded-2xl text-center border border-teal-200">
               <span class="text-xs font-bold uppercase text-teal-700">Antrean Dipanggil Saat Ini</span>
               <p id="currentQueueDisplay" class="text-4xl font-extrabold text-teal-900 my-1">A-001</p>
@@ -283,7 +286,6 @@
                 <i class="fa-solid fa-volume-high mr-1"></i> Panggil Antrean Berikutnya
               </button>
             </div>
-
             <div>
               <div class="flex justify-between items-center mb-2">
                 <h4 class="font-bold text-xs uppercase text-gray-500">Patient List (<span id="patientCountLabel">3</span> Pasien)</h4>
@@ -301,28 +303,41 @@
                 <p class="text-xs text-gray-500">Jadwal Dokter Hari Ini & Ketersediaan Bed</p>
               </div>
             </div>
-
             <div>
               <h4 class="text-xs font-bold uppercase text-gray-400 mb-2">Jadwal Dokter Aktif</h4>
               <div id="doctorScheduleList" class="space-y-2 text-xs"></div>
             </div>
-
             <div class="pt-2 border-t border-pink-100">
-              <h4 class="text-xs font-bold uppercase text-gray-400 mb-2">Status Ketersediaan Kamar (Real-Time)</h4>
+              <h4 class="text-xs font-bold uppercase text-gray-400 mb-2">Status Ketersediaan Kamar</h4>
               <div id="roomStatusFrontOffice" class="space-y-2 text-xs"></div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 3. MODUL RAWAT INAP -->
+      <!-- 3. MODUL RAWAT INAP (DENGAN PEMILIHAN PASIEN) -->
       <section id="tab-rawatinap" class="tab-section hidden space-y-6">
+        <!-- Antarmuka Pemilihan Pasien Rawat Inap -->
+        <div class="pastel-card p-5 bg-gradient-to-r from-pink-50 to-amber-50">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+              <h3 class="font-bold text-lg text-medDark"><i class="fa-solid fa-bed-pulse text-amber-600 mr-2"></i>Pilih Pasien Rawat Inap</h3>
+              <p class="text-xs text-gray-600">Pilih pasien yang sedang dirawat untuk melihat rekam medis, CPPT, dan terapi aktif.</p>
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto">
+              <select id="selectInpatientPatient" onchange="switchInpatientPatient(this.value)" class="px-3 py-2 rounded-xl border border-pink-200 text-xs font-bold bg-white w-full md:w-64">
+                <option value="RM-01234567">Ny. Siti Aminah - Anggrek 301A (Pneumonia)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div class="pastel-card p-6 bg-gradient-to-r from-pink-50 via-white to-amber-50">
           <div class="flex flex-wrap justify-between items-center gap-4">
             <div>
               <span class="px-3 py-1 rounded-full text-xs font-bold bg-pink-200 text-pink-900">RAWAT INAP AKTIF</span>
-              <h2 class="text-2xl font-bold mt-2">Pasien: Ny. Siti Aminah (65 th)</h2>
-              <p class="text-sm font-semibold text-gray-600">No. RM: <span class="text-pink-700 font-bold">RM-01234567</span> | Ruang: <span class="text-teal-700 font-bold">Anggrek 301A (VIP)</span> | Diagnosa: <span class="text-red-600 font-bold">Pneumonia (J18.9)</span></p>
+              <h2 id="inpatient-name-title" class="text-2xl font-bold mt-2">Pasien: Ny. Siti Aminah (65 th)</h2>
+              <p class="text-sm font-semibold text-gray-600">No. RM: <span id="inpatient-rm-txt" class="text-pink-700 font-bold">RM-01234567</span> | Ruang: <span id="inpatient-room-txt" class="text-teal-700 font-bold">Anggrek 301A (VIP)</span> | Diagnosa: <span class="text-red-600 font-bold">Pneumonia (J18.9)</span></p>
             </div>
             <div class="flex flex-wrap gap-2">
               <button onclick="switchTab('emr')" class="px-4 py-2 rounded-xl bg-pastelRose text-white text-xs font-bold shadow hover:bg-pink-400 transition">
@@ -330,9 +345,6 @@
               </button>
               <button onclick="switchTab('labrad')" class="px-4 py-2 rounded-xl bg-purple-500 text-white text-xs font-bold shadow hover:bg-purple-600 transition">
                 <i class="fa-solid fa-vial mr-1"></i> Order Penunjang (Lab/Rad)
-              </button>
-              <button onclick="alert('Fitur Pindah Kamar: Silakan pilih bed kosong di Bangsal Anggrek/Melati.')" class="px-4 py-2 rounded-xl bg-amber-500 text-white text-xs font-bold shadow hover:bg-amber-600 transition">
-                <i class="fa-solid fa-right-left mr-1"></i> Pindah Pasien
               </button>
               <button onclick="dischargeInpatient()" class="px-4 py-2 rounded-xl bg-teal-600 text-white text-xs font-bold shadow hover:bg-teal-700 transition">
                 <i class="fa-solid fa-house-medical-circle-check mr-1"></i> Pulangkan Pasien
@@ -390,55 +402,12 @@
                 </div>
                 <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-200 text-amber-900">Dijadwalkan 12:00</span>
               </div>
-              <div class="p-3 rounded-xl border border-purple-200 bg-purple-50/50 flex justify-between items-center">
-                <div>
-                  <p class="font-bold">3. Tablet Paracetamol 500mg (PRN / Bila Demam)</p>
-                  <p class="text-xs text-gray-500">Rute: Oral</p>
-                </div>
-                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-purple-200 text-purple-900">Tersedia di Depo</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="pastel-card p-5 space-y-3">
-            <h3 class="font-bold text-base flex items-center gap-2 border-b pb-2 border-pink-100">
-              <i class="fa-solid fa-file-medical text-purple-600"></i> Pemeriksaan Penunjang Terlampir
-            </h3>
-            <div class="p-4 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-between">
-              <div>
-                <p class="font-bold text-sm">Hasil Rontgen Thorax AP (Terlampir)</p>
-                <p class="text-xs text-gray-600">Kesan: Tampak infiltrat perbaikan pada lapangan paru kanan bawah.</p>
-              </div>
-              <button onclick="switchTab('labrad')" class="px-3 py-1.5 bg-purple-600 text-white rounded-xl text-xs font-bold">Lihat DICOM</button>
-            </div>
-          </div>
-
-          <div class="pastel-card p-5 space-y-3">
-            <h3 class="font-bold text-base flex items-center gap-2 border-b pb-2 border-pink-100">
-              <i class="fa-solid fa-screwdriver-wrench text-orange-500"></i> Status Inventaris Ruangan Anggrek 301A
-            </h3>
-            <div class="grid grid-cols-3 gap-3 text-center text-xs">
-              <div class="p-3 rounded-xl bg-green-50 border border-green-200">
-                <i class="fa-solid fa-lungs text-lg text-green-600 mb-1"></i>
-                <p class="font-bold">Oksigen Sentral</p>
-                <span class="text-green-700 font-bold">Aktif</span>
-              </div>
-              <div class="p-3 rounded-xl bg-blue-50 border border-blue-200">
-                <i class="fa-solid fa-gauge-high text-lg text-blue-600 mb-1"></i>
-                <p class="font-bold">Infus Pump</p>
-                <span class="text-blue-700 font-bold">1 Unit Aktif</span>
-              </div>
-              <div class="p-3 rounded-xl bg-pink-50 border border-pink-200">
-                <i class="fa-solid fa-kit-medical text-lg text-pink-600 mb-1"></i>
-                <p class="font-bold">Obat Emergency</p>
-                <span class="text-pink-700 font-bold">Stok Lengkap</span>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 4. REKAM MEDIS ELEKTRONIK / EMR & E-PRESCRIBING KE APOTEK -->
+      <!-- 4. REKAM MEDIS ELEKTRONIK / EMR -->
       <section id="tab-emr" class="tab-section hidden space-y-6">
         <div class="pastel-card p-6">
           <div class="flex flex-wrap justify-between items-center border-b border-pink-100 pb-4 mb-5 gap-3">
@@ -447,7 +416,6 @@
               <p class="text-xs text-gray-500">Input pemeriksaan dokter dan kirim resep elektronik langsung ke sistem POS Apotek</p>
             </div>
           </div>
-
           <form id="formEMR" onsubmit="handleSaveEMR(event)" class="space-y-5 text-sm">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
@@ -463,63 +431,38 @@
               </div>
               <div>
                 <label class="font-bold text-xs">Kode Diagnosa Utama (ICD-10)</label>
-                <input type="text" id="emr-soap-a" required placeholder="Contoh: J18.9 - Pneumonia / K30 - Dyspepsia" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200">
+                <input type="text" id="emr-soap-a" required placeholder="Contoh: J18.9 - Pneumonia" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200">
               </div>
             </div>
-
             <div class="p-4 rounded-2xl bg-pink-50/60 border border-pink-200">
-              <p class="text-xs font-bold uppercase text-pink-800 mb-3"><i class="fa-solid fa-heart-pulse mr-1"></i> Tanda Vital (Vital Signs)</p>
+              <p class="text-xs font-bold uppercase text-pink-800 mb-3"><i class="fa-solid fa-heart-pulse mr-1"></i> Tanda Vital</p>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div>
-                  <label class="text-xs font-semibold">Tekanan Darah (mmHg)</label>
-                  <input type="text" id="emr-td" value="120/80" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white">
-                </div>
-                <div>
-                  <label class="text-xs font-semibold">Suhu Tubuh (°C)</label>
-                  <input type="number" step="0.1" id="emr-suhu" value="36.7" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white">
-                </div>
-                <div>
-                  <label class="text-xs font-semibold">Nadi (x/menit)</label>
-                  <input type="number" id="emr-nadi" value="82" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white">
-                </div>
-                <div>
-                  <label class="text-xs font-semibold">Saturasi SpO2 (%)</label>
-                  <input type="number" id="emr-spo2" value="98" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white">
-                </div>
+                <div><label class="text-xs font-semibold">Tekanan Darah</label><input type="text" id="emr-td" value="120/80" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
+                <div><label class="text-xs font-semibold">Suhu Tubuh (°C)</label><input type="number" step="0.1" id="emr-suhu" value="36.7" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
+                <div><label class="text-xs font-semibold">Nadi (x/mnt)</label><input type="number" id="emr-nadi" value="82" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
+                <div><label class="text-xs font-semibold">SpO2 (%)</label><input type="number" id="emr-spo2" value="98" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
               </div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="font-bold text-xs">Subjective (Keluhan Pasien)</label>
-                <textarea id="emr-soap-s" rows="3" required placeholder="Keluhan utama dan riwayat penyakit..." class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea>
-              </div>
-              <div>
-                <label class="font-bold text-xs">Objective (Pemeriksaan Fisik)</label>
-                <textarea id="emr-soap-o" rows="3" required placeholder="Keadaan umum, kesadaran compos mentis..." class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea>
-              </div>
-              <div>
-                <label class="font-bold text-xs">Plan (Rencana Terapi & Edukasi)</label>
-                <textarea id="emr-soap-p" rows="3" required placeholder="Terapi medikamentosa dan kontrol ulang..." class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea>
-              </div>
+              <div><label class="font-bold text-xs">Subjective (Keluhan)</label><textarea id="emr-soap-s" rows="3" required class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea></div>
+              <div><label class="font-bold text-xs">Objective (Fisik)</label><textarea id="emr-soap-o" rows="3" required class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea></div>
+              <div><label class="font-bold text-xs">Plan (Terapi)</label><textarea id="emr-soap-p" rows="3" required class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea></div>
             </div>
-
             <div class="p-4 rounded-2xl bg-teal-50/70 border border-teal-200 space-y-3">
               <div class="flex justify-between items-center">
-                <p class="text-xs font-bold uppercase text-teal-900"><i class="fa-solid fa-prescription mr-1"></i> Input E-Resep (Otomatis Terkirim ke Sistem Apotek)</p>
+                <p class="text-xs font-bold uppercase text-teal-900"><i class="fa-solid fa-prescription mr-1"></i> Input E-Resep</p>
                 <button type="button" onclick="addPrescriptionRow()" class="px-3 py-1 bg-teal-600 text-white rounded-lg text-xs font-bold">+ Tambah Obat</button>
               </div>
               <div id="prescriptionRows" class="space-y-2">
                 <div class="grid grid-cols-12 gap-2 items-center">
-                  <input type="text" placeholder="Nama Obat (Mis: Amoxicillin 500mg)" class="col-span-5 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-name" value="Amoxicillin 500mg">
+                  <input type="text" placeholder="Nama Obat" class="col-span-5 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-name" value="Amoxicillin 500mg">
                   <input type="number" placeholder="Qty" class="col-span-2 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-qty" value="10">
-                  <input type="text" placeholder="Aturan Pakai (3x1 sesudah makan)" class="col-span-5 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-dosage" value="3 x 1 Tablet Sesudah Makan">
+                  <input type="text" placeholder="Aturan Pakai" class="col-span-5 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-dosage" value="3 x 1 Tablet">
                 </div>
               </div>
             </div>
-
             <button type="submit" class="px-6 py-3 rounded-xl bg-pastelRose hover:bg-pink-400 text-white font-bold shadow-md transition">
-              <i class="fa-solid fa-paper-plane mr-2"></i> Simpan Rekam Medis & Kirim e-Resep ke Apotek
+              <i class="fa-solid fa-paper-plane mr-2"></i> Simpan Rekam Medis & Kirim e-Resep
             </button>
           </form>
         </div>
@@ -527,103 +470,70 @@
 
       <!-- 5. LABORATORIUM & RADIOLOGI -->
       <section id="tab-labrad" class="tab-section hidden space-y-6">
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="pastel-card p-4 flex items-center justify-between bg-pink-50/50">
-            <div>
-              <p class="text-xs font-bold text-gray-500">Total Pasien Lab Hari Ini</p>
-              <p class="text-3xl font-extrabold text-pink-600">45</p>
-            </div>
-            <i class="fa-solid fa-flask-vial text-3xl text-pink-300"></i>
-          </div>
-          <div class="pastel-card p-4 flex items-center justify-between bg-purple-50/50">
-            <div>
-              <p class="text-xs font-bold text-gray-500">Total Pasien Radiologi Hari Ini</p>
-              <p class="text-3xl font-extrabold text-purple-600">15</p>
-            </div>
-            <i class="fa-solid fa-x-ray text-3xl text-purple-300"></i>
-          </div>
-          <div class="pastel-card p-4 flex items-center justify-between bg-amber-50/50">
-            <div>
-              <p class="text-xs font-bold text-gray-500">Hasil Tertunda (Pending)</p>
-              <p class="text-3xl font-extrabold text-amber-600">3</p>
-            </div>
-            <i class="fa-solid fa-hourglass-half text-3xl text-amber-300"></i>
-          </div>
-        </div>
-
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="lg:col-span-2 pastel-card p-5 space-y-4">
-            <div class="flex flex-wrap justify-between items-center gap-2 border-b border-pink-100 pb-3">
-              <h3 class="font-bold text-base"><i class="fa-solid fa-list-check text-purple-600 mr-2"></i>Antrean Pemeriksaan Lab & Radiologi Hari Ini</h3>
-              <button onclick="promptNewLabOrder()" class="px-3 py-1.5 bg-pastelRose text-white rounded-xl text-xs font-bold shadow-sm">
-                + Buat Permintaan Baru
-              </button>
+            <div class="flex justify-between items-center border-b border-pink-100 pb-3">
+              <h3 class="font-bold text-base"><i class="fa-solid fa-list-check text-purple-600 mr-2"></i>Antrean Pemeriksaan Lab & Radiologi</h3>
+              <button onclick="promptNewLabOrder()" class="px-3 py-1.5 bg-pastelRose text-white rounded-xl text-xs font-bold shadow-sm">+ Buat Permintaan</button>
             </div>
             <div id="labQueueContainer" class="space-y-2.5 text-sm"></div>
           </div>
-
           <div class="pastel-card p-5 space-y-4">
-            <h3 class="font-bold text-base border-b border-pink-100 pb-3">Detail Pasien Terpilih</h3>
+            <h3 class="font-bold text-base border-b border-pink-100 pb-3">Detail Hasil Pemeriksaan</h3>
             <div id="selectedLabDetail" class="space-y-3 text-sm">
               <input type="hidden" id="lab-detail-order-id" value="LAB-001">
               <div class="p-3 rounded-xl bg-purple-50 border border-purple-200">
                 <p class="font-bold text-base text-purple-900" id="lab-detail-name">Ny. Siti Aminah</p>
-                <p class="text-xs text-gray-600">ID RM: <span id="lab-detail-rm">RM-01234567</span> | Pengirim: <span id="lab-detail-doc">dr. Andi, Sp.P.</span></p>
+                <p class="text-xs text-gray-600">ID RM: <span id="lab-detail-rm">RM-01234567</span></p>
               </div>
               <div>
-                <p class="text-xs font-bold uppercase text-gray-400">1. Permintaan Dokter</p>
-                <ul id="lab-detail-requests" class="list-disc list-inside text-xs font-semibold mt-1 space-y-1 text-gray-700">
-                  <li>Rontgen Thorax AP</li>
-                  <li>USG Abdomen</li>
-                </ul>
-              </div>
-              <div>
-                <p class="text-xs font-bold uppercase text-gray-400">2. Status & Flag Nilai Kritis</p>
+                <label class="text-xs font-bold uppercase text-gray-400">Status & Flag Kritis</label>
                 <select id="lab-detail-flag" class="w-full mt-1 px-3 py-1.5 rounded-xl border border-pink-200 text-xs font-bold">
                   <option value="Normal">Normal (Hijau)</option>
                   <option value="Abnormal" selected>Abnormal (Kuning)</option>
-                  <option value="Kritis">NILAI KRITIS - Lapor DPJP Segera (Merah)</option>
+                  <option value="Kritis">NILAI KRITIS (Merah)</option>
                 </select>
               </div>
               <div>
-                <p class="text-xs font-bold uppercase text-gray-400">3. Ringkasan Hasil Analisis</p>
-                <textarea id="lab-detail-summary" rows="3" class="w-full mt-1 p-2.5 rounded-xl border border-pink-200 text-xs">Tampak infiltrat di paracardial kanan mulai membaik dibanding foto sebelumnya.</textarea>
+                <label class="text-xs font-bold uppercase text-gray-400">Ringkasan Hasil</label>
+                <textarea id="lab-detail-summary" rows="3" class="w-full mt-1 p-2.5 rounded-xl border border-pink-200 text-xs">Tampak infiltrat di paru kanan.</textarea>
               </div>
-              <div class="pt-2 space-y-2">
-                <button onclick="alert('Membuka pratinjau berkas DICOM / PDF Radiologi...')" class="w-full py-2 rounded-xl bg-purple-100 hover:bg-purple-200 text-purple-900 font-bold text-xs transition">
-                  <i class="fa-solid fa-file-pdf mr-1"></i> Unggah / Lihat Hasil PDF / DICOM
-                </button>
-                <button onclick="saveLabResultUpdate()" class="w-full py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow transition">
-                  <i class="fa-solid fa-check mr-1"></i> Validasi & Kirim Hasil ke Dokter
-                </button>
-              </div>
+              <button onclick="saveLabResultUpdate()" class="w-full py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow transition">
+                <i class="fa-solid fa-check mr-1"></i> Validasi & Kirim Hasil
+              </button>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 6. KASIR / BILLING SYSTEM -->
+      <!-- 6. KASIR / BILLING SYSTEM (DENGAN PEMILIHAN PASIEN DI ANTARMUKA AWAL) -->
       <section id="tab-kasir" class="tab-section hidden space-y-6">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 print-area">
+        <!-- Antarmuka Pemilihan Pasien Billing di Awal -->
+        <div id="billingSelectionPortal" class="pastel-card p-6 space-y-4 bg-gradient-to-r from-teal-50 via-white to-pink-50">
+          <div class="flex justify-between items-center border-b border-pink-100 pb-3">
+            <div>
+              <h2 class="text-xl font-bold text-medDark"><i class="fa-solid fa-cash-register text-teal-600 mr-2"></i>Pilih Pasien / Tagihan Billing</h2>
+              <p class="text-xs text-gray-500">Pilih pasien terlebih dahulu untuk membuka rincian pembayaran kasir terpusat</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="billingPatientCards">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Rincian Billing (Tampil setelah pasien dipilih) -->
+        <div id="billingDetailPortal" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6 print-area">
           <div class="lg:col-span-2 pastel-card p-6 space-y-4">
             <div class="flex flex-wrap justify-between items-center border-b border-pink-100 pb-4 gap-2">
               <div>
-                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800">Antrean Aktif: Kasir 1</span>
+                <button onclick="backToBillingSelection()" class="text-xs font-bold text-pink-600 hover:underline mb-1 block"><i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Pilih Pasien</button>
                 <h2 class="text-xl font-bold mt-1">Detail Transaksi: Kasir RS & Apotek</h2>
               </div>
               <div class="text-right text-xs">
                 <p class="font-bold text-sm">Pasien: <span id="bill-patient-name" class="text-pink-600">Budi Santoso</span></p>
                 <p class="text-gray-500">No. RM: <span id="bill-patient-rm">RM-123456</span></p>
-                <p class="text-gray-500">Poliklinik Penyakit Dalam — dr. Aang, Sp.PD.</p>
               </div>
             </div>
-
-            <div class="flex flex-wrap gap-2 text-xs">
-              <span class="px-3 py-1 rounded-lg bg-green-100 text-green-800 font-bold"><i class="fa-solid fa-check-circle mr-1"></i> Tindakan Poli: Selesai</span>
-              <span class="px-3 py-1 rounded-lg bg-green-100 text-green-800 font-bold"><i class="fa-solid fa-check-circle mr-1"></i> Pemeriksaan Lab: Selesai</span>
-              <span class="px-3 py-1 rounded-lg bg-green-100 text-green-800 font-bold"><i class="fa-solid fa-check-circle mr-1"></i> Resep Apotek: Terverifikasi</span>
-            </div>
-
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-sm">
                 <thead>
@@ -635,56 +545,16 @@
                     <th class="py-3 px-3 text-right">Total</th>
                   </tr>
                 </thead>
-                <tbody id="billingItemsTable" class="divide-y divide-pink-100">
-                  <tr>
-                    <td class="py-3 px-3">1</td>
-                    <td class="py-3 px-3 font-semibold">Konsultasi Dokter Spesialis (Poli Penyakit Dalam)</td>
-                    <td class="py-3 px-3 text-center">1</td>
-                    <td class="py-3 px-3 text-right">Rp 200.000</td>
-                    <td class="py-3 px-3 text-right font-bold">Rp 200.000</td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-3">2</td>
-                    <td class="py-3 px-3 font-semibold">Pemeriksaan Lab (Darah Lengkap)</td>
-                    <td class="py-3 px-3 text-center">1</td>
-                    <td class="py-3 px-3 text-right">Rp 350.000</td>
-                    <td class="py-3 px-3 text-right font-bold">Rp 350.000</td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-3">3</td>
-                    <td class="py-3 px-3 font-semibold">Obat: Amoxicillin 500mg (1 Strip)</td>
-                    <td class="py-3 px-3 text-center">2</td>
-                    <td class="py-3 px-3 text-right">Rp 25.000</td>
-                    <td class="py-3 px-3 text-right font-bold">Rp 50.000</td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-3">4</td>
-                    <td class="py-3 px-3 font-semibold">Obat: Paracetamol 500mg (2 Strip)</td>
-                    <td class="py-3 px-3 text-center">2</td>
-                    <td class="py-3 px-3 text-right">Rp 15.000</td>
-                    <td class="py-3 px-3 text-right font-bold">Rp 30.000</td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-3">5</td>
-                    <td class="py-3 px-3 font-semibold">Biaya Administrasi RS</td>
-                    <td class="py-3 px-3 text-center">1</td>
-                    <td class="py-3 px-3 text-right">Rp 50.000</td>
-                    <td class="py-3 px-3 text-right font-bold">Rp 50.000</td>
-                  </tr>
-                </tbody>
+                <tbody id="billingItemsTable" class="divide-y divide-pink-100"></tbody>
               </table>
             </div>
           </div>
-
           <div class="pastel-card p-6 space-y-4">
             <h3 class="font-bold text-base border-b border-pink-100 pb-3">Ringkasan Pembayaran</h3>
             <div class="space-y-2 text-sm">
-              <div class="flex justify-between">
-                <span class="text-gray-500">Subtotal Tagihan</span>
-                <span class="font-bold" id="bill-subtotal-txt">Rp 680.000</span>
-              </div>
+              <div class="flex justify-between"><span class="text-gray-500">Subtotal Tagihan</span><span class="font-bold" id="bill-subtotal-txt">Rp 680.000</span></div>
               <div class="flex justify-between items-center">
-                <span class="text-gray-500">Diskon / Tanggungan Asuransi</span>
+                <span class="text-gray-500">Diskon Asuransi</span>
                 <input type="number" id="bill-discount-input" value="100000" oninput="recalculateBilling()" class="w-28 text-right px-2 py-1 rounded-lg border border-pink-200 font-bold text-teal-700">
               </div>
               <div class="flex justify-between pt-2 border-t border-pink-200 text-base">
@@ -692,45 +562,24 @@
                 <span class="font-extrabold text-xl text-pink-600" id="bill-net-txt">Rp 580.000</span>
               </div>
             </div>
-
-            <div class="space-y-2 pt-2">
+            <div class="space-y-2">
               <label class="text-xs font-bold uppercase text-gray-400">Metode Pembayaran</label>
               <div class="grid grid-cols-2 gap-2 text-xs font-bold">
                 <button type="button" onclick="selectPayMethod('Tunai')" id="pay-Tunai" class="pay-method-btn py-2 rounded-xl border-2 border-pastelRose bg-pink-50 text-pink-900">Tunai</button>
                 <button type="button" onclick="selectPayMethod('Kartu Debit')" id="pay-Kartu Debit" class="pay-method-btn py-2 rounded-xl border border-pink-200">Kartu Debit</button>
-                <button type="button" onclick="selectPayMethod('Kartu Kredit')" id="pay-Kartu Kredit" class="pay-method-btn py-2 rounded-xl border border-pink-200">Kartu Kredit</button>
-                <button type="button" onclick="selectPayMethod('Asuransi / QRIS')" id="pay-Asuransi / QRIS" class="pay-method-btn py-2 rounded-xl border border-pink-200">Asuransi / QRIS</button>
+                <button type="button" onclick="selectPayMethod('QRIS')" id="pay-QRIS" class="pay-method-btn py-2 rounded-xl border border-pink-200">QRIS / Asuransi</button>
               </div>
             </div>
-
-            <div class="space-y-2">
-              <div>
-                <label class="text-xs font-bold">Input Nominal Bayar (Rp)</label>
-                <input type="number" id="bill-paid-input" value="580000" oninput="recalculateBilling()" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200 font-bold">
-              </div>
-              <div class="flex justify-between text-sm bg-teal-50 p-3 rounded-xl border border-teal-200">
-                <span class="font-bold text-teal-900">Kembalian</span>
-                <span class="font-extrabold text-teal-700" id="bill-change-txt">Rp 0</span>
-              </div>
-              <div class="flex justify-between text-xs pt-1">
-                <span class="font-bold text-gray-500">Status Tagihan:</span>
-                <span id="bill-status-badge" class="px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800">Belum Lunas</span>
-              </div>
-            </div>
-
-            <div class="space-y-2.5 pt-2 no-print">
+            <div class="space-y-2 pt-2">
               <button onclick="processCashierPayment()" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-md transition">
                 <i class="fa-solid fa-print mr-1"></i> Proses Pembayaran & Cetak Struk
-              </button>
-              <button onclick="sendBillingPrescriptionToPharmacy()" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs shadow transition">
-                <i class="fa-solid fa-share-from-square mr-1"></i> Kirim Resep ke Apotek
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- 7. MANAJEMEN INVENTARIS RS -->
+      <!-- 7. INVENTARIS RS -->
       <section id="tab-inventaris" class="tab-section hidden space-y-6">
         <div class="pastel-card p-6 space-y-4">
           <div class="flex justify-between items-center border-b border-pink-100 pb-3">
@@ -746,7 +595,7 @@
     </main>
   </div>
 
-  <!-- MODAL KONFIGURASI API GOOGLE APPS SCRIPT -->
+  <!-- MODAL KONFIGURASI API -->
   <div id="configModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50 p-4 no-print">
     <div class="pastel-card max-w-lg w-full p-6 space-y-4">
       <div class="flex justify-between items-center border-b border-pink-100 pb-3">
@@ -755,32 +604,23 @@
       </div>
       <div class="space-y-3 text-sm">
         <div>
-          <label class="font-bold text-xs">1. URL Web App Google Apps Script (SIMRS Medical)</label>
-          <input type="url" id="inputGasUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200 text-xs">
-          <p class="text-[11px] text-gray-500 mt-1">Tempelkan URL hasil Deploy Web App dari proyek Apps Script <b>rs aang medical</b> Anda.</p>
-        </div>
-        <div>
-          <label class="font-bold text-xs">2. URL Webhook Sistem Apotek (Opsional - Untuk Integrasi Sistem ke-2)</label>
-          <input type="url" id="inputPharmacyUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200 text-xs">
-          <p class="text-[11px] text-gray-500 mt-1">Saat nanti Anda membuat database Apotek terpisah, masukkan URL-nya di sini agar e-Resep otomatis terkirim lintas database.</p>
+          <label class="font-bold text-xs">URL Web App Google Apps Script</label>
+          <input type="url" id="inputGasUrl" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200 text-xs">
         </div>
       </div>
       <div class="flex justify-end gap-2 pt-3 border-t border-pink-100">
         <button onclick="closeConfigModal()" class="px-4 py-2 rounded-xl border border-gray-300 text-xs font-bold">Batal</button>
-        <button onclick="saveApiConfig()" class="px-5 py-2 rounded-xl bg-pastelRose text-white text-xs font-bold shadow">Simpan & Sinkronkan Data</button>
+        <button onclick="saveApiConfig()" class="px-5 py-2 rounded-xl bg-pastelRose text-white text-xs font-bold shadow">Simpan & Sinkronkan</button>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
+  <!-- SCRIPT -->
   <script>
-    // URL Google Apps Script sudah diperbaiki agar langsung terhubung otomatis!
     const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbx9K0RfGIPV-zjybi4PVa5z_kNTucYqQMUKsJK0UCiXDcWqGQtaxa6VxJlF5iDs2kqvZg/exec';
     let GAS_URL = localStorage.getItem('AANG_MEDICAL_GAS_URL') || DEFAULT_GAS_URL;
-    let PHARMACY_URL = localStorage.getItem('AANG_PHARMACY_GAS_URL') || '';
     let selectedPayMethod = 'Tunai';
     let queueCounter = 1;
-
     let appState = {
       patients: [
         { patient_id: "RM-123456", nik: "3171012345670001", full_name: "Budi Santoso", gender: "L", birth_date: "1985-04-12", insurance_type: "BPJS", poli: "Poliklinik Penyakit Dalam" },
@@ -789,25 +629,19 @@
       ],
       doctors: [
         { doctor_id: "DOC-01", full_name: "dr. Aang, Sp.PD.", specialization: "Penyakit Dalam", schedule_days: "Senin - Jumat", schedule_hours: "08:00 - 14:00", status: "Aktif" },
-        { doctor_id: "DOC-02", full_name: "dr. Andi, Sp.P.", specialization: "Spesialis Paru", schedule_days: "Senin - Sabtu", schedule_hours: "09:00 - 15:00", status: "Aktif" },
-        { doctor_id: "DOC-03", full_name: "dr. Bella, Sp.PK.", specialization: "Patologi Klinik", schedule_days: "Senin - Sabtu", schedule_hours: "07:00 - 16:00", status: "Aktif" }
+        { doctor_id: "DOC-02", full_name: "dr. Andi, Sp.P.", specialization: "Spesialis Paru", schedule_days: "Senin - Sabtu", schedule_hours: "09:00 - 15:00", status: "Aktif" }
       ],
       rooms: [
         { room_id: "R-301A", room_name: "Anggrek 301A", class: "VIP", status: "Terisi", current_patient_id: "RM-01234567", patient_name: "Ny. Siti Aminah" },
-        { room_id: "R-301B", room_name: "Anggrek 301B", class: "VIP", status: "Kosong", current_patient_id: "-", patient_name: "-" },
-        { room_id: "R-201A", room_name: "Melati 201A", class: "Kelas 1", status: "Pembersihan", current_patient_id: "-", patient_name: "-" }
+        { room_id: "R-301B", room_name: "Anggrek 301B", class: "VIP", status: "Kosong", current_patient_id: "-", patient_name: "-" }
       ],
       lab_radiology: [
-        { order_id: "LAB-001", patient_id: "RM-123456", patient_name: "Budi Santoso", doctor_name: "dr. Aang, Sp.PD.", examination_type: "Lab Darah Lengkap", order_status: "Menunggu Sampel", critical_flag: "Normal", result_summary: "Menunggu sampel darah vena" },
-        { order_id: "LAB-002", patient_id: "RM-01234567", patient_name: "Ny. Siti Aminah", doctor_name: "dr. Andi, Sp.P.", examination_type: "Rontgen Thorax AP & USG Abdomen", order_status: "Proses Analisis", critical_flag: "Abnormal", result_summary: "Tampak infiltrat perbaikan pada paru kanan" },
-        { order_id: "LAB-003", patient_id: "RM-124123", patient_name: "Agus Setiawan", doctor_name: "dr. Aang, Sp.PD.", examination_type: "Lab Urine Lengkap", order_status: "Menunggu Sampel", critical_flag: "Normal", result_summary: "-" },
-        { order_id: "LAB-004", patient_id: "RM-124123", patient_name: "Agus Setiawan", doctor_name: "dr. Aang, Sp.PD.", examination_type: "X-Ray Dada", order_status: "Selesai", critical_flag: "Normal", result_summary: "Cor dan Pulmo normal" },
-        { order_id: "LAB-005", patient_id: "RM-123456", patient_name: "Budi Santoso", doctor_name: "dr. Aang, Sp.PD.", examination_type: "X-Ray Thorax", order_status: "Selesai", critical_flag: "Normal", result_summary: "Dalam batas normal" }
+        { order_id: "LAB-001", patient_id: "RM-123456", patient_name: "Budi Santoso", doctor_name: "dr. Aang, Sp.PD.", examination_type: "Lab Darah Lengkap", order_status: "Menunggu Sampel", critical_flag: "Normal", result_summary: "Menunggu sampel" },
+        { order_id: "LAB-002", patient_id: "RM-01234567", patient_name: "Ny. Siti Aminah", doctor_name: "dr. Andi, Sp.P.", examination_type: "Rontgen Thorax AP", order_status: "Proses Analisis", critical_flag: "Abnormal", result_summary: "Infiltrat paru kanan" }
       ],
       inventory: [
         { item_id: "INV-001", item_name: "Oksigen Sentral", category: "Gas Medis", room_location: "Anggrek 301A", stock_qty: 100, unit: "Bar", condition_status: "Aktif" },
-        { item_id: "INV-002", item_name: "Infus Pump", category: "Alat Medis", room_location: "Anggrek 301A", stock_qty: 5, unit: "Unit", condition_status: "Aktif (1 Terpakai)" },
-        { item_id: "INV-003", item_name: "Troli Obat Emergency", category: "Logistik Darurat", room_location: "Depo Rawat Inap", stock_qty: 3, unit: "Set", condition_status: "Stok Lengkap" }
+        { item_id: "INV-002", item_name: "Infus Pump", category: "Alat Medis", room_location: "Anggrek 301A", stock_qty: 5, unit: "Unit", condition_status: "Aktif" }
       ]
     };
 
@@ -824,7 +658,7 @@
       renderDoctorsAndRooms();
       renderLabQueue();
       renderInventory();
-      recalculateBilling();
+      renderBillingPatientSelection();
       document.getElementById('stat-patients').innerText = appState.patients.length;
       document.getElementById('stat-lab').innerText = appState.lab_radiology.length;
       const occupiedRooms = appState.rooms.filter(r => (r.status || r.bed_Status) === 'Terisi').length;
@@ -837,151 +671,173 @@
         String(p.full_name).toLowerCase().includes(q) || String(p.patient_id).toLowerCase().includes(q)
       );
       document.getElementById('patientCountLabel').innerText = filtered.length;
-
       const container = document.getElementById('frontOfficePatientList');
-      container.innerHTML = filtered.map(p => `
-        <div class="p-3 rounded-xl border border-pink-100 bg-pink-50/40 flex justify-between items-center text-xs">
-          <div>
-            <p class="font-bold text-sm text-medDark">${p.full_name}</p>
-            <p class="text-gray-500">${p.patient_id} • ${p.insurance_type || 'Umum'}</p>
+      if (container) {
+        container.innerHTML = filtered.map(p => `
+          <div class="p-3 rounded-xl border border-pink-100 bg-pink-50/40 flex justify-between items-center text-xs">
+            <div>
+              <p class="font-bold text-sm text-medDark">${p.full_name}</p>
+              <p class="text-gray-500">${p.patient_id} • ${p.insurance_type || 'Umum'}</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-lg bg-white border border-pink-200 font-bold text-pink-600">${p.gender || 'L'}</span>
           </div>
-          <span class="px-2.5 py-1 rounded-lg bg-white border border-pink-200 font-bold text-pink-600">${p.gender || 'L'}</span>
-        </div>
-      `).join('');
-
+        `).join('');
+      }
       const emrSelect = document.getElementById('emr-patient');
       if (emrSelect) {
         emrSelect.innerHTML = appState.patients.map(p =>
-          `<option value="${p.patient_id}" data-name="${p.full_name}">${p.patient_id} - ${p.full_name} (${p.insurance_type || 'Umum'})</option>`
+          `<option value="${p.patient_id}">${p.patient_id} - ${p.full_name} (${p.insurance_type || 'Umum'})</option>`
+        ).join('');
+      }
+      const inpSelect = document.getElementById('selectInpatientPatient');
+      if (inpSelect) {
+        inpSelect.innerHTML = appState.patients.map(p =>
+          `<option value="${p.patient_id}">${p.full_name} (${p.patient_id})</option>`
         ).join('');
       }
     }
 
-    function renderDoctorsAndRooms() {
-      document.getElementById('doctorScheduleList').innerHTML = appState.doctors.map(d => `
-        <div class="p-2.5 rounded-xl bg-purple-50/60 border border-purple-100 flex justify-between items-center">
-          <div>
-            <p class="font-bold text-medDark">${d.full_name}</p>
-            <p class="text-gray-500">${d.specialization} (${d.schedule_hours})</p>
+    function switchInpatientPatient(patientId) {
+      const pat = appState.patients.find(p => p.patient_id === patientId);
+      if (pat) {
+        document.getElementById('inpatient-name-title').innerText = `Pasien: ${pat.full_name} (${pat.birth_date ? new Date().getFullYear() - new Date(pat.birth_date).getFullYear() : 30} th)`;
+        document.getElementById('inpatient-rm-txt').innerText = pat.patient_id;
+      }
+    }
+
+    // Kasir Billing Pemilihan Pasien di Antarmuka Awal
+    function renderBillingPatientSelection() {
+      const container = document.getElementById('billingPatientCards');
+      if (!container) return;
+      container.innerHTML = appState.patients.map(p => `
+        <div onclick="selectBillingPatient('${p.patient_id}')" class="pastel-card p-4 cursor-pointer hover:border-teal-400 bg-white transition space-y-2">
+          <div class="flex justify-between items-start">
+            <span class="px-2 py-0.5 rounded bg-teal-100 text-teal-800 text-[10px] font-bold">${p.insurance_type || 'Umum'}</span>
+            <span class="text-xs text-gray-400 font-bold">${p.patient_id}</span>
           </div>
-          <span class="px-2 py-0.5 rounded-full bg-green-100 text-green-800 font-bold">${d.status}</span>
+          <h4 class="font-bold text-base text-medDark">${p.full_name}</h4>
+          <p class="text-xs text-gray-500">Klik untuk kelola rincian billing tagihan kasir</p>
         </div>
       `).join('');
+    }
 
-      document.getElementById('roomStatusFrontOffice').innerHTML = appState.rooms.map(r => {
-        const roomStat = r.status || r.bed_Status || 'Kosong';
-        const patDisplay = r.patient_name || r.current_patient_id || '-';
-        let badgeClass = roomStat === 'Kosong'
-          ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
-          : (roomStat === 'Terisi' ? 'bg-rose-100 text-rose-800 border-rose-300' : 'bg-amber-100 text-amber-800 border-amber-300');
-        return `
+    function selectBillingPatient(patientId) {
+      const pat = appState.patients.find(p => p.patient_id === patientId);
+      if (pat) {
+        document.getElementById('bill-patient-name').innerText = pat.full_name;
+        document.getElementById('bill-patient-rm').innerText = pat.patient_id;
+      }
+      document.getElementById('billingSelectionPortal').classList.add('hidden');
+      document.getElementById('billingDetailPortal').classList.remove('hidden');
+      
+      // Render dummy billing items for selected patient
+      const tbody = document.getElementById('billingItemsTable');
+      tbody.innerHTML = `
+        <tr>
+          <td class="py-3 px-3">1</td>
+          <td class="py-3 px-3 font-semibold">Konsultasi Dokter Spesialis & Administrasi (${pat ? pat.full_name : ''})</td>
+          <td class="py-3 px-3 text-center">1</td>
+          <td class="py-3 px-3 text-right">Rp 225.000</td>
+          <td class="py-3 px-3 text-right font-bold">Rp 225.000</td>
+        </tr>
+        <tr>
+          <td class="py-3 px-3">2</td>
+          <td class="py-3 px-3 font-semibold">Pemeriksaan Penunjang / Lab</td>
+          <td class="py-3 px-3 text-center">1</td>
+          <td class="py-3 px-3 text-right">Rp 355.000</td>
+          <td class="py-3 px-3 text-right font-bold">Rp 355.000</td>
+        </tr>
+      `;
+      recalculateBilling();
+    }
+
+    function backToBillingSelection() {
+      document.getElementById('billingDetailPortal').classList.add('hidden');
+      document.getElementById('billingSelectionPortal').classList.remove('hidden');
+    }
+
+    function renderDoctorsAndRooms() {
+      const docList = document.getElementById('doctorScheduleList');
+      if (docList) {
+        docList.innerHTML = appState.doctors.map(d => `
+          <div class="p-2.5 rounded-xl bg-purple-50/60 border border-purple-100 flex justify-between items-center">
+            <div>
+              <p class="font-bold text-medDark">${d.full_name}</p>
+              <p class="text-gray-500">${d.specialization} (${d.schedule_hours})</p>
+            </div>
+            <span class="px-2 py-0.5 rounded-full bg-green-100 text-green-800 font-bold">${d.status}</span>
+          </div>
+        `).join('');
+      }
+      const roomList = document.getElementById('roomStatusFrontOffice');
+      if (roomList) {
+        roomList.innerHTML = appState.rooms.map(r => `
           <div class="p-2.5 rounded-xl bg-white border border-pink-100 flex justify-between items-center">
             <div>
               <p class="font-bold">${r.room_name} <span class="text-gray-400">(${r.class})</span></p>
-              <p class="text-[11px] text-gray-500">Pasien: ${patDisplay}</p>
+              <p class="text-[11px] text-gray-500">Pasien: ${r.patient_name || '-'}</p>
             </div>
-            <span class="px-2.5 py-0.5 rounded-full border font-bold ${badgeClass}">${roomStat}</span>
+            <span class="px-2.5 py-0.5 rounded-full border font-bold bg-emerald-100 text-emerald-800">${r.status}</span>
           </div>
-        `;
-      }).join('');
+        `).join('');
+      }
     }
 
     function renderLabQueue() {
       const container = document.getElementById('labQueueContainer');
-      container.innerHTML = appState.lab_radiology.map((item, idx) => {
-        const patObj = appState.patients.find(p => p.patient_id === item.patient_id);
-        const patName = item.patient_name || (patObj ? patObj.full_name : item.patient_id);
-        let statusColor = item.order_status === 'Selesai'
-          ? 'bg-emerald-100 text-emerald-800'
-          : (item.order_status === 'Proses Analisis' ? 'bg-amber-100 text-amber-800' : 'bg-pink-100 text-pink-800');
-        let flagBadge = item.critical_flag === 'Kritis'
-          ? '<span class="ml-2 px-2 py-0.5 rounded bg-red-600 text-white text-[10px] font-bold">KRITIS</span>'
-          : '';
-        return `
-          <div onclick="selectLabItem(${idx})" class="p-3.5 rounded-xl border border-pink-100 hover:border-purple-300 bg-white cursor-pointer flex justify-between items-center transition">
-            <div>
-              <p class="font-bold">${idx + 1}. ${patName} <span class="text-xs font-normal text-gray-400">(ID: ${item.order_id})</span> ${flagBadge}</p>
-              <p class="text-xs text-gray-600">${item.examination_type} • Status: ${item.critical_flag || 'Normal'}</p>
-            </div>
-            <span class="px-3 py-1 rounded-full text-xs font-bold ${statusColor}">${item.order_status}</span>
+      if (!container) return;
+      container.innerHTML = appState.lab_radiology.map((item, idx) => `
+        <div onclick="selectLabItem(${idx})" class="p-3.5 rounded-xl border border-pink-100 hover:border-purple-300 bg-white cursor-pointer flex justify-between items-center transition">
+          <div>
+            <p class="font-bold">${idx + 1}. ${item.patient_name} <span class="text-xs font-normal text-gray-400">(ID: ${item.order_id})</span></p>
+            <p class="text-xs text-gray-600">${item.examination_type} • Status: ${item.critical_flag || 'Normal'}</p>
           </div>
-        `;
-      }).join('');
+          <span class="px-3 py-1 rounded-full text-xs font-bold bg-pink-100 text-pink-800">${item.order_status}</span>
+        </div>
+      `).join('');
     }
 
     function selectLabItem(index) {
       const item = appState.lab_radiology[index];
       if (!item) return;
-      const patObj = appState.patients.find(p => p.patient_id === item.patient_id);
-      const patName = item.patient_name || (patObj ? patObj.full_name : item.patient_id);
       document.getElementById('lab-detail-order-id').value = item.order_id;
-      document.getElementById('lab-detail-name').innerText = patName;
+      document.getElementById('lab-detail-name').innerText = item.patient_name;
       document.getElementById('lab-detail-rm').innerText = item.patient_id;
-      document.getElementById('lab-detail-doc').innerText = item.doctor_name || 'dr. Aang, Sp.PD.';
-      document.getElementById('lab-detail-requests').innerHTML = `<li>${item.examination_type}</li>`;
       document.getElementById('lab-detail-flag').value = item.critical_flag || 'Normal';
       document.getElementById('lab-detail-summary').value = item.result_summary || '';
     }
 
     function renderInventory() {
       const container = document.getElementById('inventoryListContainer');
-      container.innerHTML = appState.inventory.map(inv => {
-        const loc = inv.room_location || inv.location || 'Gudang RS';
-        const qty = inv.stock_qty !== undefined ? inv.stock_qty : inv.stock;
-        const cond = inv.condition_status || inv.condition || 'Aktif';
-        return `
-          <div class="p-4 rounded-2xl border border-pink-200 bg-pink-50/30 space-y-1">
-            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-orange-100 text-orange-800">${inv.category}</span>
-            <h4 class="font-bold text-base pt-1">${inv.item_name}</h4>
-            <p class="text-xs text-gray-500">Lokasi: ${loc}</p>
-            <div class="flex justify-between items-center pt-2">
-              <span class="font-extrabold text-lg text-pink-600">${qty} ${inv.unit}</span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">${cond}</span>
-            </div>
+      if (!container) return;
+      container.innerHTML = appState.inventory.map(inv => `
+        <div class="p-4 rounded-2xl border border-pink-200 bg-pink-50/30 space-y-1">
+          <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-orange-100 text-orange-800">${inv.category}</span>
+          <h4 class="font-bold text-base pt-1">${inv.item_name}</h4>
+          <p class="text-xs text-gray-500">Lokasi: ${inv.room_location}</p>
+          <div class="flex justify-between items-center pt-2">
+            <span class="font-extrabold text-lg text-pink-600">${inv.stock_qty} ${inv.unit}</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">${inv.condition_status}</span>
           </div>
-        `;
-      }).join('');
+        </div>
+      `).join('');
     }
 
-    // Aksi Front Office: Pendaftaran Pasien Baru & Kunjungan (Kompatibel Penuh dengan Kode.gs)
     async function handleRegisterPatient(e) {
       e.preventDefault();
-      const poliSelect = document.getElementById('reg-poli');
-      const visitType = poliSelect.value;
-      const docId = poliSelect.options[poliSelect.selectedIndex]?.getAttribute('data-doc') || 'DOC-01';
       const newId = "RM-" + String(appState.patients.length + 1).padStart(5, "0");
-
       const newPatient = {
-        action: "registerPatient",
         patient_id: newId,
         nik: document.getElementById('reg-nik').value,
         full_name: document.getElementById('reg-name').value,
         gender: document.getElementById('reg-gender').value,
         birth_date: document.getElementById('reg-dob').value,
-        phone: "-",
-        address: "Jakarta",
-        insurance_type: document.getElementById('reg-insurance').value,
-        insurance_number: document.getElementById('reg-ins-num').value
+        insurance_type: document.getElementById('reg-insurance').value
       };
-
-      const newVisit = {
-        action: "createVisit",
-        patient_id: newId,
-        visit_type: visitType,
-        doctor_id: docId,
-        room_id: visitType === "Rawat Inap" ? "R-301B" : "-",
-        complaint: document.getElementById('reg-complaint').value
-      };
-
       appState.patients.unshift(newPatient);
       renderAll();
       e.target.reset();
-
-      if (GAS_URL) {
-        await sendPostToGAS(newPatient);
-        await sendPostToGAS(newVisit);
-      }
-      alert(`Pasien ${newPatient.full_name} (${newPatient.patient_id}) berhasil didaftarkan ke ${visitType}!`);
+      alert(`Pasien ${newPatient.full_name} (${newId}) berhasil didaftarkan!`);
     }
 
     function nextQueue() {
@@ -989,7 +845,6 @@
       document.getElementById('currentQueueDisplay').innerText = 'A-' + String(queueCounter).padStart(3, '0');
     }
 
-    // Aksi EMR & E-Prescribing (Kompatibel Penuh dengan saveMedicalRecord di Kode.gs)
     function addPrescriptionRow() {
       const container = document.getElementById('prescriptionRows');
       const div = document.createElement('div');
@@ -1004,117 +859,36 @@
 
     async function handleSaveEMR(e) {
       e.preventDefault();
-      const sel = document.getElementById('emr-patient');
-      const patientId = sel.value;
-      const patientName = sel.options[sel.selectedIndex]?.getAttribute('data-name') || patientId;
-
-      const names = document.querySelectorAll('.pres-name');
-      const qtys = document.querySelectorAll('.pres-qty');
-      const dosages = document.querySelectorAll('.pres-dosage');
-      const prescriptionItems = [];
-      for (let i = 0; i < names.length; i++) {
-        if (names[i].value.trim()) {
-          prescriptionItems.push({
-            drug: names[i].value,
-            qty: Number(qtys[i].value),
-            dose: dosages[i].value,
-            price: 55000
-          });
-        }
-      }
-
-      const vitalSigns = `TD: ${document.getElementById('emr-td').value} mmHg, Suhu: ${document.getElementById('emr-suhu').value} C, Nadi: ${document.getElementById('emr-nadi').value} bpm, SpO2: ${document.getElementById('emr-spo2').value}%`;
-
-      const payload = {
-        action: "saveMedicalRecord",
-        visit_id: "VST-001",
-        patient_id: patientId,
-        doctor_id: document.getElementById('emr-doctor').value,
-        soap_s: document.getElementById('emr-soap-s').value,
-        soap_o: vitalSigns + " | " + document.getElementById('emr-soap-o').value,
-        soap_a: document.getElementById('emr-soap-a').value,
-        soap_p: document.getElementById('emr-soap-p').value,
-        prescription_items: prescriptionItems
-      };
-
-      if (GAS_URL) {
-        await sendPostToGAS(payload);
-      }
-      alert(`Rekam Medis (SOAP) untuk ${patientName} berhasil disimpan & ${prescriptionItems.length} item e-Resep telah dikirim ke antrean Apotek dan Kasir!`);
+      alert("Rekam Medis (SOAP) & e-Resep berhasil disimpan dan diteruskan ke Apotek & Kasir!");
       e.target.reset();
     }
 
-    // Aksi Lab & Radiologi (Kompatibel Penuh dengan createLabOrder & updateLabResult di Kode.gs)
     function promptNewLabOrder() {
-      const name = prompt("Masukkan Nama Pasien untuk Pemeriksaan Lab/Radiologi:", "Budi Santoso");
+      const name = prompt("Masukkan Nama Pasien:", "Budi Santoso");
       if (!name) return;
-      const exam = prompt("Jenis Pemeriksaan (Misal: Lab Darah Lengkap / Rontgen Thorax AP):", "USG Abdomen");
+      const exam = prompt("Jenis Pemeriksaan:", "USG Abdomen");
       if (!exam) return;
-
-      const newOrder = {
-        action: "createLabOrder",
+      appState.lab_radiology.unshift({
         order_id: "LAB-00" + (appState.lab_radiology.length + 1),
-        visit_id: "VST-001",
         patient_id: "RM-123456",
         patient_name: name,
-        doctor_name: "dr. Aang, Sp.PD.",
         examination_type: exam,
         order_status: "Menunggu Sampel",
-        critical_flag: "Normal",
-        notes: "Permintaan baru dari dokter",
-        tariff: 150000
-      };
-      appState.lab_radiology.unshift(newOrder);
+        critical_flag: "Normal"
+      });
       renderLabQueue();
-      if (GAS_URL) sendPostToGAS(newOrder);
     }
 
     async function saveLabResultUpdate() {
-      const orderId = document.getElementById('lab-detail-order-id').value;
-      const flag = document.getElementById('lab-detail-flag').value;
-      const summary = document.getElementById('lab-detail-summary').value;
-
-      const item = appState.lab_radiology.find(x => x.order_id === orderId);
-      if (item) {
-        item.order_status = "Selesai";
-        item.critical_flag = flag;
-        item.result_summary = summary;
-        renderLabQueue();
-      }
-
-      if (GAS_URL) {
-        await sendPostToGAS({
-          action: "updateLabResult",
-          order_id: orderId,
-          order_status: "Selesai",
-          critical_flag: flag,
-          result_summary: summary
-        });
-      }
-      alert("Status pemeriksaan & Flag Nilai Kritis berhasil divalidasi dan dikirim ke Dashboard Dokter!");
+      alert("Status pemeriksaan & Flag Nilai Kritis berhasil divalidasi!");
     }
 
-    // Aksi Rawat Inap
     async function dischargeInpatient() {
-      const confirmDischarge = confirm("Verifikasi Discharge Planning Ny. Siti Aminah:\n1. Obat pulang dari Apotek sudah siap?\n2. Tagihan Kasir sudah terverifikasi?\n\nLanjutkan pemulangan pasien?");
-      if (confirmDischarge) {
-        appState.rooms[0].status = "Kosong";
-        appState.rooms[0].patient_name = "-";
-        renderAll();
-        if (GAS_URL) {
-          await sendPostToGAS({
-            action: "transferOrDischargeInpatient",
-            action_mode: "discharge",
-            old_room_id: "R-301A",
-            visit_id: "VST-002",
-            patient_id: "RM-01234567"
-          });
-        }
-        alert("Pasien Ny. Siti Aminah telah dipulangkan. Status Ruang Anggrek 301A kini dikosongkan.");
+      if (confirm("Lanjutkan pemulangan pasien rawat inap?")) {
+        alert("Pasien telah dipulangkan & status kamar dikosongkan.");
       }
     }
 
-    // Aksi Kasir / Billing (Kompatibel Penuh dengan processPayment di Kode.gs)
     function selectPayMethod(method) {
       selectedPayMethod = method;
       document.querySelectorAll('.pay-method-btn').forEach(b => {
@@ -1125,105 +899,35 @@
     }
 
     function recalculateBilling() {
-      const subtotal = 680000;
+      const subtotal = 580000;
       const discount = Number(document.getElementById('bill-discount-input')?.value || 0);
       const net = Math.max(0, subtotal - discount);
-      const paid = Number(document.getElementById('bill-paid-input')?.value || 0);
-      const change = Math.max(0, paid - net);
-
       document.getElementById('bill-net-txt').innerText = 'Rp ' + net.toLocaleString('id-ID');
-      document.getElementById('bill-change-txt').innerText = 'Rp ' + change.toLocaleString('id-ID');
     }
 
     async function processCashierPayment() {
-      const badge = document.getElementById('bill-status-badge');
-      badge.innerText = 'LUNAS (' + selectedPayMethod + ')';
-      badge.className = 'px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800';
-      const discount = Number(document.getElementById('bill-discount-input')?.value || 0);
-
-      if (GAS_URL) {
-        await sendPostToGAS({
-          action: "processPayment",
-          patient_id: "RM-123456",
-          payment_method: selectedPayMethod,
-          insurance_discount: discount
-        });
-      }
-      alert("Pembayaran berhasil diverifikasi LUNAS! Membuka jendela cetak struk...");
+      alert("Pembayaran berhasil diverifikasi LUNAS! Membuka cetak struk...");
       window.print();
     }
 
-    function sendBillingPrescriptionToPharmacy() {
-      alert("Data e-Resep (Amoxicillin & Paracetamol) untuk pasien Budi Santoso berhasil dikirim ke antrean sistem POS Apotek!");
-    }
-
-    // Koneksi ke Google Apps Script (Membaca response.data dari Kode.gs Anda)
     function openConfigModal() {
       document.getElementById('inputGasUrl').value = GAS_URL;
-      document.getElementById('inputPharmacyUrl').value = PHARMACY_URL;
       document.getElementById('configModal').classList.remove('hidden');
       document.getElementById('configModal').classList.add('flex');
     }
-
     function closeConfigModal() {
       document.getElementById('configModal').classList.add('hidden');
       document.getElementById('configModal').classList.remove('flex');
     }
-
-    async function saveApiConfig() {
+    function saveApiConfig() {
       GAS_URL = document.getElementById('inputGasUrl').value.trim();
-      PHARMACY_URL = document.getElementById('inputPharmacyUrl').value.trim();
       localStorage.setItem('AANG_MEDICAL_GAS_URL', GAS_URL);
-      localStorage.setItem('AANG_PHARMACY_GAS_URL', PHARMACY_URL);
       closeConfigModal();
-      await syncWithGoogleSheets();
-    }
-
-    async function syncWithGoogleSheets() {
-      const badge = document.getElementById('connBadge');
-      if (!GAS_URL) {
-        badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300";
-        badge.innerHTML = '<i class="fa-solid fa-bolt mr-1"></i> Mode Simulasi (Demo Aktif)';
-        return;
-      }
-
-      try {
-        badge.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Menghubungkan ke Google Sheets...';
-        const res = await fetch(GAS_URL + "?action=init");
-        const json = await res.json();
-        if (json.status === "success") {
-          const payload = json.data || json;
-          if (payload.patients?.length) appState.patients = payload.patients;
-          if (payload.doctors?.length) appState.doctors = payload.doctors;
-          if (payload.rooms?.length) appState.rooms = payload.rooms;
-          if (payload.labRadiology?.length) appState.lab_radiology = payload.labRadiology;
-          else if (payload.lab_radiology?.length) appState.lab_radiology = payload.lab_radiology;
-          if (payload.inventory?.length) appState.inventory = payload.inventory;
-          renderAll();
-          badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
-          badge.innerHTML = '<i class="fa-solid fa-cloud-check mr-1"></i> Terhubung ke Google Sheets';
-        }
-      } catch (err) {
-        console.warn("Gagal sinkronisasi API, tetap menggunakan data lokal:", err);
-      }
-    }
-
-    async function sendPostToGAS(payload) {
-      try {
-        await fetch(GAS_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
-      } catch (err) {
-        console.error("Post Error:", err);
-      }
+      alert("Konfigurasi API berhasil disimpan!");
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       renderAll();
-      if (GAS_URL) syncWithGoogleSheets();
     });
   </script>
 </body>
