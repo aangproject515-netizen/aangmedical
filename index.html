@@ -52,7 +52,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 145%; /* Diperbesar agar teks bawah gambar terpotong */
+      height: 145%;
       object-fit: cover;
       object-position: top center;
     }
@@ -67,7 +67,6 @@
   <header class="bg-gradient-to-r from-pastelPink via-pastelYellow to-pastelMint border-b-2 border-pink-200 sticky top-0 z-40 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <!-- Logo Asli Dikembalikan -->
         <div class="w-16 h-16 rounded-2xl bg-white border-2 border-pastelRose flex items-center justify-center shadow-sm overflow-hidden">
           <img src="logo_medica.png" alt="Logo RS Aang Medical" class="w-full h-full object-cover scale-125" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
           <i class="fa-solid fa-user-doctor text-2xl text-pastelRose hidden"></i>
@@ -319,7 +318,6 @@
 
       <!-- 3. MODUL RAWAT INAP (DENGAN PEMILIHAN PASIEN) -->
       <section id="tab-rawatinap" class="tab-section hidden space-y-6">
-        <!-- Antarmuka Pemilihan Pasien Rawat Inap -->
         <div class="pastel-card p-5 bg-gradient-to-r from-pink-50 to-amber-50">
           <div class="flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
@@ -619,7 +617,7 @@
 
   <!-- SCRIPT -->
   <script>
-    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbyRpHlPAgkzb0nSmurDBWrh-2pfW3XoFQjCOGCsUjl7fKUipfa2Gw2i-MN5SRNz-enl3A/exec';
+    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxpW9cfNeMGObxUmwH6Uyr_mSgn57lecebAzuxPOWqfjHv8rdytaAUXBacCui0UZB40Yw/exec';
     let GAS_URL = localStorage.getItem('AANG_MEDICAL_GAS_URL') || DEFAULT_GAS_URL;
     let selectedPayMethod = 'Tunai';
     let queueCounter = 1;
@@ -702,7 +700,8 @@
     function switchInpatientPatient(patientId) {
       const pat = appState.patients.find(p => p.patient_id === patientId);
       if (pat) {
-        document.getElementById('inpatient-name-title').innerText = `Pasien: ${pat.full_name} (${pat.birth_date ? new Date().getFullYear() - new Date(pat.birth_date).getFullYear() : 30} th)`;
+        const age = pat.birth_date ? new Date().getFullYear() - new Date(pat.birth_date).getFullYear() : 30;
+        document.getElementById('inpatient-name-title').innerText = `Pasien: ${pat.full_name} (${age} th)`;
         document.getElementById('inpatient-rm-txt').innerText = pat.patient_id;
       }
     }
