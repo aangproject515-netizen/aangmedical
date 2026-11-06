@@ -50,8 +50,8 @@
   <header class="bg-gradient-to-r from-pastelPink via-pastelYellow to-pastelMint border-b-2 border-pink-200 sticky top-0 z-40 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-white border-2 border-pastelRose flex items-center justify-center shadow-sm overflow-hidden">
-          <img src="logo_medica.png" alt="Logo RS Aang Medical" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+        <div class="w-16 h-16 rounded-2xl bg-white border-2 border-pastelRose flex items-center justify-center shadow-sm overflow-hidden">
+          <img src="logo_medica.png" alt="Logo RS Aang Medical" class="w-full h-full object-cover scale-125" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
           <i class="fa-solid fa-user-doctor text-2xl text-pastelRose hidden"></i>
         </div>
         <div>
@@ -109,7 +109,9 @@
       <section id="tab-dashboard" class="tab-section space-y-6">
         <div class="pastel-card p-6 bg-gradient-to-br from-pink-50 via-white to-teal-50">
           <div class="flex flex-col sm:flex-row items-center gap-5">
-            <img src="logo_medica.png" alt="Logo RS Aang Medical" class="w-24 h-24 rounded-3xl border-2 border-pink-200 shadow-sm object-contain bg-white p-1 shrink-0" onerror="this.style.display='none'">
+            <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-3xl border-2 border-pink-200 shadow-md bg-white overflow-hidden flex items-center justify-center shrink-0">
+              <img src="logo_medica.png" alt="Logo RS Aang Medical" class="w-full h-full object-contain scale-125" onerror="this.style.display='none'">
+            </div>
             <div>
               <h2 class="text-2xl font-bold text-medDark">Selamat Datang di Portal SIMRS RS Aang Medical</h2>
               <p class="text-sm text-gray-600 mt-1">Pilih modul layanan di bawah untuk mengelola operasional rumah sakit dan integrasi e-Resep Apotek secara real-time.</p>
@@ -140,8 +142,8 @@
         <!-- 6 Kartu Modul dengan Gambar Ilustrasi dari GitHub Repository -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <div onclick="switchTab('frontoffice')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-28 h-28 rounded-2xl bg-pink-50/70 border border-pink-100 flex items-center justify-center mb-4 p-2 group-hover:scale-105 transition overflow-hidden">
-              <img src="01-front-office.png" alt="Front Office" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="w-full h-56 rounded-2xl bg-pink-50/70 border border-pink-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
+              <img src="01-front-office.png" style="transform: scale(1.18);" alt="Front Office" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
               <i class="fa-solid fa-hospital-user text-3xl text-pink-700 hidden"></i>
             </div>
             <h3 class="text-lg font-bold">Front Office</h3>
@@ -149,8 +151,8 @@
           </div>
 
           <div onclick="switchTab('rawatinap')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-28 h-28 rounded-2xl bg-amber-50/70 border border-amber-100 flex items-center justify-center mb-4 p-2 group-hover:scale-105 transition overflow-hidden">
-              <img src="02-rawat-inap.png" alt="Rawat Inap" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="w-full h-56 rounded-2xl bg-amber-50/70 border border-amber-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
+              <img src="02-rawat-inap.png" style="transform: scale(1.18);" alt="Rawat Inap" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
               <i class="fa-solid fa-bed-pulse text-3xl text-amber-700 hidden"></i>
             </div>
             <h3 class="text-lg font-bold">Rawat Inap</h3>
@@ -158,8 +160,8 @@
           </div>
 
           <div onclick="switchTab('labrad')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-28 h-28 rounded-2xl bg-purple-50/70 border border-purple-100 flex items-center justify-center mb-4 p-2 group-hover:scale-105 transition overflow-hidden">
-              <img src="03-laboratorium-radiologi.png" alt="Laboratorium & Radiologi" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="w-full h-56 rounded-2xl bg-purple-50/70 border border-purple-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
+              <img src="03-laboratorium-radiologi.png" style="transform: scale(1.18);" alt="Laboratorium & Radiologi" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
               <i class="fa-solid fa-x-ray text-3xl text-purple-700 hidden"></i>
             </div>
             <h3 class="text-lg font-bold">Laboratorium & Radiologi</h3>
@@ -167,8 +169,8 @@
           </div>
 
           <div onclick="switchTab('kasir')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-28 h-28 rounded-2xl bg-teal-50/70 border border-teal-100 flex items-center justify-center mb-4 p-2 group-hover:scale-105 transition overflow-hidden">
-              <img src="04-kasir-billing-system.png" alt="Kasir / Billing System" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="w-full h-56 rounded-2xl bg-teal-50/70 border border-teal-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
+              <img src="04-kasir-billing-system.png" style="transform: scale(1.18);" alt="Kasir / Billing System" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
               <i class="fa-solid fa-cash-register text-3xl text-teal-700 hidden"></i>
             </div>
             <h3 class="text-lg font-bold">Kasir / Billing System</h3>
@@ -176,8 +178,8 @@
           </div>
 
           <div onclick="switchTab('inventaris')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-28 h-28 rounded-2xl bg-orange-50/70 border border-orange-100 flex items-center justify-center mb-4 p-2 group-hover:scale-105 transition overflow-hidden">
-              <img src="05-manajemen-inventaris-rs.png" alt="Manajemen Inventaris RS" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="w-full h-56 rounded-2xl bg-orange-50/70 border border-orange-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
+              <img src="05-manajemen-inventaris-rs.png" style="transform: scale(1.18);" alt="Manajemen Inventaris RS" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
               <i class="fa-solid fa-clipboard-check text-3xl text-orange-700 hidden"></i>
             </div>
             <h3 class="text-lg font-bold">Manajemen Inventaris RS</h3>
@@ -185,8 +187,8 @@
           </div>
 
           <div onclick="switchTab('emr')" class="pastel-card p-6 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
-            <div class="w-28 h-28 rounded-2xl bg-rose-50/70 border border-rose-100 flex items-center justify-center mb-4 p-2 group-hover:scale-105 transition overflow-hidden">
-              <img src="06-rekam-medis-elektronik.png" alt="Rekam Medis Elektronik" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+            <div class="w-full h-56 rounded-2xl bg-rose-50/70 border border-rose-100 flex items-center justify-center mb-4 p-0 group-hover:scale-105 transition overflow-hidden">
+              <img src="06-rekam-medis-elektronik.png" style="transform: scale(1.18);" alt="Rekam Medis Elektronik" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
               <i class="fa-solid fa-file-waveform text-3xl text-rose-700 hidden"></i>
             </div>
             <h3 class="text-lg font-bold">Rekam Medis Elektronik</h3>
