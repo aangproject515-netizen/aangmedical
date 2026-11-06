@@ -7,7 +7,7 @@
   <!-- Tailwind CSS & Font Awesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
@@ -37,6 +37,11 @@
       background-color: #FF9EAA;
       color: white;
       box-shadow: 0 4px 12px rgba(255, 158, 170, 0.4);
+    }
+    .nav-btn.locked-module {
+      opacity: 0.48;
+      background-color: #F9FAFB;
+      color: #9CA3AF;
     }
     .card-img-wrapper {
       position: relative;
@@ -74,6 +79,104 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
+
+  <!-- ===================================================================== -->
+  <!-- OVERLAY HALAMAN LOGIN SIMRS RS AANG MEDICAL (SESUAI WARNA PASTEL)     -->
+  <!-- ===================================================================== -->
+  <div id="loginScreenOverlay" class="fixed inset-0 z-50 bg-gradient-to-br from-pastelPink via-pastelYellow/50 to-pastelMint flex items-center justify-center p-4 overflow-y-auto no-print">
+    <div class="pastel-card max-w-4xl w-full overflow-hidden grid grid-cols-1 md:grid-cols-12 shadow-2xl border-2 border-pink-200 bg-white/95 backdrop-blur">
+      
+      <!-- Panel Kiri: Branding & Daftar Hak Akses Role Sesuai Dokumen -->
+      <div class="md:col-span-5 bg-gradient-to-br from-pastelPink/80 via-pink-50 to-pastelMint/80 p-6 md:p-7 flex flex-col justify-between border-b md:border-b-0 md:border-r-2 border-pink-200">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-16 h-16 rounded-2xl bg-white border-2 border-pastelRose flex items-center justify-center shadow-md overflow-hidden shrink-0">
+              <img src="logo_medica.png" alt="Logo RS Aang Medical" class="w-full h-full object-cover scale-125" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+              <i class="fa-solid fa-user-doctor text-2xl text-pastelRose hidden"></i>
+            </div>
+            <div>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-white text-pink-600 border border-pink-200 shadow-sm">SIMRS TERINTEGRASI</span>
+              <h2 class="text-xl font-extrabold text-medDark mt-0.5">RS AANG MEDICAL</h2>
+              <p class="text-[11px] font-semibold text-pink-700">Multi-Role Access Control (RBAC)</p>
+            </div>
+          </div>
+
+          <div class="bg-white/85 rounded-2xl p-3.5 border border-pink-200 space-y-2 text-xs shadow-sm">
+            <p class="font-extrabold text-medDark flex items-center gap-1.5 border-b border-pink-100 pb-1.5">
+              <i class="fa-solid fa-crown text-amber-500"></i> Posisi & Hak Akses Modul:
+            </p>
+            <ul class="space-y-1.5 text-[11px] text-gray-600 leading-snug">
+              <li><b class="text-pink-700">0. Super Admin:</b> Full Akses Semua Modul, Bypass RBAC & Kelola Semua Akun.</li>
+              <li><b class="text-medDark">1. Administrator:</b> Dashboard Admin, Manajemen User (RBAC), Master Data & Inventaris.</li>
+              <li><b class="text-medDark">2. Petugas Pendaftaran (Front Office):</b> Registrasi Pasien, Antrean Poli/IGD & Info Kamar Rawat Inap.</li>
+              <li><b class="text-medDark">3. Dokter:</b> Antrean Poli/IGD, Rawat Inap, Rekam Medis (EMR), ICD-10, e-Resep & Lab/Rad.</li>
+              <li><b class="text-medDark">4. Apoteker / Farmasi:</b> Validasi e-Resep, Stok Obat & Inventaris Farmasi RS.</li>
+              <li><b class="text-medDark">5. Petugas Lab / Penunjang:</b> Permintaan Pemeriksaan & Input/Validasi Hasil Lab/Radiologi.</li>
+              <li><b class="text-medDark">6. Kasir / Billing:</b> Single Billing Poli/Lab/Apotek, Pembayaran & Cetak Struk Resmi.</li>
+              <li><b class="text-medDark">7. Pasien (Portal Mandiri):</b> Pendaftaran Online, Jadwal Dokter & Riwayat Berobat.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pt-4 text-[11px] text-gray-500 flex items-center justify-between">
+          <span><i class="fa-solid fa-shield-heart text-pastelRose mr-1"></i> Keamanan Rekam Medis</span>
+          <span class="font-bold text-pink-700">PIN Default: 123456</span>
+        </div>
+      </div>
+
+      <!-- Panel Kanan: Form Login & Quick Role Selector -->
+      <div class="md:col-span-7 p-6 md:p-8 flex flex-col justify-between space-y-5 bg-white">
+        <div>
+          <h3 class="text-xl font-extrabold text-medDark">Masuk ke Portal SIMRS</h3>
+          <p class="text-xs text-gray-500 mt-0.5">Pilih akun pengguna sesuai jabatan (Role) untuk menyesuaikan hak akses menu</p>
+        </div>
+
+        <!-- Tombol Cepat Pilih Posisi / Role -->
+        <div class="space-y-1.5">
+          <label class="text-[11px] font-extrabold uppercase tracking-wider text-gray-400 block">Pilih Cepat Role Aktor:</label>
+          <div id="quickRoleButtonsContainer" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <form onsubmit="handleLoginSubmit(event)" class="space-y-4 text-sm">
+          <div>
+            <label class="font-bold text-xs text-gray-600 block mb-1">
+              <i class="fa-solid fa-user-shield text-pastelRose mr-1"></i> Akun Pengguna Terdaftar (Database Users)
+            </label>
+            <select id="login-user-select" onchange="fillLoginRoleInfo()" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-pink-200 bg-pink-50/30 font-extrabold text-xs text-medDark focus:outline-none focus:border-pastelRose"></select>
+          </div>
+
+          <!-- Kotak Info Role & Modul yang Dapat Diakses -->
+          <div class="p-3.5 rounded-2xl bg-gradient-to-r from-pink-50 via-amber-50/40 to-teal-50/50 border border-pink-200 space-y-2 text-xs">
+            <div class="flex justify-between items-center">
+              <span class="text-[10px] font-extrabold uppercase text-gray-400">Jabatan / Role Aktif:</span>
+              <span id="login-preview-role" class="px-2.5 py-0.5 rounded-full bg-pastelPink text-pink-900 font-extrabold text-xs">Super Admin</span>
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold uppercase text-gray-400 block">Deskripsi Tugas:</span>
+              <p id="login-preview-desc" class="text-[11px] text-gray-600 font-medium mt-0.5">Memiliki hak akses penuh (Full Access) ke seluruh modul SIMRS, konfigurasi API, dan manajemen seluruh user.</p>
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold uppercase text-gray-400 block mb-1">Menu / Fitur yang Dapat Diakses:</span>
+              <div id="login-preview-badges" class="flex flex-wrap gap-1"></div>
+            </div>
+          </div>
+
+          <div>
+            <label class="font-bold text-xs text-gray-600 block mb-1">
+              <i class="fa-solid fa-lock text-pastelRose mr-1"></i> PIN / Password Keamanan
+            </label>
+            <input type="password" id="login-password" required value="123456" placeholder="Masukkan PIN / Password..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-pink-200 text-xs font-bold focus:outline-none focus:border-pastelRose">
+          </div>
+
+          <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-pastelRose to-pink-400 hover:from-pink-400 hover:to-pastelRose text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-right-to-bracket"></i> Masuk Sesuai Hak Akses Role
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
   <!-- TOP NAVBAR -->
   <header class="bg-gradient-to-r from-pastelPink via-pastelYellow to-pastelMint border-b-2 border-pink-200 sticky top-0 z-40 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
@@ -87,7 +190,7 @@
           <p class="text-xs font-semibold text-pink-600">Sistem Informasi Rumah Sakit Terintegrasi E-Apotek</p>
         </div>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5 flex-wrap">
         <span id="connBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300">
           <i class="fa-solid fa-bolt mr-1"></i> Mode Dinamis Database
         </span>
@@ -97,6 +200,17 @@
         <button onclick="openConfigModal()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-pink-50 text-xs font-bold border-2 border-pink-200 shadow-sm transition">
           <i class="fa-solid fa-gear text-pastelRose mr-1"></i> Konfigurasi API
         </button>
+        <!-- Badge Petugas Login & Tombol Ganti User / Logout -->
+        <div class="flex items-center gap-2 bg-white px-3 py-1 rounded-xl border-2 border-pink-200 shadow-sm">
+          <i id="nav-user-icon" class="fa-solid fa-crown text-lg text-amber-500"></i>
+          <div class="text-left leading-tight">
+            <p id="nav-user-name" class="text-xs font-extrabold text-medDark">A'ang Syahroni (Super Admin)</p>
+            <p id="nav-user-role" class="text-[10px] font-bold text-pink-600">Super Admin</p>
+          </div>
+          <button onclick="handleLogout()" title="Ganti User / Logout" class="ml-1 px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition flex items-center gap-1">
+            <i class="fa-solid fa-right-from-bracket"></i> <span class="hidden sm:inline">Keluar</span>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -106,30 +220,41 @@
     <!-- SIDEBAR NAVIGATION -->
     <aside class="w-full lg:w-64 shrink-0 no-print">
       <div class="pastel-card p-4 sticky top-24 space-y-2">
-        <p class="text-xs font-bold uppercase tracking-wider text-gray-400 px-2 mb-2">Menu Modul Utama</p>
-        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn active w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
-          <i class="fa-solid fa-grip w-5 text-center"></i> Dashboard Utama
+        <div class="px-2 mb-2 flex justify-between items-center">
+          <p class="text-xs font-bold uppercase tracking-wider text-gray-400">Menu Modul Utama</p>
+          <span id="sidebar-role-badge" class="px-2 py-0.5 rounded-md bg-pink-100 text-pink-800 font-extrabold text-[10px]">FULL ACCESS</span>
+        </div>
+        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn active w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-between transition hover:bg-pink-50">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-grip w-5 text-center"></i> Dashboard Utama</span>
+          <i class="fa-solid fa-lock text-xs hidden lock-icon"></i>
         </button>
-        <button onclick="switchTab('frontoffice')" id="btn-frontoffice" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
-          <i class="fa-solid fa-id-card-clip w-5 text-center"></i> Front Office & Antrean
+        <button onclick="switchTab('frontoffice')" id="btn-frontoffice" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-between transition hover:bg-pink-50">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-id-card-clip w-5 text-center"></i> Front Office & Antrean</span>
+          <i class="fa-solid fa-lock text-xs hidden lock-icon"></i>
         </button>
-        <button onclick="switchTab('rawatinap')" id="btn-rawatinap" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
-          <i class="fa-solid fa-bed-pulse w-5 text-center"></i> Rawat Inap & Jalan
+        <button onclick="switchTab('rawatinap')" id="btn-rawatinap" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-between transition hover:bg-pink-50">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-bed-pulse w-5 text-center"></i> Rawat Inap & Jalan</span>
+          <i class="fa-solid fa-lock text-xs hidden lock-icon"></i>
         </button>
-        <button onclick="switchTab('emr')" id="btn-emr" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
-          <i class="fa-solid fa-heart-pulse w-5 text-center"></i> Rekam Medis (EMR)
+        <button onclick="switchTab('emr')" id="btn-emr" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-between transition hover:bg-pink-50">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-heart-pulse w-5 text-center"></i> Rekam Medis (EMR)</span>
+          <i class="fa-solid fa-lock text-xs hidden lock-icon"></i>
         </button>
-        <button onclick="switchTab('labrad')" id="btn-labrad" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
-          <i class="fa-solid fa-microscope w-5 text-center"></i> Lab & Radiologi
+        <button onclick="switchTab('labrad')" id="btn-labrad" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-between transition hover:bg-pink-50">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-microscope w-5 text-center"></i> Lab & Radiologi</span>
+          <i class="fa-solid fa-lock text-xs hidden lock-icon"></i>
         </button>
-        <button onclick="switchTab('kasir')" id="btn-kasir" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
-          <i class="fa-solid fa-cash-register w-5 text-center"></i> Kasir / Billing System
+        <button onclick="switchTab('kasir')" id="btn-kasir" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-between transition hover:bg-pink-50">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-cash-register w-5 text-center"></i> Kasir / Billing System</span>
+          <i class="fa-solid fa-lock text-xs hidden lock-icon"></i>
         </button>
-        <button onclick="switchTab('inventaris')" id="btn-inventaris" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
-          <i class="fa-solid fa-boxes-stacked w-5 text-center"></i> Inventaris RS
+        <button onclick="switchTab('inventaris')" id="btn-inventaris" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-between transition hover:bg-pink-50">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-boxes-stacked w-5 text-center"></i> Inventaris RS</span>
+          <i class="fa-solid fa-lock text-xs hidden lock-icon"></i>
         </button>
-        <button onclick="switchTab('users')" id="btn-users" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center gap-3 transition hover:bg-pink-50">
-          <i class="fa-solid fa-user-shield w-5 text-center"></i> Manajemen User RS
+        <button onclick="switchTab('users')" id="btn-users" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-between transition hover:bg-pink-50">
+          <span class="flex items-center gap-3"><i class="fa-solid fa-user-shield w-5 text-center"></i> Manajemen User RS</span>
+          <i class="fa-solid fa-lock text-xs hidden lock-icon"></i>
         </button>
       </div>
     </aside>
@@ -137,7 +262,25 @@
     <!-- CONTENT AREA -->
     <main class="flex-1 space-y-6">
       
-      <!-- 1. DASHBOARD PORTAL -->
+      <!-- BANNER INFORMASI ROLE & HAK AKSES AKTIF -->
+      <div id="activeRoleBanner" class="pastel-card px-5 py-3.5 bg-gradient-to-r from-pastelPink/60 via-white to-pastelMint/60 flex flex-wrap justify-between items-center gap-3 no-print">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-white border border-pink-200 flex items-center justify-center text-pastelRose shadow-sm">
+            <i class="fa-solid fa-id-badge text-lg"></i>
+          </div>
+          <div>
+            <p class="text-xs font-extrabold text-medDark">
+              Sesi Login Aktif: <span id="banner-user-name" class="text-pink-600">A'ang Syahroni (Super Admin)</span>
+              <span id="banner-user-role" class="ml-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold">Super Admin</span>
+            </p>
+            <p id="banner-user-access" class="text-[11px] text-gray-500">Akses Modul: Semua Modul & Hak Akses Penuh (Super Admin)</p>
+          </div>
+        </div>
+        <button onclick="handleLogout()" class="px-3 py-1.5 rounded-xl bg-white hover:bg-pink-50 border border-pink-200 text-xs font-bold text-pink-700 shadow-sm transition">
+          <i class="fa-solid fa-users-gear mr-1"></i> Ganti Role / Akun
+        </button>
+      </div>
+<!-- 1. DASHBOARD PORTAL -->
       <section id="tab-dashboard" class="tab-section space-y-6">
         <div class="pastel-card p-6 bg-gradient-to-br from-pink-50 via-white to-teal-50">
           <div class="flex flex-col sm:flex-row items-center gap-5">
@@ -550,7 +693,6 @@
           <div id="inventoryListContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
         </div>
       </section>
-
       <!-- 8. MANAJEMEN USER RS -->
       <section id="tab-users" class="tab-section hidden space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -673,11 +815,113 @@
     </div>
   </div>
 
-  <!-- SCRIPT UTAMA DINAMIS MURNI DATABASE -->
+    <!-- SCRIPT UTAMA DINAMIS MURNI DATABASE & RBAC SESUAI DOKUMEN -->
   <script>
-    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbxVWVPOXIDUikH9SbyJiBvn63VbnoFYqyXOKKU1YUACq8xUgFozGFfvx51uTTAyA6RraA/exec';
+    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbzNG61bCVTy_K5-3xDby0fyQiG1HJb3ZkD7X437HjZj4OJUVPG_jmiYUbsERl4H9-66lQ/exec';
     let GAS_URL = localStorage.getItem('AANG_MEDICAL_GAS_URL') || DEFAULT_GAS_URL;
     let selectedPayMethod = 'Tunai';
+    let currentLoggedInUser = JSON.parse(sessionStorage.getItem('AANG_MEDICAL_ACTIVE_USER') || 'null');
+
+    // Pemetaan Hak Akses Modul (RBAC) Berdasarkan Tabel Aktor di Dokumen Spesifikasi + Posisi Super Admin
+    const ROLE_RBAC_CONFIG = {
+      "Super Admin": {
+        allowedTabs: ['dashboard', 'frontoffice', 'rawatinap', 'emr', 'labrad', 'kasir', 'inventaris', 'users'],
+        badgeText: "SUPER ADMIN (ALL ACCESS)",
+        icon: "fa-crown text-amber-500",
+        description: "Akses tertinggi ke seluruh modul SIMRS, Manajemen User (RBAC), Rekam Medis, Kasir, Lab, Inventaris, dan Konfigurasi API.",
+        features: ["Semua Modul SIMRS", "Bypass Semua Role", "Manajemen User (RBAC)", "Master Data & Audit Log"]
+      },
+      "Administrator": {
+        allowedTabs: ['dashboard', 'frontoffice', 'rawatinap', 'emr', 'labrad', 'kasir', 'inventaris', 'users'],
+        badgeText: "ADMINISTRATOR",
+        icon: "fa-user-gear text-indigo-600",
+        description: "Mengelola keseluruhan sistem, hak akses (RBAC), dan konfigurasi master data (Dokter, Poli, Ruangan, Tarif, Obat, Audit Log).",
+        features: ["Dashboard Admin", "Manajemen User & Role (RBAC)", "Master Data Dokter/Poli/Kamar", "Master Obat & Inventaris", "Audit Log Database"]
+      },
+      "Petugas Front Office": {
+        allowedTabs: ['dashboard', 'frontoffice', 'rawatinap'],
+        badgeText: "FRONT OFFICE",
+        icon: "fa-id-card-clip text-pink-600",
+        description: "Menangani registrasi pasien baru/lama (Umum/BPJS), penjadwalan dokter, antrean Poli/IGD, dan informasi ketersediaan kamar rawat inap.",
+        features: ["Dashboard Pendaftaran", "Registrasi Pasien Baru & Lama", "Antrean Poli & IGD", "Jadwal Dokter", "Info Kamar Rawat Inap"]
+      },
+      "Petugas Pendaftaran (Registration / Front Office)": {
+        allowedTabs: ['dashboard', 'frontoffice', 'rawatinap'],
+        badgeText: "FRONT OFFICE",
+        icon: "fa-id-card-clip text-pink-600",
+        description: "Menangani registrasi pasien baru/lama (Umum/BPJS), penjadwalan dokter, antrean Poli/IGD, dan informasi ketersediaan kamar rawat inap.",
+        features: ["Dashboard Pendaftaran", "Registrasi Pasien Baru & Lama", "Antrean Poli & IGD", "Jadwal Dokter", "Info Kamar Rawat Inap"]
+      },
+      "Dokter": {
+        allowedTabs: ['dashboard', 'rawatinap', 'emr', 'labrad'],
+        badgeText: "DOKTER DPJP",
+        icon: "fa-user-doctor text-teal-600",
+        description: "Melakukan pemeriksaan medis, melihat antrean pasien Poli/IGD, mencatat Rekam Medis Elektronik (SOAP & ICD-10), menerbitkan e-Resep, dan permintaan Lab/Radiologi.",
+        features: ["Dashboard Dokter", "Antrean Pasien Poli / Rawat Inap", "Rekam Medis Elektronik (EMR)", "Input Diagnosa (ICD-10) & e-Resep", "Permintaan Lab & Radiologi"]
+      },
+      "Dokter DPJP": {
+        allowedTabs: ['dashboard', 'rawatinap', 'emr', 'labrad'],
+        badgeText: "DOKTER DPJP",
+        icon: "fa-user-doctor text-teal-600",
+        description: "Melakukan pemeriksaan medis, melihat antrean pasien Poli/IGD, mencatat Rekam Medis Elektronik (SOAP & ICD-10), menerbitkan e-Resep, dan permintaan Lab/Radiologi.",
+        features: ["Dashboard Dokter", "Antrean Pasien Poli / Rawat Inap", "Rekam Medis Elektronik (EMR)", "Input Diagnosa (ICD-10) & e-Resep", "Permintaan Lab & Radiologi"]
+      },
+      "Apoteker / Petugas Farmasi": {
+        allowedTabs: ['dashboard', 'emr', 'inventaris'],
+        badgeText: "FARMASI & APOTEK",
+        icon: "fa-mortar-pestle text-emerald-600",
+        description: "Mengelola inventaris obat, validasi e-Prescribing dari Dokter, manajemen stok obat/alkes (FIFO/FEFO), dan integrasi POS Apotek.",
+        features: ["Dashboard Farmasi", "Validasi e-Prescribing Dokter", "Manajemen Stok Obat & Alkes", "Integrasi POS Apotek"]
+      },
+      "Petugas Inventaris": {
+        allowedTabs: ['dashboard', 'inventaris'],
+        badgeText: "INVENTARIS & LOGISTIK",
+        icon: "fa-boxes-stacked text-orange-600",
+        description: "Mengelola stok alat kesehatan, reagen lab, gas medis, dan inventaris ruangan rumah sakit.",
+        features: ["Dashboard Inventaris", "Stok Alkes & Fasilitas Medis", "Monitoring Kondisi & Lokasi Ruang"]
+      },
+      "Petugas Lab / Radiologi": {
+        allowedTabs: ['dashboard', 'labrad'],
+        badgeText: "LAB & RADIOLOGI",
+        icon: "fa-microscope text-purple-600",
+        description: "Menginput dan memvalidasi hasil pemeriksaan penunjang medis (Laboratorium Darah Lengkap & Radiologi X-Ray) dari permintaan dokter.",
+        features: ["Dashboard Lab & Radiologi", "Daftar Permintaan Pemeriksaan", "Input & Validasi Hasil Lab/Radiologi", "Riwayat Pemeriksaan Pasien"]
+      },
+      "Petugas Lab / Penunjang Medis": {
+        allowedTabs: ['dashboard', 'labrad'],
+        badgeText: "LAB & RADIOLOGI",
+        icon: "fa-microscope text-purple-600",
+        description: "Menginput dan memvalidasi hasil pemeriksaan penunjang medis (Laboratorium Darah Lengkap & Radiologi X-Ray) dari permintaan dokter.",
+        features: ["Dashboard Lab & Radiologi", "Daftar Permintaan Pemeriksaan", "Input & Validasi Hasil Lab/Radiologi", "Riwayat Pemeriksaan Pasien"]
+      },
+      "Kasir / Billing": {
+        allowedTabs: ['dashboard', 'kasir'],
+        badgeText: "KASIR / BILLING",
+        icon: "fa-cash-register text-amber-600",
+        description: "Menggabungkan seluruh tagihan layanan medis (Poli, Kamar Rawat Inap, Lab, & Resep Apotek) dalam Single Billing Statement serta mencetak kuitansi resmi.",
+        features: ["Dashboard Kasir / Billing", "Single Billing Poli, Lab & Apotek", "Proses Pembayaran (Tunai/Debit/BPJS)", "Cetak Struk & Kuitansi Resmi"]
+      },
+      "Pasien": {
+        allowedTabs: ['dashboard', 'frontoffice', 'rawatinap'],
+        badgeText: "PORTAL PASIEN",
+        icon: "fa-hospital-user text-rose-500",
+        description: "Mengakses pendaftaran berobat mandiri, melihat jadwal dokter & antrean real-time, serta memantau status kunjungan.",
+        features: ["Dashboard Pasien", "Pendaftaran Berobat Online", "Jadwal Dokter & Antrean Real-time", "Riwayat Kunjungan Ringkas"]
+      }
+    };
+
+    const DEFAULT_USERS_LIST = [
+      { user_id: "USR-00", full_name: "A'ang Syahroni (Super Admin)", role: "Super Admin", module_access: "Semua Modul & Akses Semua Akun", user_status: "Aktif" },
+      { user_id: "USR-01", full_name: "Dr. Aang, Sp.PD", role: "Administrator", module_access: "Dashboard, Manajemen User (RBAC), Master Data, Inventaris", user_status: "Aktif" },
+      { user_id: "USR-02", full_name: "Siti Rahma", role: "Petugas Front Office", module_access: "Front Office & Antrean, Info Kamar Rawat Inap", user_status: "Aktif" },
+      { user_id: "USR-03", full_name: "dr. Siti Rahma, Sp.A", role: "Dokter", module_access: "Rawat Inap & Jalan, Rekam Medis (EMR), e-Resep, Lab & Radiologi", user_status: "Aktif" },
+      { user_id: "USR-04", full_name: "Apt. Rina Farmasi, S.Farm", role: "Apoteker / Petugas Farmasi", module_access: "Validasi e-Prescribing (EMR), Inventaris & Stok Obat", user_status: "Aktif" },
+      { user_id: "USR-05", full_name: "Budi Analis, A.Md.AK", role: "Petugas Lab / Radiologi", module_access: "Laboratorium & Radiologi", user_status: "Aktif" },
+      { user_id: "USR-06", full_name: "Dewi Puspita", role: "Kasir / Billing", module_access: "Kasir / Single Billing System & Cetak Struk", user_status: "Aktif" },
+      { user_id: "USR-07", full_name: "Agus Logistik", role: "Petugas Inventaris", module_access: "Manajemen Inventaris RS", user_status: "Aktif" },
+      { user_id: "USR-08", full_name: "Pasien Mandiri (Portal)", role: "Pasien", module_access: "Pendaftaran Berobat & Info Antrean", user_status: "Aktif" }
+    ];
+
     let appState = {
       patients: [],
       doctors: [],
@@ -689,13 +933,165 @@
       inventory: [],
       masterObat: [],
       auditLogs: [],
-      users: [ // <-- DITAMBAHKAN
-        { user_id: "USR-01", full_name: "Dr. Aang, Sp.PD", role: "Administrator", module_access: "Semua Modul RS", user_status: "Aktif" },
-        { user_id: "USR-02", full_name: "Siti Rahma", role: "Petugas Front Office", module_access: "Front Office & Antrean", user_status: "Aktif" },
-        { user_id: "USR-03", full_name: "dr. Siti Rahma, Sp.A", role: "Dokter DPJP", module_access: "Rekam Medis (EMR)", user_status: "Aktif" },
-        { user_id: "USR-04", full_name: "Dewi Puspita", role: "Kasir / Billing", module_access: "Kasir / Billing System", user_status: "Aktif" }
-      ]
+      users: [...DEFAULT_USERS_LIST]
     };
+
+    function getRoleConfig(roleName) {
+      if (!roleName) return ROLE_RBAC_CONFIG["Super Admin"];
+      if (ROLE_RBAC_CONFIG[roleName]) return ROLE_RBAC_CONFIG[roleName];
+      const lower = String(roleName).toLowerCase();
+      if (lower.includes("super")) return ROLE_RBAC_CONFIG["Super Admin"];
+      if (lower.includes("admin")) return ROLE_RBAC_CONFIG["Administrator"];
+      if (lower.includes("front") || lower.includes("pendaftaran") || lower.includes("registrasi")) return ROLE_RBAC_CONFIG["Petugas Front Office"];
+      if (lower.includes("dokter")) return ROLE_RBAC_CONFIG["Dokter"];
+      if (lower.includes("apotek") || lower.includes("farmasi")) return ROLE_RBAC_CONFIG["Apoteker / Petugas Farmasi"];
+      if (lower.includes("lab") || lower.includes("rad") || lower.includes("penunjang")) return ROLE_RBAC_CONFIG["Petugas Lab / Radiologi"];
+      if (lower.includes("kasir") || lower.includes("billing")) return ROLE_RBAC_CONFIG["Kasir / Billing"];
+      if (lower.includes("inventaris") || lower.includes("logistik") || lower.includes("gudang")) return ROLE_RBAC_CONFIG["Petugas Inventaris"];
+      if (lower.includes("pasien")) return ROLE_RBAC_CONFIG["Pasien"];
+      return ROLE_RBAC_CONFIG["Super Admin"];
+    }
+
+    function ensureSuperAdminAndRolesExist() {
+      // Pastikan Super Admin (USR-00) dan seluruh role dokumen selalu tersedia meskipun database hanya mengembalikan sebagian user
+      DEFAULT_USERS_LIST.forEach(defUser => {
+        const exists = appState.users.some(u => u.user_id === defUser.user_id || String(u.role).toLowerCase() === String(defUser.role).toLowerCase());
+        if (!exists) {
+          appState.users.push(defUser);
+        }
+      });
+      // Urutkan agar Super Admin berada di paling atas
+      appState.users.sort((a, b) => {
+        if (a.role === "Super Admin") return -1;
+        if (b.role === "Super Admin") return 1;
+        return String(a.user_id).localeCompare(String(b.user_id));
+      });
+    }
+
+    // --- FUNGSI AUTENTIKASI LOGIN, LOGOUT & RBAC ---
+    function renderLoginDropdown() {
+      ensureSuperAdminAndRolesExist();
+      const selectEl = document.getElementById('login-user-select');
+      if (!selectEl) return;
+      const activeUsers = appState.users.filter(u => u.user_status === 'Aktif');
+      const listToUse = activeUsers.length > 0 ? activeUsers : appState.users;
+      selectEl.innerHTML = listToUse.map(u => `<option value="${u.user_id}">${u.full_name} — [${u.role}]</option>`).join('');
+
+      // Render tombol cepat pilih role
+      const quickContainer = document.getElementById('quickRoleButtonsContainer');
+      if (quickContainer) {
+        quickContainer.innerHTML = listToUse.map(u => {
+          const isSuper = u.role === 'Super Admin';
+          return `
+            <button type="button" onclick="selectQuickLoginUser('${u.user_id}')" class="px-2.5 py-1 rounded-xl border text-[11px] font-bold transition ${isSuper ? 'bg-amber-100 border-amber-300 text-amber-900 hover:bg-amber-200' : 'bg-pink-50 border-pink-200 text-medDark hover:bg-pastelPink'}">
+              ${isSuper ? '<i class="fa-solid fa-crown text-amber-500 mr-1"></i>' : ''}${u.role}
+            </button>
+          `;
+        }).join('');
+      }
+      fillLoginRoleInfo();
+    }
+
+    function selectQuickLoginUser(userId) {
+      const selectEl = document.getElementById('login-user-select');
+      if (selectEl) {
+        selectEl.value = userId;
+        fillLoginRoleInfo();
+      }
+    }
+
+    function fillLoginRoleInfo() {
+      const selectEl = document.getElementById('login-user-select');
+      if (!selectEl) return;
+      const u = appState.users.find(x => x.user_id === selectEl.value) || appState.users[0];
+      if (u) {
+        const cfg = getRoleConfig(u.role);
+        document.getElementById('login-preview-role').innerText = u.role || 'Super Admin';
+        document.getElementById('login-preview-desc').innerText = cfg.description;
+        const badgesContainer = document.getElementById('login-preview-badges');
+        if (badgesContainer) {
+          badgesContainer.innerHTML = cfg.features.map(f => `
+            <span class="px-2 py-0.5 rounded-lg bg-white border border-pink-200 text-[10px] font-bold text-pink-700 shadow-sm">
+              <i class="fa-solid fa-check text-teal-600 mr-1"></i>${f}
+            </span>
+          `).join('');
+        }
+      }
+    }
+
+    function applyRoleAccessUI() {
+      if (!currentLoggedInUser) return;
+      const cfg = getRoleConfig(currentLoggedInUser.role);
+      const allTabs = ['dashboard', 'frontoffice', 'rawatinap', 'emr', 'labrad', 'kasir', 'inventaris', 'users'];
+
+      // Update Navbar & Banner
+      document.getElementById('nav-user-name').innerText = currentLoggedInUser.full_name;
+      document.getElementById('nav-user-role').innerText = currentLoggedInUser.role;
+      const navIcon = document.getElementById('nav-user-icon');
+      if (navIcon) navIcon.className = "fa-solid " + cfg.icon + " text-lg";
+
+      document.getElementById('banner-user-name').innerText = currentLoggedInUser.full_name;
+      document.getElementById('banner-user-role').innerText = currentLoggedInUser.role;
+      document.getElementById('banner-user-access').innerText = "Akses Menu: " + cfg.features.join(" • ");
+      document.getElementById('sidebar-role-badge').innerText = cfg.badgeText;
+
+      // Update Sidebar Buttons (Tampilkan ikon gembok pada modul yang tidak diizinkan)
+      allTabs.forEach(tabId => {
+        const btn = document.getElementById('btn-' + tabId);
+        if (!btn) return;
+        const lockIcon = btn.querySelector('.lock-icon');
+        const isAllowed = cfg.allowedTabs.includes(tabId);
+        if (isAllowed) {
+          btn.classList.remove('locked-module');
+          if (lockIcon) lockIcon.classList.add('hidden');
+        } else {
+          btn.classList.add('locked-module');
+          if (lockIcon) lockIcon.classList.remove('hidden');
+        }
+      });
+    }
+
+    function checkAuthSession() {
+      const overlay = document.getElementById('loginScreenOverlay');
+      if (currentLoggedInUser) {
+        overlay.classList.add('hidden');
+        overlay.classList.remove('flex');
+        applyRoleAccessUI();
+      } else {
+        renderLoginDropdown();
+        overlay.classList.remove('hidden');
+        overlay.classList.add('flex');
+      }
+    }
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      const userId = document.getElementById('login-user-select').value;
+      const pin = document.getElementById('login-password').value;
+      const u = appState.users.find(x => x.user_id === userId);
+      if (!u) {
+        alert("Akun user tidak ditemukan!");
+        return;
+      }
+      if (u.user_status !== 'Aktif') {
+        alert(`Akun ${u.full_name} sedang berstatus TIDAK AKTIF. Hubungi Super Admin / Administrator!`);
+        return;
+      }
+      if (!pin) {
+        alert("Masukkan PIN / Password!");
+        return;
+      }
+      currentLoggedInUser = u;
+      sessionStorage.setItem('AANG_MEDICAL_ACTIVE_USER', JSON.stringify(u));
+      checkAuthSession();
+      switchTab('dashboard');
+    }
+
+    function handleLogout() {
+      currentLoggedInUser = null;
+      sessionStorage.removeItem('AANG_MEDICAL_ACTIVE_USER');
+      checkAuthSession();
+    }
 
     async function fetchDatabaseData() {
       try {
@@ -712,19 +1108,34 @@
           appState.inventory = json.data.inventory || [];
           appState.masterObat = json.data.masterObat || [];
           appState.auditLogs = json.data.auditLogs || [];
-          appState.users = json.data.users || appState.users;
+          if (json.data.users && json.data.users.length > 0) {
+            appState.users = json.data.users;
+          }
+          ensureSuperAdminAndRolesExist();
           
           document.getElementById('connBadge').className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
           document.getElementById('connBadge').innerHTML = '<i class="fa-solid fa-cloud-check mr-1"></i> Terhubung ke Database Sheets';
           renderAll();
+          renderLoginDropdown();
         }
       } catch (err) {
         console.warn("Gagal terhubung ke GAS:", err);
+        ensureSuperAdminAndRolesExist();
         renderAll();
+        renderLoginDropdown();
       }
     }
 
     function switchTab(tabId) {
+      // Validasi RBAC: Super Admin & Administrator bebas akses semua, Role lain dicek izin modulnya
+      if (currentLoggedInUser) {
+        const cfg = getRoleConfig(currentLoggedInUser.role);
+        if (!cfg.allowedTabs.includes(tabId)) {
+          alert(`AKSES DIBATASI (RBAC):\n\nAkun Anda saat ini login sebagai "${currentLoggedInUser.role}" (${currentLoggedInUser.full_name}).\n\nRole ini hanya memiliki akses ke: ${cfg.features.join(', ')}.\n\nSilakan login menggunakan akun Super Admin atau Administrator untuk mengakses modul ini.`);
+          return;
+        }
+      }
+
       document.querySelectorAll('.tab-section').forEach(el => el.classList.add('hidden'));
       document.getElementById('tab-' + tabId).classList.remove('hidden');
       document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -817,6 +1228,7 @@
       e.preventDefault();
       const payload = {
         action: "registerPatient",
+        actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Front Office",
         nik: document.getElementById('reg-nik').value,
         full_name: document.getElementById('reg-name').value,
         gender: document.getElementById('reg-gender').value,
@@ -842,6 +1254,7 @@
       e.preventDefault();
       const payload = {
         action: "createVisit",
+        actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Front Office",
         patient_id: document.getElementById('visit-patient-id').value,
         visit_type: document.getElementById('visit-type').value,
         doctor_id: document.getElementById('visit-doctor-id').value,
@@ -1056,6 +1469,7 @@
       });
       const payload = {
         action: "saveMedicalRecord",
+        actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Dokter",
         visit_id: visit.visit_id,
         patient_id: patientId,
         doctor_id: document.getElementById('emr-doctor').value,
@@ -1084,7 +1498,6 @@
       const container = document.getElementById('labQueueContainer');
       if (!container) return;
       
-      // Gunakan appState.labRadiology secara konsisten
       const labData = appState.labRadiology || [];
       if (labData.length === 0) {
         container.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">Belum ada antrean lab & radiologi di database.</p>`;
@@ -1134,7 +1547,14 @@
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({ action: "updateLabResult", order_id: orderId, order_status: status, result_summary: summary, critical_flag: flag })
+          body: JSON.stringify({
+            action: "updateLabResult",
+            actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Petugas Lab / Radiologi",
+            order_id: orderId,
+            order_status: status,
+            result_summary: summary,
+            critical_flag: flag
+          })
         });
         alert("Tahap progres dan hasil lab/radiologi berhasil diperbarui ke database!");
         fetchDatabaseData();
@@ -1149,6 +1569,7 @@
       
       const payload = {
         action: "createLabOrder",
+        actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Dokter",
         visit_id: "VST-20261106-001",
         patient_id: rm,
         examination_type: exam,
@@ -1175,7 +1596,6 @@
       }
       container.innerHTML = appState.billing.map(b => {
         const isLunas = b.payment_status === 'Lunas';
-        // Cari data pasien berdasarkan patient_id untuk menampilkan nama lengkap
         const pat = appState.patients.find(p => p.patient_id === b.patient_id) || {};
         const patientName = pat.full_name || b.patient_id;
 
@@ -1241,7 +1661,12 @@
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({ action: "processPayment", bill_id: activeBillingObj.bill_id, payment_method: selectedPayMethod })
+          body: JSON.stringify({
+            action: "processPayment",
+            actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Kasir / Billing",
+            bill_id: activeBillingObj.bill_id,
+            payment_method: selectedPayMethod
+          })
         });
         const patObj = appState.patients.find(p => p.patient_id === activeBillingObj.patient_id) || {};
         document.getElementById('print-trx-id').innerText = activeBillingObj.bill_id;
@@ -1292,6 +1717,7 @@
       e.preventDefault();
       const payload = {
         action: "saveInventoryItem",
+        actor_role: currentLoggedInUser ? currentLoggedInUser.role : "Petugas Inventaris",
         item_id: document.getElementById('inv-id').value,
         item_name: document.getElementById('inv-name').value,
         category: document.getElementById('inv-cat').value,
@@ -1348,7 +1774,9 @@
       alert("URL Web App berhasil disimpan & disinkronkan!");
     }
 
+    // --- 8. MANAJEMEN USER & RBAC ---
     function renderUsersModule() {
+      ensureSuperAdminAndRolesExist();
       const q = (document.getElementById('userSearchInput')?.value || '').toLowerCase();
       const filtered = appState.users.filter(u =>
         String(u.full_name).toLowerCase().includes(q) || String(u.role).toLowerCase().includes(q)
@@ -1357,10 +1785,13 @@
       if (!tbody) return;
       tbody.innerHTML = filtered.map(u => {
         const active = u.user_status === 'Aktif';
+        const isSuper = u.role === 'Super Admin';
         return `
-          <tr>
-            <td class="py-3 px-3 font-extrabold text-medDark">${u.full_name}</td>
-            <td class="py-3 px-3 font-bold text-pink-700">${u.role}</td>
+          <tr class="${isSuper ? 'bg-amber-50/50' : ''}">
+            <td class="py-3 px-3 font-extrabold text-medDark">
+              ${isSuper ? '<i class="fa-solid fa-crown text-amber-500 mr-1"></i>' : ''}${u.full_name}
+            </td>
+            <td class="py-3 px-3 font-bold ${isSuper ? 'text-amber-700' : 'text-pink-700'}">${u.role}</td>
             <td class="py-3 px-3 text-xs text-gray-600">${u.module_access}</td>
             <td class="py-3 px-3 text-center">
               <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${active ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-600'}">
@@ -1394,17 +1825,22 @@
     async function openNewUserPrompt() {
       const fullName = prompt("Nama Lengkap Petugas / User RS Baru:");
       if (!fullName) return;
-      const role = prompt("Role / Jabatan (Administrator / Front Office / Dokter / Kasir / Apoteker):", "Front Office");
-      const access = prompt("Akses Modul:", "Front Office & Antrean");
+      const role = prompt(
+        "Pilih Role / Jabatan sesuai standar RBAC:\n- Super Admin\n- Administrator\n- Petugas Front Office\n- Dokter\n- Apoteker / Petugas Farmasi\n- Petugas Lab / Radiologi\n- Kasir / Billing\n- Petugas Inventaris\n- Pasien",
+        "Petugas Front Office"
+      );
+      const cfg = getRoleConfig(role);
+      const access = prompt("Akses Modul:", cfg.features.join(", "));
       const newUser = {
         user_id: "USR-RS-" + String(appState.users.length + 1).padStart(2, '0'),
         full_name: fullName,
-        role: role || "Petugas RS",
-        module_access: access || "Front Office",
+        role: role || "Petugas Front Office",
+        module_access: access || cfg.features.join(", "),
         user_status: "Aktif"
       };
       appState.users.push(newUser);
       renderUsersModule();
+      renderLoginDropdown();
       try {
         await fetch(GAS_URL, {
           method: "POST",
@@ -1422,6 +1858,7 @@
       if (!u) return;
       u.user_status = u.user_status === 'Aktif' ? 'Tidak Aktif' : 'Aktif';
       renderUsersModule();
+      renderLoginDropdown();
       try {
         await fetch(GAS_URL, {
           method: "POST",
@@ -1433,6 +1870,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      checkAuthSession();
       fetchDatabaseData();
     });
   </script>
