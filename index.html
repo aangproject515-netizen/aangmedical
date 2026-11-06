@@ -167,7 +167,6 @@
             </div>
           </div>
         </div>
-
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <div onclick="switchTab('frontoffice')" class="pastel-card p-5 cursor-pointer hover:-translate-y-1 transition group flex flex-col items-center text-center">
             <div class="card-img-wrapper mb-3 border border-pink-100 shadow-inner">
@@ -325,7 +324,7 @@
         </div>
       </section>
 
-      <!-- 3. MODUL RAWAT INAP (DENGAN CARD PER PASIEN & FILTER TANGGAL MASUK) -->
+      <!-- 3. MODUL RAWAT INAP -->
       <section id="tab-rawatinap" class="tab-section hidden space-y-6">
         <div class="pastel-card p-5 bg-gradient-to-r from-pink-50 to-amber-50 space-y-4">
           <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-pink-100 pb-3">
@@ -339,10 +338,8 @@
               <button onclick="document.getElementById('filterInpatientDate').value=''; renderInpatientCards();" class="px-3 py-1.5 rounded-xl bg-pink-100 hover:bg-pink-200 text-pink-800 font-bold text-xs">Semua Tanggal</button>
             </div>
           </div>
-          <!-- Container Card per Pasien Rawat Inap -->
           <div id="inpatientCardGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
-
         <div id="activeInpatientDetailContainer" class="space-y-6">
           <div class="pastel-card p-6 bg-gradient-to-r from-pink-50 via-white to-amber-50">
             <div class="flex flex-wrap justify-between items-center gap-4">
@@ -364,132 +361,105 @@
               </div>
             </div>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="pastel-card p-5 space-y-4">
-              <h3 class="font-bold text-base flex items-center gap-2 border-b pb-2 border-pink-100">
-                <i class="fa-solid fa-notes-medical text-pastelRose"></i> Catatan Medis Harian (CPPT) & Tanda Vital
-              </h3>
-              <div class="grid grid-cols-4 gap-2 text-center bg-pink-50 p-3 rounded-xl">
-                <div>
-                  <span class="text-[11px] text-gray-500 font-bold">Tekanan Darah</span>
-                  <p class="font-bold text-sm text-pink-700">120/80</p>
-                </div>
-                <div>
-                  <span class="text-[11px] text-gray-500 font-bold">Suhu Tubuh</span>
-                  <p class="font-bold text-sm text-pink-700">36.8 °C</p>
-                </div>
-                <div>
-                  <span class="text-[11px] text-gray-500 font-bold">Nadi (HR)</span>
-                  <p class="font-bold text-sm text-pink-700">84 bpm</p>
-                </div>
-                <div>
-                  <span class="text-[11px] text-gray-500 font-bold">SpO2</span>
-                  <p class="font-bold text-sm text-teal-700">98 %</p>
-                </div>
-              </div>
-              <div class="bg-amber-50/70 border border-amber-200 p-4 rounded-xl text-sm space-y-1">
-                <p class="font-bold text-amber-900">09:00 WIB - dr. Andi, Sp.P.:</p>
-                <p class="text-gray-700">Pasien mengeluh sesak napas berkurang drastis. Vital sign stabil, suara napas ronki berkurang.</p>
-                <p class="font-semibold text-teal-800 pt-1">Rencana: Lanjutkan terapi antibiotik & nebulizer, evaluasi foto thorax ulang besok pagi.</p>
-              </div>
-            </div>
-            <div class="pastel-card p-5 space-y-3">
-              <h3 class="font-bold text-base flex items-center gap-2 border-b pb-2 border-pink-100">
-                <i class="fa-solid fa-prescription-bottle-medical text-teal-600"></i> Daftar e-Resep & Terapi Obat Aktif
-              </h3>
-              <div class="space-y-2.5 text-sm">
-                <div class="p-3 rounded-xl border border-teal-200 bg-teal-50/50 flex justify-between items-center">
-                  <div>
-                    <p class="font-bold">1. Injeksi Ceftriaxone 1g (Tiap 12 Jam)</p>
-                    <p class="text-xs text-gray-500">Rute: Intravena (IV)</p>
-                  </div>
-                  <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-teal-200 text-teal-900">Diberikan 08:00</span>
-                </div>
-                <div class="p-3 rounded-xl border border-amber-200 bg-amber-50/50 flex justify-between items-center">
-                  <div>
-                    <p class="font-bold">2. Nebulizer Ventolin 2.5mg (Tiap 8 Jam)</p>
-                    <p class="text-xs text-gray-500">Rute: Inhalasi</p>
-                  </div>
-                  <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-200 text-amber-900">Dijadwalkan 12:00</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
-      <!-- 4. REKAM MEDIS ELEKTRONIK / EMR (DENGAN DROPDOWN STOK APOTEK & TOMBOL TAMBAH) -->
+      <!-- 4. REKAM MEDIS ELEKTRONIK / EMR (CARD SELECTION + TANGGAL PEMERIKSAAN + RIWAYAT) -->
       <section id="tab-emr" class="tab-section hidden space-y-6">
-        <div class="pastel-card p-6">
-          <div class="flex flex-wrap justify-between items-center border-b border-pink-100 pb-4 mb-5 gap-3">
+        <!-- Portlet Pilih Pasien EMR (Card View) -->
+        <div id="emrPatientSelectionPortal" class="pastel-card p-6 space-y-4 bg-gradient-to-r from-pink-50 via-white to-teal-50">
+          <div class="flex justify-between items-center border-b border-pink-100 pb-3">
             <div>
-              <h2 class="text-xl font-bold"><i class="fa-solid fa-stethoscope text-pastelRose mr-2"></i>Rekam Medis Elektronik (SOAP) & E-Prescribing</h2>
-              <p class="text-xs text-gray-500">Input resep dari dropdown stok apotek atau tambahkan obat manual jika kosong</p>
+              <h2 class="text-xl font-bold text-medDark"><i class="fa-solid fa-heart-pulse text-pastelRose mr-2"></i>Pilih Pasien untuk Rekam Medis (EMR)</h2>
+              <p class="text-xs text-gray-500">Pilih pasien untuk membuat pemeriksaan baru atau melihat riwayat kunjungan sebelumnya</p>
             </div>
+            <input type="text" id="searchEmrPortalInput" oninput="renderEmrPatientCards()" placeholder="Cari Pasien / RM..." class="px-3 py-1.5 text-xs rounded-xl border border-pink-200">
           </div>
-          <form id="formEMR" onsubmit="handleSaveEMR(event)" class="space-y-5 text-sm">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="font-bold text-xs">Pilih Pasien</label>
-                <select id="emr-patient" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200"></select>
-              </div>
-              <div>
-                <label class="font-bold text-xs">Dokter Pemeriksa (DPJP)</label>
-                <select id="emr-doctor" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200">
-                  <option value="DOC-01">dr. Aang, Sp.PD. (Penyakit Dalam)</option>
-                  <option value="DOC-02">dr. Andi, Sp.P. (Spesialis Paru)</option>
-                </select>
-              </div>
-              <div>
-                <label class="font-bold text-xs">Kode Diagnosa Utama (ICD-10)</label>
-                <input type="text" id="emr-soap-a" required placeholder="Contoh: J18.9 - Pneumonia" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200">
-              </div>
-            </div>
-            <div class="p-4 rounded-2xl bg-pink-50/60 border border-pink-200">
-              <p class="text-xs font-bold uppercase text-pink-800 mb-3"><i class="fa-solid fa-heart-pulse mr-1"></i> Tanda Vital</p>
-              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div><label class="text-xs font-semibold">Tekanan Darah</label><input type="text" id="emr-td" value="120/80" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
-                <div><label class="text-xs font-semibold">Suhu Tubuh (°C)</label><input type="number" step="0.1" id="emr-suhu" value="36.7" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
-                <div><label class="text-xs font-semibold">Nadi (x/mnt)</label><input type="number" id="emr-nadi" value="82" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
-                <div><label class="text-xs font-semibold">SpO2 (%)</label><input type="number" id="emr-spo2" value="98" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div><label class="font-bold text-xs">Subjective (Keluhan)</label><textarea id="emr-soap-s" rows="3" required class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea></div>
-              <div><label class="font-bold text-xs">Objective (Fisik)</label><textarea id="emr-soap-o" rows="3" required class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea></div>
-              <div><label class="font-bold text-xs">Plan (Terapi)</label><textarea id="emr-soap-p" rows="3" required class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea></div>
-            </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="emrPatientCardsGrid"></div>
+        </div>
 
-            <!-- E-Prescribing Berbasis Stok Apotek + Tombol Tambah Menu Dropdown -->
-            <div class="p-4 rounded-2xl bg-teal-50/70 border border-teal-200 space-y-3">
-              <div class="flex justify-between items-center">
-                <p class="text-xs font-bold uppercase text-teal-900"><i class="fa-solid fa-prescription mr-1"></i> Input E-Resep (Sesuai Stok Apotek)</p>
-                <div class="flex gap-2">
-                  <button type="button" onclick="addNewPharmacyDrugPrompt()" class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold">+ Tambah Obat ke Daftar</button>
-                  <button type="button" onclick="addPrescriptionRow()" class="px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold">+ Tambah Baris Resep</button>
-                </div>
-              </div>
-              <div id="prescriptionRows" class="space-y-2">
-                <div class="grid grid-cols-12 gap-2 items-center prescription-row-item">
-                  <select class="col-span-6 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-drug-select" onchange="checkCustomDrugInput(this)">
-                    <option value="Amoxicillin 500mg">Amoxicillin 500mg (Stok: 1250)</option>
-                    <option value="Paracetamol 100mg Syr">Paracetamol 100mg Syr (Stok: 75)</option>
-                    <option value="Ibuprofen 400mg">Ibuprofen 400mg (Stok: 500)</option>
-                    <option value="Vitamin C 1000mg">Vitamin C 1000mg (Stok: 15)</option>
-                    <option value="Amlodipine 5mg Tablet">Amlodipine 5mg Tablet (Stok: 640)</option>
-                    <option value="CUSTOM">+ Ketik Manual Nama Obat Lain...</option>
-                  </select>
-                  <input type="number" placeholder="Qty" class="col-span-2 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-qty" value="10">
-                  <input type="text" placeholder="Aturan Pakai" class="col-span-3 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-dosage" value="3 x 1 Tablet">
-                  <button type="button" onclick="this.parentElement.remove()" class="col-span-1 text-red-500 text-center"><i class="fa-solid fa-trash"></i></button>
-                </div>
-              </div>
+        <!-- Detail EMR & Riwayat Kunjungan (Tampil Setelah Pasien Dipilih) -->
+        <div id="emrDetailPortal" class="hidden space-y-6">
+          <div class="pastel-card p-5 bg-gradient-to-r from-pink-50 to-white flex justify-between items-center">
+            <div>
+              <button onclick="backToEmrSelection()" class="text-xs font-bold text-pink-600 hover:underline mb-1 block"><i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Daftar Pasien</button>
+              <h2 class="text-xl font-extrabold text-medDark">Pasien: <span id="emr-active-name" class="text-pink-600">Budi Santoso</span> (<span id="emr-active-rm">RM-123456</span>)</h2>
             </div>
-
-            <button type="submit" class="px-6 py-3 rounded-xl bg-pastelRose hover:bg-pink-400 text-white font-bold shadow-md transition">
-              <i class="fa-solid fa-paper-plane mr-2"></i> Simpan Rekam Medis & Kirim e-Resep
+            <button onclick="openNewVisitRecordModal()" class="px-4 py-2 bg-pastelRose hover:bg-pink-400 text-white rounded-xl text-xs font-bold shadow">
+              <i class="fa-solid fa-plus mr-1"></i> + Tambah Pemeriksaan Baru (Kunjungan Hari Ini)
             </button>
-          </form>
+          </div>
+
+          <!-- Riwayat Berobat Sebelumnya (Timeline / Daftar Kunjungan) -->
+          <div class="pastel-card p-5 space-y-3">
+            <h3 class="font-bold text-sm text-medDark border-b pb-2 border-pink-100"><i class="fa-solid fa-clock-rotate-left text-teal-600 mr-2"></i>Riwayat Rekam Medis & Tanggal Berobat Sebelumnya</h3>
+            <div id="patientVisitHistoryContainer" class="space-y-3"></div>
+          </div>
+
+          <!-- Form Input EMR SOAP & e-Prescribing Aktif -->
+          <div class="pastel-card p-6">
+            <div class="flex justify-between items-center border-b border-pink-100 pb-3 mb-4">
+              <h3 class="font-bold text-base text-medDark"><i class="fa-solid fa-pen-to-square text-pastelRose mr-2"></i>Form Input SOAP & e-Resep (<span id="emr-active-visit-date">Tanggal: 2026-11-06</span>)</h3>
+            </div>
+            <form id="formEMR" onsubmit="handleSaveEMR(event)" class="space-y-5 text-sm">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="font-bold text-xs">Dokter Pemeriksa (DPJP)</label>
+                  <select id="emr-doctor" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200">
+                    <option value="DOC-01">dr. Aang, Sp.PD. (Penyakit Dalam)</option>
+                    <option value="DOC-02">dr. Andi, Sp.P. (Spesialis Paru)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="font-bold text-xs">Kode Diagnosa Utama (ICD-10)</label>
+                  <input type="text" id="emr-soap-a" required placeholder="Contoh: J18.9 - Pneumonia" class="w-full mt-1 px-3 py-2 rounded-xl border border-pink-200">
+                </div>
+              </div>
+              <div class="p-4 rounded-2xl bg-pink-50/60 border border-pink-200">
+                <p class="text-xs font-bold uppercase text-pink-800 mb-3"><i class="fa-solid fa-heart-pulse mr-1"></i> Tanda Vital</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div><label class="text-xs font-semibold">Tekanan Darah</label><input type="text" id="emr-td" value="120/80" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
+                  <div><label class="text-xs font-semibold">Suhu Tubuh (°C)</label><input type="number" step="0.1" id="emr-suhu" value="36.7" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
+                  <div><label class="text-xs font-semibold">Nadi (x/mnt)</label><input type="number" id="emr-nadi" value="82" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
+                  <div><label class="text-xs font-semibold">SpO2 (%)</label><input type="number" id="emr-spo2" value="98" class="w-full mt-1 px-3 py-1.5 rounded-lg border border-pink-200 bg-white"></div>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div><label class="font-bold text-xs">Subjective (Keluhan)</label><textarea id="emr-soap-s" rows="3" required class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea></div>
+                <div><label class="font-bold text-xs">Objective (Fisik)</label><textarea id="emr-soap-o" rows="3" required class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea></div>
+                <div><label class="font-bold text-xs">Plan (Terapi)</label><textarea id="emr-soap-p" rows="3" required class="w-full mt-1 p-3 rounded-xl border border-pink-200"></textarea></div>
+              </div>
+              
+              <!-- E-Prescribing Berbasis Stok Apotek + Tombol Tambah Menu -->
+              <div class="p-4 rounded-2xl bg-teal-50/70 border border-teal-200 space-y-3">
+                <div class="flex justify-between items-center">
+                  <p class="text-xs font-bold uppercase text-teal-900"><i class="fa-solid fa-prescription mr-1"></i> Input E-Resep (Sesuai Stok Apotek)</p>
+                  <div class="flex gap-2">
+                    <button type="button" onclick="addNewPharmacyDrugPrompt()" class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold">+ Tambah Obat ke Daftar</button>
+                    <button type="button" onclick="addPrescriptionRow()" class="px-3 py-1 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold">+ Tambah Baris Resep</button>
+                  </div>
+                </div>
+                <div id="prescriptionRows" class="space-y-2">
+                  <div class="grid grid-cols-12 gap-2 items-center prescription-row-item">
+                    <select class="col-span-6 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-drug-select" onchange="checkCustomDrugInput(this)">
+                      <option value="Amoxicillin 500mg">Amoxicillin 500mg (Stok: 1250)</option>
+                      <option value="Paracetamol 100mg Syr">Paracetamol 100mg Syr (Stok: 75)</option>
+                      <option value="Ibuprofen 400mg">Ibuprofen 400mg (Stok: 500)</option>
+                      <option value="Vitamin C 1000mg">Vitamin C 1000mg (Stok: 15)</option>
+                      <option value="Amlodipine 5mg Tablet">Amlodipine 5mg Tablet (Stok: 640)</option>
+                      <option value="CUSTOM">+ Ketik Manual Nama Obat Lain...</option>
+                    </select>
+                    <input type="number" placeholder="Qty" class="col-span-2 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-qty" value="10">
+                    <input type="text" placeholder="Aturan Pakai" class="col-span-3 px-3 py-1.5 rounded-lg border border-teal-200 bg-white text-xs pres-dosage" value="3 x 1 Tablet">
+                    <button type="button" onclick="this.parentElement.remove()" class="col-span-1 text-red-500 text-center"><i class="fa-solid fa-trash"></i></button>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="px-6 py-3 rounded-xl bg-pastelRose hover:bg-pink-400 text-white font-bold shadow-md transition">
+                <i class="fa-solid fa-paper-plane mr-2"></i> Simpan Rekam Medis & Kirim e-Resep
+              </button>
+            </form>
+          </div>
         </div>
       </section>
 
@@ -531,7 +501,7 @@
         </div>
       </section>
 
-      <!-- 6. KASIR / BILLING SYSTEM (DENGAN STATUS LUNAS/BELUM & PRINT LABELED STRUK PROFESIONAL) -->
+      <!-- 6. KASIR / BILLING SYSTEM -->
       <section id="tab-kasir" class="tab-section hidden space-y-6">
         <div id="billingSelectionPortal" class="pastel-card p-6 space-y-4 bg-gradient-to-r from-teal-50 via-white to-pink-50">
           <div class="flex justify-between items-center border-b border-pink-100 pb-3">
@@ -542,7 +512,6 @@
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="billingPatientCards"></div>
         </div>
-
         <div id="billingDetailPortal" class="hidden space-y-6">
           <div class="pastel-card p-6 space-y-4">
             <div class="flex flex-wrap justify-between items-center border-b border-pink-100 pb-4 gap-2">
@@ -573,7 +542,6 @@
               </table>
             </div>
           </div>
-
           <div class="pastel-card p-6 space-y-4">
             <h3 class="font-bold text-base border-b border-pink-100 pb-3">Ringkasan Pembayaran</h3>
             <div class="space-y-2 text-sm">
@@ -619,7 +587,7 @@
     </main>
   </div>
 
-  <!-- AREA PRINT STRUK KASIR PROFESIONAL (TERSEMBUNYI SAAT DI WEB, AKTIF SAAT PRINT) -->
+  <!-- AREA PRINT STRUK KASIR RESMI -->
   <div id="printableReceiptArea" class="hidden p-8 font-mono text-xs text-gray-800 bg-white">
     <div class="text-center border-b-2 border-dashed border-gray-400 pb-4 mb-4">
       <h2 class="text-lg font-bold">RS AANG MEDICAL</h2>
@@ -677,7 +645,7 @@
 
   <!-- SCRIPT UTAMA -->
   <script>
-    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwwAIe1KwlgB2joDa0nhRQQiwcJzc5OxqVw-sDQe7DFNO4jaTInx-u0FzfvSipGCqug5A/exec';
+    const DEFAULT_GAS_URL = 'https://script.google.com/macros/s/AKfycbwJeHMjxZH-b8BFF1GQOk-sYtCL6O-y4wiy_M7IFYqdYb4bDGAk3ZhWzEeinaHh6aMCyQ/exec';
     let GAS_URL = localStorage.getItem('AANG_MEDICAL_GAS_URL') || DEFAULT_GAS_URL;
     let selectedPayMethod = 'Tunai';
     let queueCounter = 1;
@@ -707,7 +675,17 @@
       pharmacyStockList: [
         "Amoxicillin 500mg", "Paracetamol 100mg Syr", "Ibuprofen 400mg", "Vitamin C 1000mg",
         "Amlodipine 5mg Tablet", "Panadol Extra", "Vitamin D3", "Cough Syrup", "Antiseptic"
-      ]
+      ],
+      // Penyimpanan Riwayat Kunjungan & Rekam Medis Pasien Berdasarkan Tanggal
+      emrRecords: {
+        "RM-123456": [
+          { visit_date: "2026-10-15", soap_s: "Batuk pilek ringan", soap_o: "Faring hiperemis", soap_a: "J00 - Common Cold", soap_p: "Paracetamol 3x1", doctor: "dr. Aang, Sp.PD." },
+          { visit_date: "2026-11-06", soap_s: "Kontrol tekanan darah, pusing", soap_o: "TD 140/90 mmHg", soap_a: "I10 - Essential Hypertension", soap_p: "Amlodipine 5mg 1x1", doctor: "dr. Aang, Sp.PD." }
+        ],
+        "RM-01234567": [
+          { visit_date: "2026-11-05", soap_s: "Sesak napas, demam tinggi", soap_o: "Ronki di paru kanan, SpO2 92%", soap_a: "J18.9 - Pneumonia", soap_p: "Injeksi Ceftriaxone & Oksigen", doctor: "dr. Andi, Sp.P." }
+        ]
+      }
     };
 
     function switchTab(tabId) {
@@ -717,6 +695,7 @@
       const activeBtn = document.getElementById('btn-' + tabId);
       if (activeBtn) activeBtn.classList.add('active');
       if (tabId === 'rawatinap') renderInpatientCards();
+      if (tabId === 'emr') renderEmrPatientCards();
     }
 
     function renderAll() {
@@ -726,6 +705,7 @@
       renderInventory();
       renderBillingPatientSelection();
       renderInpatientCards();
+      renderEmrPatientCards();
       document.getElementById('stat-patients').innerText = appState.patients.length;
       document.getElementById('stat-lab').innerText = appState.lab_radiology.length;
       const occupiedRooms = appState.rooms.filter(r => r.status === 'Terisi').length;
@@ -737,17 +717,14 @@
       const filterDate = document.getElementById('filterInpatientDate')?.value || '';
       const container = document.getElementById('inpatientCardGrid');
       if (!container) return;
-
       const inpPatients = appState.patients.filter(p => {
         if (!filterDate) return true;
         return p.admission_date === filterDate;
       });
-
       if (inpPatients.length === 0) {
         container.innerHTML = `<p class="col-span-2 text-center text-xs text-gray-500 py-4">Tidak ada pasien rawat inap untuk tanggal tersebut.</p>`;
         return;
       }
-
       container.innerHTML = inpPatients.map(p => `
         <div class="pastel-card p-4 bg-white border border-pink-200 shadow-sm space-y-2 hover:border-pink-400 transition cursor-pointer" onclick="selectActiveInpatient('${p.patient_id}')">
           <div class="flex justify-between items-start">
@@ -770,7 +747,80 @@
       }
     }
 
-    // --- RENDER E-RESER EMR (DROPDOWN STOK APOTEK + TOMBOL TAMBAH) ---
+    // --- RENDER EMR CARD SELECTION & RIWAYAT KUNJUNGAN BERDASARKAN TANGGAL ---
+    function renderEmrPatientCards() {
+      const q = (document.getElementById('searchEmrPortalInput')?.value || '').toLowerCase();
+      const filtered = appState.patients.filter(p =>
+        String(p.full_name).toLowerCase().includes(q) || String(p.patient_id).toLowerCase().includes(q)
+      );
+      const container = document.getElementById('emrPatientCardsGrid');
+      if (!container) return;
+
+      container.innerHTML = filtered.map(p => `
+        <div onclick="selectEmrPatient('${p.patient_id}')" class="pastel-card p-4 cursor-pointer hover:border-pastelRose bg-white transition space-y-2">
+          <div class="flex justify-between items-start">
+            <span class="px-2 py-0.5 rounded bg-pink-100 text-pink-800 text-[10px] font-bold">${p.insurance_type || 'Umum'}</span>
+            <span class="text-xs text-gray-400 font-bold">${p.patient_id}</span>
+          </div>
+          <h4 class="font-extrabold text-base text-medDark">${p.full_name}</h4>
+          <p class="text-xs text-gray-500">Poli: ${p.poli || 'Penyakit Dalam'} • Klik untuk rekam medis</p>
+        </div>
+      `).join('');
+    }
+
+    function selectEmrPatient(patientId) {
+      const pat = appState.patients.find(p => p.patient_id === patientId);
+      if (!pat) return;
+
+      document.getElementById('emr-active-name').innerText = pat.full_name;
+      document.getElementById('emr-active-rm').innerText = pat.patient_id;
+      document.getElementById('emrPatientSelectionPortal').classList.add('hidden');
+      document.getElementById('emrDetailPortal').classList.remove('hidden');
+
+      renderPatientVisitHistory(patientId);
+    }
+
+    function backToEmrSelection() {
+      document.getElementById('emrDetailPortal').classList.add('hidden');
+      document.getElementById('emrPatientSelectionPortal').classList.remove('hidden');
+    }
+
+    function renderPatientVisitHistory(patientId) {
+      const container = document.getElementById('patientVisitHistoryContainer');
+      const records = appState.emrRecords[patientId] || [];
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      document.getElementById('emr-active-visit-date').innerText = `Tanggal Berobat: ${todayStr}`;
+
+      if (records.length === 0) {
+        container.innerHTML = `<p class="text-xs text-gray-500 italic">Belum ada riwayat kunjungan sebelumnya. Silakan buat pemeriksaan baru.</p>`;
+        return;
+      }
+
+      container.innerHTML = records.map((rec, idx) => `
+        <div class="p-3.5 rounded-xl border border-teal-200 bg-teal-50/40 text-xs space-y-1">
+          <div class="flex justify-between font-bold text-teal-900 border-b border-teal-100 pb-1">
+            <span><i class="fa-solid fa-calendar-day mr-1"></i> Tanggal Berobat: ${rec.visit_date}</span>
+            <span>DPJP: ${rec.doctor}</span>
+          </div>
+          <p><b>Diagnosa (ICD-10):</b> <span class="text-pink-700 font-semibold">${rec.soap_a}</span></p>
+          <p><b>Keluhan (S):</b> ${rec.soap_s}</p>
+          <p><b>Terapi / Plan (P):</b> ${rec.soap_p}</p>
+        </div>
+      `).join('');
+    }
+
+    function openNewVisitRecordModal() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      document.getElementById('emr-active-visit-date').innerText = `Tanggal Berobat: ${todayStr}`;
+      document.getElementById('emr-soap-s').value = "";
+      document.getElementById('emr-soap-o"').value = "";
+      document.getElementById('emr-soap-a').value = "";
+      document.getElementById('emr-soap-p').value = "";
+      alert("Form siap untuk entri rekam medis kunjungan baru hari ini.");
+    }
+
+    // --- E-PRESCRIBING BERBASIS STOK APOTEK + TOMBOL TAMBAH ---
     function addPrescriptionRow() {
       const container = document.getElementById('prescriptionRows');
       const div = document.createElement('div');
@@ -810,7 +860,6 @@
       if (newDrug && !appState.pharmacyStockList.includes(newDrug)) {
         appState.pharmacyStockList.push(newDrug);
         alert(`Obat "${newDrug}" berhasil ditambahkan ke pilihan dropdown e-Resep!`);
-        // Refresh existing selects
         document.querySelectorAll('.pres-drug-select').forEach(sel => {
           const opt = document.createElement('option');
           opt.value = newDrug;
@@ -885,12 +934,10 @@
       const subTxt = document.getElementById('bill-subtotal-txt').innerText;
       const discTxt = document.getElementById('bill-discount-input').value;
 
-      // Ubah status badge di layar menjadi Lunas
       const badge = document.getElementById('bill-status-badge');
       badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
       badge.innerText = "Lunas";
 
-      // Isi data untuk cetak struk resmi
       document.getElementById('print-trx-id').innerText = "BIL-2026-" + Math.floor(100 + Math.random() * 900);
       document.getElementById('print-patient-name').innerText = patName;
       document.getElementById('print-patient-rm').innerText = patRm;
@@ -935,12 +982,6 @@
             <span class="px-2.5 py-1 rounded-lg bg-white border border-pink-200 font-bold text-pink-600">${p.gender || 'L'}</span>
           </div>
         `).join('');
-      }
-      const emrSelect = document.getElementById('emr-patient');
-      if (emrSelect) {
-        emrSelect.innerHTML = appState.patients.map(p =>
-          `<option value="${p.patient_id}">${p.patient_id} - ${p.full_name} (${p.insurance_type || 'Umum'})</option>`
-        ).join('');
       }
     }
 
@@ -1036,8 +1077,22 @@
 
     async function handleSaveEMR(e) {
       e.preventDefault();
-      alert("Rekam Medis (SOAP) & e-Resep berhasil disimpan dan diteruskan ke Apotek & Kasir!");
-      e.target.reset();
+      const rm = document.getElementById('emr-active-rm').innerText;
+      const todayStr = new Date().toISOString().split('T')[0];
+      const newRec = {
+        visit_date: todayStr,
+        soap_s: document.getElementById('emr-soap-s').value,
+        soap_o: document.getElementById('emr-soap-o').value,
+        soap_a: document.getElementById('emr-soap-a').value,
+        soap_p: document.getElementById('emr-soap-p').value,
+        doctor: document.getElementById('emr-doctor').selectedOptions[0].text
+      };
+
+      if (!appState.emrRecords[rm]) appState.emrRecords[rm] = [];
+      appState.emrRecords[rm].unshift(newRec);
+
+      alert("Rekam Medis (SOAP) & e-Resep berhasil disimpan dan riwayat tanggal berobat tercatat!");
+      renderPatientVisitHistory(rm);
     }
 
     function promptNewLabOrder() {
